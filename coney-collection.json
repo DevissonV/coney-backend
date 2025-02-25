@@ -1,17 +1,17 @@
 {
 	"info": {
-		"_postman_id": "9319492a-3890-4508-878f-e34cf87b1bf1",
-		"name": "EdenSky-Backend-API",
-		"description": "API collection for EdenSky Backend endpoints",
+		"_postman_id": "6fd0eb46-9370-4891-9cb7-51e7c856961c",
+		"name": "Coney-Backend-API",
+		"description": "API collection for Coney Backend endpoints",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "28892594"
+		"_exporter_id": "10141207"
 	},
 	"item": [
 		{
-			"name": "Employee",
+			"name": "Raffles",
 			"item": [
 				{
-					"name": "get-all-employees",
+					"name": "get-all",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -26,13 +26,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/employees/?limit=3&page=1&minSalary=1000&name=Devisson",
+							"raw": "{{url}}/api/raffles/?limit=3&page=1",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
-								"employees",
+								"raffles",
 								""
 							],
 							"query": [
@@ -43,14 +43,6 @@
 								{
 									"key": "page",
 									"value": "1"
-								},
-								{
-									"key": "minSalary",
-									"value": "1000"
-								},
-								{
-									"key": "name",
-									"value": "Devisson"
 								}
 							]
 						}
@@ -58,7 +50,7 @@
 					"response": []
 				},
 				{
-					"name": "get-employee-by-ID",
+					"name": "get-by-ID",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -85,13 +77,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/employees/:id",
+							"raw": "{{url}}/api/raffles/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
-								"employees",
+								"raffles",
 								":id"
 							],
 							"variable": [
@@ -105,7 +97,7 @@
 					"response": []
 				},
 				{
-					"name": "create-employee",
+					"name": "create",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -129,13 +121,13 @@
 							"raw": "{\n  \"name\": \"Devisson Vasquez\",\n  \"hire_date\": \"2023-01-01\",\n  \"salary\": 1000\n}"
 						},
 						"url": {
-							"raw": "{{url}}/api/employees/",
+							"raw": "{{url}}/api/raffles/",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
-								"employees",
+								"raffles",
 								""
 							]
 						}
@@ -143,7 +135,7 @@
 					"response": []
 				},
 				{
-					"name": "update-employee",
+					"name": "update",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -167,13 +159,13 @@
 							"raw": "{\n  \"name\": \"Lionel Messi\",\n  \"hire_date\": \"2025-01-01\",\n  \"salary\": 60000\n}"
 						},
 						"url": {
-							"raw": "{{url}}/api/employees/:id",
+							"raw": "{{url}}/api/raffles/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
-								"employees",
+								"raffles",
 								":id"
 							],
 							"variable": [
@@ -187,7 +179,7 @@
 					"response": []
 				},
 				{
-					"name": "delete-employee",
+					"name": "delete",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -202,213 +194,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/employees/:id",
+							"raw": "{{url}}/api/raffles/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
-								"employees",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Request",
-			"item": [
-				{
-					"name": "get-all-requests",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{TOKEN}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/api/requests/?limit=2&page=1&code=REQ003",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"requests",
-								""
-							],
-							"query": [
-								{
-									"key": "limit",
-									"value": "2"
-								},
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "code",
-									"value": "REQ003"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get-request-by-ID",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{TOKEN}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/api/requests/:id",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"requests",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "create-request",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{TOKEN}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"code\": \"REQ003\",\n  \"description\": \"Sample Request\",\n  \"summary\": \"Summary of the request\",\n  \"employee_id\": 2\n}"
-						},
-						"url": {
-							"raw": "{{url}}/api/requests/",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"requests",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "update-request",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{TOKEN}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"code\": \"REQ002\",\n  \"description\": \"Updated Request\",\n  \"summary\": \"Updated summary\",\n  \"employee_id\": 2\n}"
-						},
-						"url": {
-							"raw": "{{url}}/api/requests/:id",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"requests",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "2"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete-request",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{TOKEN}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/api/requests/:id",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"requests",
+								"raffles",
 								":id"
 							],
 							"variable": [

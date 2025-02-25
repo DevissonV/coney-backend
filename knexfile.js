@@ -20,6 +20,16 @@ const setSchema = (conn, done) => {
   });
 };
 
+const directoryMigrations = [
+  './src/features/users/migrations',
+  './src/features/raffles/migrations',
+];
+
+const directorySeed = [
+  './src/features/users/seed',
+  './src/features/raffles/seed',
+];
+
 export const development = {
   client: 'pg',
   connection,
@@ -27,18 +37,10 @@ export const development = {
   migrations: {
     tableName: 'knex_migrations',
     schemaName: schema,
-    directory: [
-      './src/features/employees/migrations',
-      './src/features/requests/migrations',
-      './src/features/users/migrations',
-    ],
+    directory: directoryMigrations,
   },
   seeds: {
-    directory: [
-      './src/features/employees/seed',
-      './src/features/requests/seed',
-      './src/features/users/seed',
-    ],
+    directory: directorySeed,
   },
   pool: {
     min: 0,
@@ -55,18 +57,10 @@ export const production = {
   migrations: {
     tableName: 'knex_migrations',
     schemaName: schema,
-    directory: [
-      './src/features/employees/migrations',
-      './src/features/requests/migrations',
-      './src/features/users/migrations',
-    ],
+    directory: directoryMigrations,
   },
   seeds: {
-    directory: [
-      './src/features/employees/seed',
-      './src/features/requests/seed',
-      './src/features/users/seed',
-    ],
+    directory: directorySeed,
   },
   pool: {
     min: 0,

@@ -1,7 +1,7 @@
 {
-  "name": "eden-sky-backend",
+  "name": "coney-backend",
   "version": "1.0.0",
-  "description": "Backend for Eden Sky project",
+  "description": "Backend for Coney project",
   "main": "src/server.js",
   "type": "module",
   "scripts": {

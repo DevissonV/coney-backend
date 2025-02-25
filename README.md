@@ -7,7 +7,7 @@
 ┃ ┗ 📜Dockerfile.dev
 ┣ 📂logs
 ┃ ┣ 📜app-old.log
-┃ ┣ 📜app-new.log
+┃ ┗ 📜app-new.log
 ┣ 📂scripts
 ┃ ┗ 📜generate-module.js
 ┣ 📂src
@@ -34,43 +34,27 @@
 ┃ ┃     ┣ 📜error-handler.js
 ┃ ┃     ┗ 📜response-handler.js
 ┃ ┣ 📂features
-┃ ┃ ┣ 📂employees
-┃ ┃ ┃ ┣ 📂api
-┃ ┃ ┃ ┃ ┗ 📜employee-routes.js
-┃ ┃ ┃ ┣ 📂controllers
-┃ ┃ ┃ ┃ ┗ 📜employee-controller.js
-┃ ┃ ┃ ┣ 📂dto
-┃ ┃ ┃ ┃ ┗ 📜employee-dto.js
-┃ ┃ ┃ ┣ 📂migrations
-┃ ┃ ┃ ┃ ┗ 📜20241205225059_create_employees_table.js
-┃ ┃ ┃ ┣ 📂repositories
-┃ ┃ ┃ ┃ ┗ 📜employee-repository.js
-┃ ┃ ┃ ┣ 📂services
-┃ ┃ ┃ ┃ ┗ 📜employee-service.js
-┃ ┃ ┃ ┗ 📂validations
-┃ ┃ ┃   ┣ 📜employee-criteria-validation.js
-┃ ┃ ┃   ┗ 📜employee-validation.js
 ┃ ┃ ┣ 📂health-checks
 ┃ ┃ ┃ ┣ 📂api
 ┃ ┃ ┃ ┃ ┗ 📜health-check-routes.js
 ┃ ┃ ┃ ┗ 📂controllers
 ┃ ┃ ┃   ┗ 📜health-check-controller.js
-┃ ┃ ┣ 📂requests
+┃ ┃ ┣ 📂raffles
 ┃ ┃ ┃ ┣ 📂api
-┃ ┃ ┃ ┃ ┗ 📜request-routes.js
+┃ ┃ ┃ ┃ ┗ 📜raffle-routes.js
 ┃ ┃ ┃ ┣ 📂controllers
-┃ ┃ ┃ ┃ ┗ 📜request-controller.js
+┃ ┃ ┃ ┃ ┗ 📜raffle-controller.js
 ┃ ┃ ┃ ┣ 📂dto
-┃ ┃ ┃ ┃ ┗ 📜request-dto.js
+┃ ┃ ┃ ┃ ┗ 📜raffle-dto.js
 ┃ ┃ ┃ ┣ 📂migrations
-┃ ┃ ┃ ┃ ┗ 📜20241205225101_create_requests_table.js
+┃ ┃ ┃ ┃ ┗ 📜20250225031050_create_raffles_table.js
 ┃ ┃ ┃ ┣ 📂repositories
-┃ ┃ ┃ ┃ ┗ 📜request-repository.js
+┃ ┃ ┃ ┃ ┗ 📜raffle-repository.js
 ┃ ┃ ┃ ┣ 📂services
-┃ ┃ ┃ ┃ ┗ 📜request-service.js
+┃ ┃ ┃ ┃ ┗ 📜raffle-service.js
 ┃ ┃ ┃ ┗ 📂validations
-┃ ┃ ┃   ┣ 📜request-criteria-validation.js
-┃ ┃ ┃   ┗ 📜request-validation.js
+┃ ┃ ┃   ┣ 📜raffle-criteria-validation.js
+┃ ┃ ┃   ┗ 📜raffle-validation.js
 ┃ ┃ ┗ 📂users
 ┃ ┃   ┣ 📂api
 ┃ ┃   ┃ ┗ 📜user-routes.js
@@ -92,25 +76,22 @@
 ┣ 📂tests
 ┃ ┣ 📂auth
 ┃ ┃ ┗ 📜auth.spec.js
-┃ ┣ 📂employees
-┃ ┃ ┗ 📜employees.spec.js
-┃ ┗ 📂request
-┃   ┗ 📜request.spec.js
+┃ ┣ 📂raffles
+┃ ┃ ┗ 📜raffle.spec.js
 ┣ 📜.dockerignore
 ┣ 📜.env
 ┣ 📜.env-example
 ┣ 📜.eslintrc.json
 ┣ 📜.gitignore
 ┣ 📜.prettierrc
+┣ 📜coney-collection.json
 ┣ 📜docker-compose.dev.yml
-┣ 📜eden-sky-collection.json
 ┣ 📜jest.config.mjs
 ┣ 📜jsconfig.json
 ┣ 📜knexfile.js
 ┣ 📜LICENSE
 ┣ 📜package.json
 ┗ 📜README.md
-
 
 ```
 
@@ -164,13 +145,13 @@ Si prefieres utilizar Docker para simplificar la ejecución del proyecto, sigue 
 1. Construir la imagen, ejecuta el siguiente comando para construir la imagen del contenedor:
 
 ```
-docker-compose -f docker-compose.dev.yml build
+docker-compose build
 ```
 
 2. Levantar los contenedores
 
 ```
-docker-compose -f docker-compose.dev.yml up
+docker-compose up
 ```
 
 ## Crear nuevas tablas mediante migraciones
@@ -178,9 +159,8 @@ docker-compose -f docker-compose.dev.yml up
 Si necesitas crear nuevas tablas, utiliza los siguientes comandos para generar los archivos de migración, ejemplo de las tablas existentes:
 
 ```
-npx knex migrate:make create_employees_table
-npx knex migrate:make create_requests_table
 npx knex migrate:make create_users_table
+npx knex migrate:make create_raffles_table
 ```
 
 Estos comandos generarán archivos de migración en la carpeta correspondiente (migrations/), donde podrás definir la estructura de las tablas.
@@ -200,8 +180,7 @@ Para ejecutar las pruebas de integración (usando Jest y Supertest), utiliza los
 
 ```
 npm test auth/auth.spec.js
-npm test employees/employees.spec.js
-npm test request/request.spec.js
+npm test raffles/raffle.spec.js
 ```
 
 Cada comando ejecutará los tests definidos en los archivos especificados. Asegúrate de que las rutas de prueba sean correctas y estén configuradas para el entorno de desarrollo.
@@ -217,7 +196,7 @@ IMPORTANTE: tener presente que la ejecución de las pruebas puede afectar los da
 
 Para facilitar la ejecución y prueba de las APIs en Postman:
 
-- En la raíz del proyecto hay un archivo llamado `eden-sky-collection.json`.
+- En la raíz del proyecto hay un archivo llamado `coney-collection.json`.
   Importa este archivo en Postman para cargar todas las rutas y configuraciones del proyecto.
 - Ajusta las variables de entorno en Postman según tu configuración local o de Docker, variable `{{URL}}`.
 

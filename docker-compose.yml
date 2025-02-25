@@ -1,7 +1,7 @@
 services:
   db:
     image: postgres:16.2
-    container_name: BD-EdenSky
+    container_name: BD-Coney
     ports:
       - "${DB_PORT}:5432"
     environment:
@@ -18,7 +18,7 @@ services:
       start_period: 5s
 
   backend:
-    container_name: Backend-EdenSky
+    container_name: Backend-Coney
     build:
       context: .
       dockerfile: .docker/Dockerfile.dev
