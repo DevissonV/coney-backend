@@ -7,7 +7,7 @@
 ┃ ┗ 📜Dockerfile.dev
 ┣ 📂logs
 ┃ ┣ 📜app-old.log
-┃ ┣ 📜app-new.log
+┃ ┗ 📜app-new.log
 ┣ 📂scripts
 ┃ ┗ 📜generate-module.js
 ┣ 📂src
@@ -73,6 +73,22 @@
 ┃ ┃ ┃ ┗ 📂validations
 ┃ ┃ ┃   ┣ 📜raffle-criteria-validation.js
 ┃ ┃ ┃   ┗ 📜raffle-validation.js
+┃ ┃ ┣ 📂tickets
+┃ ┃ ┃ ┣ 📂api
+┃ ┃ ┃ ┃ ┗ 📜ticket-routes.js
+┃ ┃ ┃ ┣ 📂controllers
+┃ ┃ ┃ ┃ ┗ 📜ticket-controller.js
+┃ ┃ ┃ ┣ 📂dto
+┃ ┃ ┃ ┃ ┗ 📜ticket-dto.js
+┃ ┃ ┃ ┣ 📂migrations
+┃ ┃ ┃ ┃ ┗ 📜20250225163808_create_tickets_table.js
+┃ ┃ ┃ ┣ 📂repositories
+┃ ┃ ┃ ┃ ┗ 📜ticket-repository.js
+┃ ┃ ┃ ┣ 📂services
+┃ ┃ ┃ ┃ ┗ 📜ticket-service.js
+┃ ┃ ┃ ┗ 📂validations
+┃ ┃ ┃   ┣ 📜ticket-criteria-validation.js
+┃ ┃ ┃   ┗ 📜ticket-validation.js
 ┃ ┃ ┗ 📂users
 ┃ ┃   ┣ 📂api
 ┃ ┃   ┃ ┗ 📜user-routes.js
@@ -98,8 +114,10 @@
 ┃ ┃ ┗ 📜country.spec.js
 ┃ ┣ 📂factories
 ┃ ┃ ┗ 📜auth-factory.js
-┃ ┗ 📂raffles
-┃   ┗ 📜raffle.spec.js
+┃ ┣ 📂raffles
+┃ ┃ ┗ 📜raffle.spec.js
+┃ ┗ 📂tickets
+┃   ┗ 📜ticket.spec.js
 ┣ 📜.dockerignore
 ┣ 📜.env
 ┣ 📜.env-example
