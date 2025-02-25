@@ -4,9 +4,9 @@ export const up = async (knex) => {
     table.string('username', 50).notNullable().unique();
     table.string('password').notNullable();
     table
-      .enum('role', ['admin', 'employee'])
+      .enum('role', ['admin', 'user', 'anonymous'])
       .notNullable()
-      .defaultTo('employee');
+      .defaultTo('anonymous');
     table.timestamps(true, true);
   });
 };

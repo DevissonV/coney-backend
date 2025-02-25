@@ -18,10 +18,10 @@ const userSchema = Joi.object({
   }),
 
   role: Joi.string()
-    .valid(envs.ROLE_ADMIN, envs.ROLE_EMPLOYEE)
-    .default(envs.ROLE_EMPLOYEE)
+    .valid(envs.ROLE_ADMIN, envs.ROLE_USER, envs.ROLE_ANONYMOUS)
+    .default(envs.ROLE_ANONYMOUS)
     .messages({
-      'any.only': `Role must be either "${envs.ROLE_ADMIN}" or "${envs.ROLE_EMPLOYEE}".`,
+      'any.only': `Role must be either "${envs.ROLE_ADMIN}" or "${envs.ROLE_USER}" or "${envs.ROLE_ANONYMOUS}".`,
     }),
 });
 

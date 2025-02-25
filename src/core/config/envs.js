@@ -27,8 +27,11 @@ const envVarsSchema = Joi.object({
   ROLE_ADMIN: Joi.string().required().messages({
     'any.required': 'ROLE_ADMIN is required',
   }),
-  ROLE_EMPLOYEE: Joi.string().required().messages({
-    'any.required': 'ROLE_EMPLOYEE is required',
+  ROLE_USER: Joi.string().required().messages({
+    'any.required': 'ROLE_USER is required',
+  }),
+  ROLE_ANONYMOUS: Joi.string().required().messages({
+    'any.required': 'ROLE_ANONYMOUS is required',
   }),
   CORS_ORIGINS: Joi.string().required().messages({
     'any.required': 'CORS_ORIGINS is required',
