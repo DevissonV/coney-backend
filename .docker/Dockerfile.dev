@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE ${APP_PORT}
 
-CMD ["npm", "run", "start-docker"]
+CMD ["npm", "run", "start-docker-dev"]

@@ -140,7 +140,7 @@ import ${singularModuleName}Service from '../services/${singularModuleName}-serv
  */
 class ${capitalize(singularModuleName)}Controller extends BaseController {
   constructor() {
-    super(${singularModuleName}Service, '${capitalize(moduleName)}');
+    super(${singularModuleName}Service, '${capitalize(singularModuleName)}');
   }
 }
 

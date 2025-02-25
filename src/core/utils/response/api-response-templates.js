@@ -2,11 +2,11 @@
  * Standard success messages for API responses.
  */
 export const successMessages = {
-  GET_ALL: 'Records retrieved successfully',
-  GET_ONE: 'Record retrieved successfully',
-  CREATE: 'Record created successfully',
-  UPDATE: 'Record updated successfully',
-  DELETE: 'Record deleted successfully',
+  GET_ALL: 'records retrieved successfully',
+  GET_ONE: 'record retrieved successfully',
+  CREATE: 'record created successfully',
+  UPDATE: 'record updated successfully',
+  DELETE: 'record deleted successfully',
 };
 
 /**
