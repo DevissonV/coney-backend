@@ -7,7 +7,7 @@
 ┃ ┗ 📜Dockerfile.dev
 ┣ 📂logs
 ┃ ┣ 📜app-old.log
-┃ ┗ 📜app-new.log
+┃ ┣ 📜app-new.log
 ┣ 📂scripts
 ┃ ┗ 📜generate-module.js
 ┣ 📂src
@@ -34,6 +34,24 @@
 ┃ ┃     ┣ 📜error-handler.js
 ┃ ┃     ┗ 📜response-handler.js
 ┃ ┣ 📂features
+┃ ┃ ┣ 📂countries
+┃ ┃ ┃ ┣ 📂api
+┃ ┃ ┃ ┃ ┗ 📜country-routes.js
+┃ ┃ ┃ ┣ 📂controllers
+┃ ┃ ┃ ┃ ┗ 📜country-controller.js
+┃ ┃ ┃ ┣ 📂dto
+┃ ┃ ┃ ┃ ┗ 📜country-dto.js
+┃ ┃ ┃ ┣ 📂migrations
+┃ ┃ ┃ ┃ ┗ 📜20250225143122_create_countries_table.js
+┃ ┃ ┃ ┣ 📂repositories
+┃ ┃ ┃ ┃ ┗ 📜country-repository.js
+┃ ┃ ┃ ┣ 📂seed
+┃ ┃ ┃ ┃ ┗ 📜country-seeder.js
+┃ ┃ ┃ ┣ 📂services
+┃ ┃ ┃ ┃ ┗ 📜country-service.js
+┃ ┃ ┃ ┗ 📂validations
+┃ ┃ ┃   ┣ 📜country-criteria-validation.js
+┃ ┃ ┃   ┗ 📜country-validation.js
 ┃ ┃ ┣ 📂health-checks
 ┃ ┃ ┃ ┣ 📂api
 ┃ ┃ ┃ ┃ ┗ 📜health-check-routes.js
@@ -76,8 +94,12 @@
 ┣ 📂tests
 ┃ ┣ 📂auth
 ┃ ┃ ┗ 📜auth.spec.js
-┃ ┣ 📂raffles
-┃ ┃ ┗ 📜raffle.spec.js
+┃ ┣ 📂countries
+┃ ┃ ┗ 📜country.spec.js
+┃ ┣ 📂factories
+┃ ┃ ┗ 📜auth-factory.js
+┃ ┗ 📂raffles
+┃   ┗ 📜raffle.spec.js
 ┣ 📜.dockerignore
 ┣ 📜.env
 ┣ 📜.env-example
@@ -85,7 +107,7 @@
 ┣ 📜.gitignore
 ┣ 📜.prettierrc
 ┣ 📜coney-collection.json
-┣ 📜docker-compose.dev.yml
+┣ 📜docker-compose.yml
 ┣ 📜jest.config.mjs
 ┣ 📜jsconfig.json
 ┣ 📜knexfile.js
