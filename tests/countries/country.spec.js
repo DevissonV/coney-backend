@@ -2,35 +2,30 @@ import app from '../../src/server.js';
 import request from 'supertest';
 import { registerAndLoginUser } from '../factories/auth-factory.js';
 
-describe('Raffles API', () => {
+describe('Countries API', () => {
   let token;
-  let createdRaffleId;
+  let createdCountryId;
 
   beforeAll(async () => {
     token = await registerAndLoginUser();
   });
 
-  it('should create a new raffle', async () => {
-    const raffleData = {
-      name: 'Test Raffle',
-      description: 'This is a test raffle',
-      init_date: '2025-02-01T00:00:00.000Z',
-      end_date: '2025-03-01T00:00:00.000Z',
-    };
+  it('should create a new country', async () => {
+    const countryData = { name: 'Test Country' };
 
     const response = await request(app)
-      .post('/api/raffles/')
+      .post('/api/countries/')
       .set('Authorization', `Bearer ${token}`)
-      .send(raffleData);
+      .send(countryData);
 
     expect(response.status).toBe(201);
-    expect(response.body.data[0]).toHaveProperty('name', raffleData.name);
-    createdRaffleId = response.body.data[0].id;
+    expect(response.body.data[0]).toHaveProperty('name', countryData.name);
+    createdCountryId = response.body.data[0].id;
   });
 
-  it('should get all raffles', async () => {
+  it('should get all countries', async () => {
     const response = await request(app)
-      .get('/api/raffles/')
+      .get('/api/countries/')
       .set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(200);
@@ -38,18 +33,18 @@ describe('Raffles API', () => {
     expect(Array.isArray(response.body.data)).toBe(true);
   });
 
-  it('should get a single raffle by ID', async () => {
+  it('should get a single country by ID', async () => {
     const response = await request(app)
-      .get(`/api/raffles/${createdRaffleId}`)
+      .get(`/api/countries/${createdCountryId}`)
       .set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(200);
-    expect(response.body.data).toHaveProperty('id', createdRaffleId);
+    expect(response.body.data).toHaveProperty('id', createdCountryId);
   });
 
-  it('should delete a raffle', async () => {
+  it('should delete a country', async () => {
     const response = await request(app)
-      .delete(`/api/raffles/${createdRaffleId}`)
+      .delete(`/api/countries/${createdCountryId}`)
       .set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(200);

@@ -23,12 +23,10 @@ const setSchema = (conn, done) => {
 const directoryMigrations = [
   './src/features/users/migrations',
   './src/features/raffles/migrations',
+  './src/features/countries/migrations',
 ];
 
-const directorySeed = [
-  './src/features/users/seed',
-  './src/features/raffles/seed',
-];
+const directorySeed = ['./src/features/countries/seed'];
 
 export const development = {
   client: 'pg',

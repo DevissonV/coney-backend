@@ -7,9 +7,11 @@
   "scripts": {
     "start": "cross-env node src/server.js",
     "dev": "nodemon src/server.js",
-    "start-docker": "npm run migrations && npm run dev",
+    "start-docker-dev": "npm run migrations && npm run seed && npm run dev",
+    "start-docker-prod": "npm run migrations && npm run start",
     "migrations": "npx knex migrate:latest",
-    "test": "cross-env NODE_ENV=development NODE_OPTIONS=--experimental-vm-modules jest",
+    "seed": "npx knex seed:run",
+    "test": "cross-env NODE_ENV=development NODE_OPTIONS=--experimental-vm-modules jest --runInBand",
     "generate-module": "node scripts/generate-module.js"
   },
   "license": "ISC",
