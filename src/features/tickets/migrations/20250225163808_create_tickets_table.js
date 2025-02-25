@@ -3,7 +3,7 @@ export const up = async (knex) => {
     table.increments('id').primary();
     table.string('ticket_number').notNullable();
     table
-      .integer('riffle_id')
+      .integer('raffle_id')
       .unsigned()
       .references('id')
       .inTable('raffles')

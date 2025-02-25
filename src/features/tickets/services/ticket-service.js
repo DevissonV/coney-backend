@@ -9,12 +9,29 @@ import {
   updateTicketDto,
   searchTicketDto,
 } from '../dto/ticket-dto.js';
+import raffleService from '#features/raffles/services/raffle-service.js';
 
 /**
  * Service class for handling ticket business logic.
  * @class TicketService
  */
 class TicketService {
+  /** @private */
+  #raffleService;
+
+  /**
+   * inject instance of TicketService.
+   *
+   * @param {Object} raffleService - The raffle service adapter
+   */
+  constructor(raffleService) {
+    /**
+     * @private
+     * @type {Object}
+     */
+    this.#raffleService = raffleService;
+  }
+
   /**
    * Retrieves all tickets.
    * @param {Object} params - Query parameters.
@@ -27,7 +44,7 @@ class TicketService {
 
       const criteria = new GenericCriteria(dto, {
         ticket_number: { column: 'ticket_number', operator: '=' },
-        riffle_id: { column: 'riffle_id', operator: '=' },
+        raffle_id: { column: 'raffle_id', operator: '=' },
         user_id: { column: 'user_id', operator: '=' },
       });
 
@@ -69,6 +86,9 @@ class TicketService {
     try {
       validateTicket(data);
       const dto = createTicketDto(data);
+
+      await this.#raffleService.getById(dto.raffle_id);
+
       return await ticketRepository.create(dto);
     } catch (error) {
       getLogger().error(`Error create ticket: ${error.message}`);
@@ -119,4 +139,4 @@ class TicketService {
   }
 }
 
-export default new TicketService();
+export default new TicketService(raffleService);

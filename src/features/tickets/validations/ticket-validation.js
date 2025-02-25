@@ -7,7 +7,7 @@ import { AppError } from '#core/utils/response/error-handler.js';
  */
 const ticketSchema = Joi.object({
   ticket_number: Joi.string().required(),
-  riffle_id: Joi.number().integer().allow(null),
+  raffle_id: Joi.number().integer().allow(null),
   user_id: Joi.number().integer().allow(null),
 });
 
