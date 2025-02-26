@@ -118,7 +118,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Devisson Vasquez\",\n  \"hire_date\": \"2023-01-01\",\n  \"salary\": 1000\n}"
+							"raw": "{\n    \"name\": \"Rifa Dev\",\n    \"description\": \"Rifa pro fondos coljuegos 2\",\n    \"initDate\": \"2025-02-26T14:30:00Z\",\n    \"endDate\": \"2025-02-27T14:30:00Z\"\n}"
 						},
 						"url": {
 							"raw": "{{url}}/api/raffles/",
@@ -156,7 +156,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Lionel Messi\",\n  \"hire_date\": \"2025-01-01\",\n  \"salary\": 60000\n}"
+							"raw": "{\n    \"name\": \"Rifa 2 para gamers\",\n    \"description\": \"Rifa pro fondos mundial de e sports 2\",\n    \"initDate\": \"2025-09-26T14:30:00Z\",\n    \"endDate\": \"2025-10-26T14:30:00Z\"\n}"
 						},
 						"url": {
 							"raw": "{{url}}/api/raffles/:id",
@@ -534,7 +534,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"ticket_number\": \"3\",\n  \"raffle_id\": 22,\n  \"user_id\": 1\n}"
+							"raw": "{\n  \"ticket_number\": \"3\",\n  \"riffle_id\": 22,\n  \"user_id\": 1\n}"
 						},
 						"url": {
 							"raw": "{{url}}/api/tickets/",

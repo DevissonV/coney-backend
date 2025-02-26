@@ -8,8 +8,8 @@ import { AppError } from '#core/utils/response/error-handler.js';
 const raffleSchema = Joi.object({
   name: Joi.string().max(100).required(),
   description: Joi.string().max(255).allow(null, '').optional(),
-  init_date: Joi.date().iso().required(),
-  end_date: Joi.date().iso().greater(Joi.ref('init_date')).required(),
+  initDate: Joi.date().iso().required(),
+  endDate: Joi.date().iso().greater(Joi.ref('initDate')).required(),
 });
 
 /**
