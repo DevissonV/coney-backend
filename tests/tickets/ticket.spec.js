@@ -62,6 +62,20 @@ describe('Tickets API', () => {
     expect(response.body.data).toHaveProperty('id', createdTicketId);
   });
 
+  it('should update a ticket', async () => {
+    const updatedData = {
+      ticketNumber: 99,
+      userId: null,
+    };
+
+    const response = await request(app)
+      .patch(`/api/tickets/${createdTicketId}`)
+      .set('Authorization', `Bearer ${token}`)
+      .send(updatedData);
+
+    expect(response.status).toBe(200);
+  });
+
   it('should delete a ticket', async () => {
     const response = await request(app)
       .delete(`/api/tickets/${createdTicketId}`)

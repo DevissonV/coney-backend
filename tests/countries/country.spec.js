@@ -42,6 +42,17 @@ describe('Countries API', () => {
     expect(response.body.data).toHaveProperty('id', createdCountryId);
   });
 
+  it('should update a country', async () => {
+    const updatedData = { name: 'Updated Test Country' };
+
+    const response = await request(app)
+      .patch(`/api/countries/${createdCountryId}`)
+      .set('Authorization', `Bearer ${token}`)
+      .send(updatedData);
+
+    expect(response.status).toBe(200);
+  });
+
   it('should delete a country', async () => {
     const response = await request(app)
       .delete(`/api/countries/${createdCountryId}`)
