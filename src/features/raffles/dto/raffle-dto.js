@@ -6,8 +6,8 @@
 export const createRaffleDto = (data) => ({
   name: data.name,
   description: data.description,
-  init_date: data.init_date,
-  end_date: data.end_date,
+  init_date: data.initDate,
+  end_date: data.endDate,
 });
 
 /**
@@ -18,8 +18,8 @@ export const createRaffleDto = (data) => ({
 export const updateRaffleDto = (data) => ({
   name: data.name,
   description: data.description,
-  init_date: data.init_date,
-  end_date: data.end_date,
+  init_date: data.initDate,
+  end_date: data.endDate,
 });
 
 /**

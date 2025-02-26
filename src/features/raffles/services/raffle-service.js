@@ -160,10 +160,11 @@ class RaffleService {
 
       for (let i = 1; i <= ticketCount; i++) {
         const dataTicket = {
-          ticket_number: i,
-          raffle_id: raffleId,
-          user_id: null,
+          ticketNumber: i,
+          raffleId: raffleId,
+          userId: null,
         };
+
         await this.#ticketService.create(dataTicket);
       }
     } catch (error) {

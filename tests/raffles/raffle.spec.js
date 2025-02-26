@@ -14,8 +14,8 @@ describe('Raffles API', () => {
     const raffleData = {
       name: 'Test Raffle',
       description: 'This is a test raffle',
-      init_date: '2025-02-01T00:00:00.000Z',
-      end_date: '2025-03-01T00:00:00.000Z',
+      initDate: '2025-02-01T00:00:00.000Z',
+      endDate: '2025-03-01T00:00:00.000Z',
     };
 
     const response = await request(app)

@@ -16,8 +16,8 @@ describe('Tickets API', () => {
       .send({
         name: 'Test Raffle for Tickets',
         description: 'Raffle for ticket testing',
-        init_date: '2025-02-01T00:00:00.000Z',
-        end_date: '2025-03-01T00:00:00.000Z',
+        initDate: '2025-02-01T00:00:00.000Z',
+        endDate: '2025-03-01T00:00:00.000Z',
       });
 
     createdRaffleId = raffleResponse.body.data[0].id;
@@ -25,9 +25,9 @@ describe('Tickets API', () => {
 
   it('should create a new ticket', async () => {
     const ticketData = {
-      ticket_number: 1,
-      raffle_id: createdRaffleId,
-      user_id: null,
+      ticketNumber: 1,
+      raffleId: createdRaffleId,
+      userId: null,
     };
 
     const response = await request(app)
@@ -38,7 +38,7 @@ describe('Tickets API', () => {
     expect(response.status).toBe(201);
     expect(response.body.data[0]).toHaveProperty(
       'ticket_number',
-      ticketData.ticket_number,
+      ticketData.ticketNumber,
     );
     createdTicketId = response.body.data[0].id;
   });

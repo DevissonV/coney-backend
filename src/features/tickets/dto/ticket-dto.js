@@ -4,9 +4,9 @@
  * @returns {Object} A DTO containing only the necessary properties.
  */
 export const createTicketDto = (data) => ({
-  ticket_number: data.ticket_number,
-  raffle_id: data.raffle_id ?? null,
-  user_id: data.user_id ?? null,
+  ticket_number: data.ticketNumber,
+  raffle_id: data.raffleId ?? null,
+  user_id: data.userId ?? null,
 });
 
 /**
@@ -15,9 +15,9 @@ export const createTicketDto = (data) => ({
  * @returns {Object} A DTO containing only the properties that can be updated.
  */
 export const updateTicketDto = (data) => ({
-  ticket_number: data.ticket_number,
-  raffle_id: data.raffle_id ?? null,
-  user_id: data.user_id ?? null,
+  ticket_number: data.ticketNumber,
+  raffle_id: data.raffleId ?? null,
+  user_id: data.userId ?? null,
 });
 
 /**
