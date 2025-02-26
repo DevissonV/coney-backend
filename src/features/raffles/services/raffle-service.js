@@ -148,25 +148,26 @@ class RaffleService {
    * Each ticket is associated with the raffle provided in the data parameter.
    *
    * @private
-   * @param {Object} data - The raffle object for which tickets will be generated.
-   * @param {number} data.id - The unique identifier of the raffle.
+   * @param {number} raffleId - The unique identifier of the raffle.
    * @returns {Promise<void>} A promise that resolves when all tickets have been created.
    * @throws {AppError} Throws an error if any ticket creation fails.
    */
-  async #createTickets(data) {
+  async #createTickets(raffleId) {
     try {
       const ticketCount = envs.TICKET_GENERATION_COUNT;
 
       for (let i = 0; i <= ticketCount; i++) {
         const dataTicket = {
           ticket_number: i,
-          raffle_id: data,
+          raffle_id: raffleId,
           user_id: null,
         };
         await this.#ticketService.create(dataTicket);
       }
     } catch (error) {
-      getLogger().error(`Error create raffle: ${error.message}`);
+      getLogger().error(
+        `Error create tickets in module of raffle: ${error.message}`,
+      );
       throw new AppError(
         error.message || 'Database error while creating raffle',
         error.statusCode || 500,
