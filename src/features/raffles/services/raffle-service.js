@@ -142,10 +142,12 @@ class RaffleService {
   }
 
   /**
-   * Generates 100 tickets associated with a given raffle.
+   * Generates tickets associated with a given raffle.
    *
-   * This method creates 100 tickets sequentially by calling the ticket service.
+   * This method creates tickets sequentially by calling the ticket service.
    * Each ticket is associated with the raffle provided in the data parameter.
+   * The number of tickets generated is defined by the TICKET_GENERATION_COUNT
+   * environment variable.
    *
    * @private
    * @param {number} raffleId - The unique identifier of the raffle.
