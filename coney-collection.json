@@ -12,6 +12,9 @@
 			"item": [
 				{
 					"name": "get-all",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -25,8 +28,17 @@
 						},
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{url}}/api/raffles/?limit=3&page=1",
+							"raw": "{{url}}/api/raffles/?limit=3&page=1&name=Rifa",
 							"host": [
 								"{{url}}"
 							],
@@ -43,6 +55,10 @@
 								{
 									"key": "page",
 									"value": "1"
+								},
+								{
+									"key": "name",
+									"value": "Rifa"
 								}
 							]
 						}
@@ -234,7 +250,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/countries/?limit=3&page=1",
+							"raw": "{{url}}/api/countries/?limit=3&page=3&",
 							"host": [
 								"{{url}}"
 							],
@@ -250,7 +266,11 @@
 								},
 								{
 									"key": "page",
-									"value": "1"
+									"value": "3"
+								},
+								{
+									"key": "",
+									"value": null
 								}
 							]
 						}
@@ -285,13 +305,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/raffles/:id",
+							"raw": "{{url}}/api/countries/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
-								"raffles",
+								"countries",
 								":id"
 							],
 							"variable": [
@@ -326,16 +346,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Devisson Vasquez\",\n  \"hire_date\": \"2023-01-01\",\n  \"salary\": 1000\n}"
+							"raw": "{\n  \"name\": \"NuncaJamas\"\n}"
 						},
 						"url": {
-							"raw": "{{url}}/api/raffles/",
+							"raw": "{{url}}/api/countries/",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
-								"raffles",
+								"countries",
 								""
 							]
 						}
@@ -364,16 +384,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Lionel Messi\",\n  \"hire_date\": \"2025-01-01\",\n  \"salary\": 60000\n}"
+							"raw": "{\n  \"name\": \"Libertylandia\"\n}"
 						},
 						"url": {
-							"raw": "{{url}}/api/raffles/:id",
+							"raw": "{{url}}/api/countries/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
-								"raffles",
+								"countries",
 								":id"
 							],
 							"variable": [
@@ -402,13 +422,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/raffles/:id",
+							"raw": "{{url}}/api/countries/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
-								"raffles",
+								"countries",
 								":id"
 							],
 							"variable": [
@@ -459,6 +479,11 @@
 								{
 									"key": "page",
 									"value": "1"
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
 								}
 							]
 						}
@@ -534,7 +559,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"ticket_number\": \"3\",\n  \"riffle_id\": 22,\n  \"user_id\": 1\n}"
+							"raw": "{\n  \"ticketNumber\": \"3\",\n  \"raffleId\": 3,\n  \"userId\": 1\n}"
 						},
 						"url": {
 							"raw": "{{url}}/api/tickets/",
@@ -572,22 +597,22 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Lionel Messi\",\n  \"hire_date\": \"2025-01-01\",\n  \"salary\": 60000\n}"
+							"raw": "{\n  \"ticketNumber\": \"2\",\n  \"raffleId\": 1,\n  \"userId\": 1\n}"
 						},
 						"url": {
-							"raw": "{{url}}/api/raffles/:id",
+							"raw": "{{url}}/api/tickets/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
-								"raffles",
+								"tickets",
 								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": "1"
+									"value": "2"
 								}
 							]
 						}
@@ -610,19 +635,19 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/raffles/:id",
+							"raw": "{{url}}/api/tickets/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
-								"raffles",
+								"tickets",
 								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": "1"
+									"value": "2"
 								}
 							]
 						}
