@@ -158,7 +158,7 @@ class RaffleService {
     try {
       const ticketCount = envs.TICKET_GENERATION_COUNT;
 
-      for (let i = 0; i <= ticketCount; i++) {
+      for (let i = 1; i <= ticketCount; i++) {
         const dataTicket = {
           ticket_number: i,
           raffle_id: raffleId,
