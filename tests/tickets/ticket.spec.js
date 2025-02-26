@@ -26,7 +26,7 @@ describe('Tickets API', () => {
   it('should create a new ticket', async () => {
     const ticketData = {
       ticket_number: 'TICKET-001',
-      riffle_id: createdRaffleId,
+      raffle_id: createdRaffleId,
       user_id: null,
     };
 

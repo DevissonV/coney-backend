@@ -5,7 +5,7 @@
  */
 export const createTicketDto = (data) => ({
   ticket_number: data.ticket_number,
-  riffle_id: data.riffle_id ?? null,
+  raffle_id: data.raffle_id ?? null,
   user_id: data.user_id ?? null,
 });
 
@@ -16,7 +16,7 @@ export const createTicketDto = (data) => ({
  */
 export const updateTicketDto = (data) => ({
   ticket_number: data.ticket_number,
-  riffle_id: data.riffle_id ?? null,
+  raffle_id: data.raffle_id ?? null,
   user_id: data.user_id ?? null,
 });
 
@@ -27,7 +27,7 @@ export const updateTicketDto = (data) => ({
  */
 export const searchTicketDto = (params) => ({
   ticket_number: params.ticket_number ?? null,
-  riffle_id: params.riffle_id ?? null,
+  raffle_id: params.raffle_id ?? null,
   user_id: params.user_id ?? null,
   limit: params.limit ?? 10,
   page: params.page ?? 1,

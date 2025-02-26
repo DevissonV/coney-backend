@@ -27,7 +27,7 @@ class TicketService {
 
       const criteria = new GenericCriteria(dto, {
         ticket_number: { column: 'ticket_number', operator: '=' },
-        riffle_id: { column: 'riffle_id', operator: '=' },
+        raffle_id: { column: 'raffle_id', operator: '=' },
         user_id: { column: 'user_id', operator: '=' },
       });
 
@@ -69,6 +69,7 @@ class TicketService {
     try {
       validateTicket(data);
       const dto = createTicketDto(data);
+
       return await ticketRepository.create(dto);
     } catch (error) {
       getLogger().error(`Error create ticket: ${error.message}`);

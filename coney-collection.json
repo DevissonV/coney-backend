@@ -534,7 +534,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"ticket_number\": \"3\",\n  \"riffle_id\": 22,\n  \"user_id\": 1\n}"
+							"raw": "{\n  \"ticket_number\": \"3\",\n  \"raffle_id\": 22,\n  \"user_id\": 1\n}"
 						},
 						"url": {
 							"raw": "{{url}}/api/tickets/",
