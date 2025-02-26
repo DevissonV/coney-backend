@@ -42,6 +42,7 @@ class GenericCriteria {
    */
   applyFilters(query) {
     Object.entries(this.#filters).forEach(([key, value]) => {
+      if (value === null || value === undefined) return;
       const { column, operator } = this.#filterConfig[key];
 
       switch (operator) {
