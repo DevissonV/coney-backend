@@ -1,7 +1,7 @@
 export const up = async (knex) => {
   await knex.schema.createTable('tickets', (table) => {
     table.increments('id').primary();
-    table.string('ticket_number').notNullable();
+    table.integer('ticket_number').notNullable();
     table
       .integer('raffle_id')
       .unsigned()

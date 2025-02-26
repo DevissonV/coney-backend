@@ -6,7 +6,7 @@ import { AppError } from '#core/utils/response/error-handler.js';
  * @constant {Joi.ObjectSchema}
  */
 const ticketSchema = Joi.object({
-  ticket_number: Joi.string().required(),
+  ticket_number: Joi.number().required(),
   raffle_id: Joi.number().integer().allow(null),
   user_id: Joi.number().integer().allow(null),
 });
