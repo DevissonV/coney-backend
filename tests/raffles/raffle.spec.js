@@ -47,6 +47,22 @@ describe('Raffles API', () => {
     expect(response.body.data).toHaveProperty('id', createdRaffleId);
   });
 
+  it('should update a raffle', async () => {
+    const updatedData = {
+      name: 'Updated Test Raffle',
+      description: 'Updated description',
+      initDate: '2025-03-01T00:00:00.000Z',
+      endDate: '2025-04-01T00:00:00.000Z',
+    };
+
+    const response = await request(app)
+      .patch(`/api/raffles/${createdRaffleId}`)
+      .set('Authorization', `Bearer ${token}`)
+      .send(updatedData);
+
+    expect(response.status).toBe(200);
+  });
+
   it('should delete a raffle', async () => {
     const response = await request(app)
       .delete(`/api/raffles/${createdRaffleId}`)
