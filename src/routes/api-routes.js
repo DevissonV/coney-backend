@@ -4,6 +4,7 @@ import userRoutes from '#features/users/api/user-routes.js';
 import raffleRoutes from '#features/raffles/api/raffle-routes.js';
 import countryRoutes from '#features/countries/api/country-routes.js';
 import ticketRoutes from '#features/tickets/api/ticket-routes.js';
+import paymentRoutes from '#features/payments/api/payment-routes.js';
 
 const apiRoutes = Router();
 
@@ -12,5 +13,6 @@ apiRoutes.use('/health-checks', healthCheckRoutes);
 apiRoutes.use('/raffles', raffleRoutes);
 apiRoutes.use('/countries', countryRoutes);
 apiRoutes.use('/tickets', ticketRoutes);
+apiRoutes.use('/payments', paymentRoutes);
 
 export default apiRoutes;
