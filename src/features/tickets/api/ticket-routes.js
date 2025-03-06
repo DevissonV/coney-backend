@@ -5,34 +5,30 @@ import ticketController from '../controllers/ticket-controller.js';
 
 const router = Router();
 
+router.get('/', ticketController.getAll);
 router.get(
-  '/', 
-  authenticate, 
-  authorize([envs.ROLE_ADMIN]), 
-  ticketController.getAll
-);
-router.get(
-  '/:id', 
-  authenticate, 
-  authorize([envs.ROLE_ADMIN]), 
-  ticketController.getById
+  '/:id',
+  authenticate,
+  authorize([envs.ROLE_ADMIN]),
+  ticketController.getById,
 );
 router.post(
-  '/', 
-  authenticate, 
-  authorize([envs.ROLE_ADMIN]), 
-  ticketController.create
+  '/',
+  authenticate,
+  authorize([envs.ROLE_ADMIN]),
+  ticketController.create,
 );
 router.patch(
-  '/:id', 
-  authenticate, 
-  authorize([envs.ROLE_ADMIN]), 
-  ticketController.update
+  '/:id',
+  authenticate,
+  authorize([envs.ROLE_ADMIN]),
+  ticketController.update,
 );
 router.delete(
-  '/:id', authenticate, 
-  authorize([envs.ROLE_ADMIN]), 
-  ticketController.delete
+  '/:id',
+  authenticate,
+  authorize([envs.ROLE_ADMIN]),
+  ticketController.delete,
 );
 
 export default router;

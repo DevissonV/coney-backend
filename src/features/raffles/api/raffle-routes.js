@@ -5,34 +5,30 @@ import raffleController from '../controllers/raffle-controller.js';
 
 const router = Router();
 
+router.get('/', raffleController.getAll);
 router.get(
-  '/', 
-  authenticate, 
-  authorize([envs.ROLE_ADMIN]), 
-  raffleController.getAll
-);
-router.get(
-  '/:id', 
-  authenticate, 
-  authorize([envs.ROLE_ADMIN]), 
-  raffleController.getById
+  '/:id',
+  authenticate,
+  authorize([envs.ROLE_ADMIN]),
+  raffleController.getById,
 );
 router.post(
-  '/', 
-  authenticate, 
-  authorize([envs.ROLE_ADMIN]), 
-  raffleController.create
+  '/',
+  authenticate,
+  authorize([envs.ROLE_ADMIN]),
+  raffleController.create,
 );
 router.patch(
-  '/:id', 
-  authenticate, 
-  authorize([envs.ROLE_ADMIN]), 
-  raffleController.update
+  '/:id',
+  authenticate,
+  authorize([envs.ROLE_ADMIN]),
+  raffleController.update,
 );
 router.delete(
-  '/:id', authenticate, 
-  authorize([envs.ROLE_ADMIN]), 
-  raffleController.delete
+  '/:id',
+  authenticate,
+  authorize([envs.ROLE_ADMIN]),
+  raffleController.delete,
 );
 
 export default router;
