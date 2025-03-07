@@ -12,7 +12,8 @@
     "migrations": "npx knex migrate:latest",
     "seed": "npx knex seed:run",
     "test": "cross-env NODE_ENV=development NODE_OPTIONS=--experimental-vm-modules jest --runInBand",
-    "generate-module": "node scripts/generate-module.js"
+    "generate-module": "node scripts/generate-module.js",
+    "lint": "npx eslint . --fix && npx prettier --write ."
   },
   "license": "ISC",
   "dependencies": {
@@ -34,7 +35,8 @@
     "babel-jest": "^29.7.0",
     "cross-env": "^7.0.3",
     "eslint": "^9.21.0",
-    "eslint-config-prettier": "^10.0.1",
+    "eslint-config-prettier": "^10.0.2",
+    "eslint-plugin-prettier": "^5.2.3",
     "jest": "^29.7.0",
     "nodemon": "^3.1.7",
     "prettier": "^3.5.2",

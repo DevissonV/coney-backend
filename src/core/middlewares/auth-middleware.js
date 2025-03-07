@@ -22,7 +22,7 @@ export const authenticate = (req, res, next) => {
     const decoded = jwt.verify(token, envs.JWT_SECRET);
     req.user = decoded;
     next();
-  } catch (err) {
+  } catch {
     return res
       .status(401)
       .json({ status: false, code: 401, error: 'Invalid token.' });

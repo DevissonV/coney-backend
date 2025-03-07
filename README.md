@@ -121,11 +121,12 @@
 ┣ 📜.dockerignore
 ┣ 📜.env
 ┣ 📜.env-example
-┣ 📜.eslintrc.json
 ┣ 📜.gitignore
+┣ 📜.prettierignore
 ┣ 📜.prettierrc
 ┣ 📜coney-collection.json
 ┣ 📜docker-compose.yml
+┣ 📜eslint.config.js
 ┣ 📜jest.config.mjs
 ┣ 📜jsconfig.json
 ┣ 📜knexfile.js

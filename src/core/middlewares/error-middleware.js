@@ -10,7 +10,7 @@ import { getLogger } from '../utils/logger/logger.js';
  * @param {import('express').Response} res - Express response object.
  * @param {import('express').NextFunction} next - Express next middleware function.
  */
-const errorMiddleware = (err, req, res, next) => {
+const errorMiddleware = (err, req, res, _next) => {
   const statusCode = err.statusCode || 500;
 
   getLogger().error(

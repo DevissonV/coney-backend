@@ -37,7 +37,7 @@ class UserController {
     userService
       .login(req.body)
       .then((authData) =>
-        responseHandler.success(res, authData, `User logged in successfully`),
+        responseHandler.success(res, authData, 'User logged in successfully'),
       )
       .catch(next);
   }
