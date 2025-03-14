@@ -1,41 +1,83 @@
-import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import { envs } from '#core/config/envs.js';
 import { AppError } from '#core/utils/response/error-handler.js';
 import { getLogger } from '#core/utils/logger/logger.js';
+import GenericCriteria from '#core/filters/criteria/generic-criteria.js';
 import userRepository from '../repositories/user-repository.js';
-import { validateUser } from '../validations/user-validation.js';
-import { createUserDto, loginUserDto } from '../dto/user-dto.js';
+import { validateUserCreate } from '../validations/user-create-validation.js';
+import { validateUserUpdate } from '../validations/user-update-validation.js';
+import { validateUserCriteria } from '../validations/user-criteria-validation.js';
+import {
+  createUserDto,
+  updateUserDto,
+  searchUserDto,
+} from '../dto/user-dto.js';
 
 /**
- * Service class for managing user-related business logic.
+ * Service class for handling user business logic.
  * @class UserService
  */
 class UserService {
   /**
-   * Registers a new user.
-   * @param {Object} data - User registration data.
-   * @returns {Promise<Object>} The created user.
+   * Retrieves all users.
+   * @param {Object} params - Query parameters.
+   * @returns {Promise<Object[]>} List of users.
    */
-  async register(data) {
+  async getAll(params) {
     try {
-      const validatedData = validateUser(data);
+      const validatedParams = validateUserCriteria(params);
+      const dto = searchUserDto(validatedParams);
 
-      const existingUser = await userRepository.findByUsername(
-        validatedData.username,
+      const criteria = new GenericCriteria(dto, {
+        email: { column: 'email', operator: '=' },
+        first_name: { column: 'first_name', operator: 'ILIKE' },
+        last_name: { column: 'last_name', operator: 'ILIKE' },
+        role: { column: 'role', operator: '=' },
+        is_email_validated: { column: 'is_email_validated', operator: '=' },
+        is_user_authorized: { column: 'is_user_authorized', operator: '=' },
+      });
+
+      return await userRepository.getAll(criteria);
+    } catch (error) {
+      getLogger().error(`Error getAll users: ${error.message}`);
+      throw new AppError(
+        error.message || 'Database error while retrieving users',
+        error.statusCode || 500,
       );
+    }
+  }
 
-      if (existingUser) {
-        throw new AppError('Username already exists', 400);
-      }
+  /**
+   * Retrieves a single user by ID.
+   * @param {number} id - User ID.
+   * @returns {Promise<Object>} User data.
+   */
+  async getById(id) {
+    try {
+      const user = await userRepository.getById(id);
+      if (!user) throw new AppError(`User with ID ${id} not found`, 404);
+      return user;
+    } catch (error) {
+      getLogger().error(`Error getById user: ${error.message}`);
+      throw new AppError(
+        error.message || 'Database error while retrieving user',
+        error.statusCode || 500,
+      );
+    }
+  }
 
-      validatedData.password = await bcrypt.hash(validatedData.password, 10);
-
-      const dto = createUserDto(validatedData);
-
+  /**
+   * Creates a new users.
+   * @param {Object} data - Users details.
+   * @returns {Promise<Object>} Created users data.
+   */
+  async create(data) {
+    try {
+      validateUserCreate(data);
+      data.password = await bcrypt.hash(data.password, 10);
+      const dto = createUserDto(data);
       return await userRepository.create(dto);
     } catch (error) {
-      getLogger().error(`Error register user: ${error.message}`);
+      getLogger().error(`Error create user: ${error.message}`);
       throw new AppError(
         error.message || 'Database error while creating user',
         error.statusCode || 500,
@@ -44,44 +86,35 @@ class UserService {
   }
 
   /**
-   * Logs in a user and generates a token.
-   * @param {Object} credentials - User login credentials.
-   * @returns {Promise<{token: string, role: string}>} Authentication token and role.
+   * Updates an existing user.
+   * @param {number} id - User ID.
+   * @param {Object} data - Updated User details.
+   * @returns {Promise<Object>} Updated user data.
    */
-  async login(credentials) {
+  async update(id, data) {
     try {
-      const dto = loginUserDto(credentials);
-      const user = await userRepository.findByUsername(dto.username);
-      if (!user || !(await bcrypt.compare(dto.password, user.password))) {
-        throw new AppError('Invalid username or password', 401);
-      }
-      const token = jwt.sign(
-        { id: user.id, username: user.username, role: user.role },
-        envs.JWT_SECRET,
-        { expiresIn: envs.JWT_TIME_EXPIRES },
-      );
-      return { token, role: user.role };
+      const user = await this.getById(id);
+      validateUserUpdate(data);
+      const dto = updateUserDto(data);
+      return await userRepository.update(user.id, dto);
     } catch (error) {
-      getLogger().error(`Error login user: ${error.message}`);
+      getLogger().error(`Error update user: ${error.message}`);
       throw new AppError(
-        error.message || 'Database error during login',
+        error.message || 'Database error while updating user',
         error.statusCode || 500,
       );
     }
   }
 
   /**
-   * Deletes a user by username.
-   * @param {string} username - Username of the user to delete.
+   * Deletes a user by ID.
+   * @param {number} id - User ID.
    * @returns {Promise<void>} Resolves when the deletion is complete.
    */
-  async deleteByUsername(username) {
+  async delete(id) {
     try {
-      const user = await userRepository.findByUsername(username);
-      if (!user) {
-        throw new AppError(`User ${username} not found`, 404);
-      }
-      await userRepository.deleteByUsername(username);
+      const user = await this.getById(id);
+      return await userRepository.delete(user.id);
     } catch (error) {
       getLogger().error(`Error delete user: ${error.message}`);
       throw new AppError(

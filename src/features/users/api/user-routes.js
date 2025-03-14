@@ -5,13 +5,31 @@ import userController from '../controllers/user-controller.js';
 
 const router = Router();
 
-router.post('/register', userController.register);
-router.post('/login', userController.login);
-router.delete(
+router.get(
   '/',
+  authenticate,
+  authorize([envs.ROLE_ADMIN]),
+  userController.getAll,
+);
+router.get(
+  '/:id',
+  authenticate,
+  authorize([envs.ROLE_ADMIN]),
+  userController.getById,
+);
+router.post('/', userController.create);
+router.patch(
+  '/:id',
+  authenticate,
+  authorize([envs.ROLE_ADMIN]),
+  userController.update,
+);
+router.delete(
+  '/:id',
   authenticate,
   authorize([envs.ROLE_ADMIN]),
   userController.delete,
 );
+router.post('/login', userController.login);
 
 export default router;

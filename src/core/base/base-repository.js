@@ -12,31 +12,44 @@ export default class BaseRepository {
     /**
      * Database table name.
      * @type {string}
-     * @private
+     * @protected
      */
-    this.#tableName = tableName;
+    this.tableName = tableName;
   }
 
-  /** @private */
-  #tableName;
+  /**
+   * Removes sensitive fields from a record.
+   * This method can be overridden in child repositories.
+   *
+   * @param {Object} record - The record object.
+   * @returns {Object} The sanitized record.
+   * @protected
+   */
+  sanitizeRecord(record) {
+    return record; // By default, no modification is made
+  }
 
   /**
    * Retrieves all records with optional filtering and pagination.
+   * Applies `sanitizeRecord()` to each result.
+   *
    * @param {GenericCriteria} criteria - Criteria object for query customization.
    * @returns {Promise<Object>} Paginated list of records.
    */
   async getAll(criteria) {
-    const query = db(this.#tableName);
+    const query = db(this.tableName);
     criteria.applyFilters(query);
     criteria.applyPagination(query);
 
-    const countQuery = db(this.#tableName);
+    const countQuery = db(this.tableName);
     criteria.applyFilters(countQuery);
 
     const totalResult = await countQuery.count('* as count').first();
     const total = totalResult ? parseInt(totalResult.count, 10) : 0;
 
-    const data = await query;
+    let data = await query;
+
+    data = data.map(this.sanitizeRecord.bind(this));
 
     return {
       data,
@@ -48,30 +61,43 @@ export default class BaseRepository {
 
   /**
    * Retrieves a record by ID.
+   * Applies `sanitizeRecord()` before returning.
+   *
    * @param {number} id - Record ID.
    * @returns {Promise<Object|null>} Record data or null if not found.
    */
   async getById(id) {
-    return await db(this.#tableName).where({ id }).first();
+    const record = await db(this.tableName).where({ id }).first();
+    return record ? this.sanitizeRecord(record) : null;
   }
 
   /**
    * Creates a new record.
+   * Applies `sanitizeRecord()` before returning.
+   *
    * @param {Object} data - Record data.
    * @returns {Promise<Object>} Created record.
    */
   async create(data) {
-    return await db(this.#tableName).insert(data).returning('*');
+    const [record] = await db(this.tableName).insert(data).returning('*');
+    return this.sanitizeRecord(record);
   }
 
   /**
    * Updates an existing record by ID.
+   * Applies `sanitizeRecord()` before returning.
+   *
    * @param {number} id - Record ID.
    * @param {Object} data - Updated record data.
    * @returns {Promise<Object>} Updated record.
    */
   async update(id, data) {
-    return await db(this.#tableName).where({ id }).update(data).returning('*');
+    const [record] = await db(this.tableName)
+      .where({ id })
+      .update(data)
+      .returning('*');
+
+    return this.sanitizeRecord(record);
   }
 
   /**
@@ -80,6 +106,6 @@ export default class BaseRepository {
    * @returns {Promise<number>} Number of deleted rows.
    */
   async delete(id) {
-    return await db(this.#tableName).where({ id }).del();
+    return await db(this.tableName).where({ id }).del();
   }
 }
