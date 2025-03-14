@@ -4,11 +4,14 @@ import { registerAndLoginUser } from '../factories/auth-factory.js';
 
 describe('Tickets API', () => {
   let token;
+  let userId;
   let createdTicketId;
   let createdRaffleId;
 
   beforeAll(async () => {
-    token = await registerAndLoginUser();
+    const result = await registerAndLoginUser();
+    token = result.token;
+    userId = result.userId;
 
     const raffleResponse = await request(app)
       .post('/api/raffles/')
@@ -20,7 +23,24 @@ describe('Tickets API', () => {
         endDate: '2025-03-01T00:00:00.000Z',
       });
 
-    createdRaffleId = raffleResponse.body.data[0].id;
+    expect(raffleResponse.status).toBe(201);
+    expect(raffleResponse.body).toHaveProperty('data');
+    expect(raffleResponse.body.data).toHaveProperty('id');
+
+    createdRaffleId = raffleResponse.body.data.id;
+  });
+
+  afterAll(async () => {
+    if (createdRaffleId) {
+      await request(app)
+        .delete(`/api/raffles/${createdRaffleId}`)
+        .set('Authorization', `Bearer ${token}`);
+    }
+    if (userId) {
+      await request(app)
+        .delete(`/api/users/${userId}`)
+        .set('Authorization', `Bearer ${token}`);
+    }
   });
 
   it('should create a new ticket', async () => {
@@ -36,11 +56,11 @@ describe('Tickets API', () => {
       .send(ticketData);
 
     expect(response.status).toBe(201);
-    expect(response.body.data[0]).toHaveProperty(
+    expect(response.body.data).toHaveProperty(
       'ticket_number',
       ticketData.ticketNumber,
     );
-    createdTicketId = response.body.data[0].id;
+    createdTicketId = response.body.data.id;
   });
 
   it('should get all tickets', async () => {

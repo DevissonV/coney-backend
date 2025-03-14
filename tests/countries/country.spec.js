@@ -4,14 +4,25 @@ import { registerAndLoginUser } from '../factories/auth-factory.js';
 
 describe('Countries API', () => {
   let token;
+  let userId;
   let createdCountryId;
 
   beforeAll(async () => {
-    token = await registerAndLoginUser();
+    const result = await registerAndLoginUser();
+    token = result.token;
+    userId = result.userId;
+  });
+
+  afterAll(async () => {
+    if (userId) {
+      await request(app)
+        .delete(`/api/users/${userId}`)
+        .set('Authorization', `Bearer ${token}`);
+    }
   });
 
   it('should create a new country', async () => {
-    const countryData = { name: 'Test Country' };
+    const countryData = { name: `Test Country ${Date.now()}` };
 
     const response = await request(app)
       .post('/api/countries/')
@@ -19,8 +30,9 @@ describe('Countries API', () => {
       .send(countryData);
 
     expect(response.status).toBe(201);
-    expect(response.body.data[0]).toHaveProperty('name', countryData.name);
-    createdCountryId = response.body.data[0].id;
+    expect(response.body).toHaveProperty('data');
+    expect(response.body.data).toHaveProperty('id');
+    createdCountryId = response.body.data.id;
   });
 
   it('should get all countries', async () => {

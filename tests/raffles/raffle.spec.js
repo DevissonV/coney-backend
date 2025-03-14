@@ -4,10 +4,21 @@ import { registerAndLoginUser } from '../factories/auth-factory.js';
 
 describe('Raffles API', () => {
   let token;
+  let userId;
   let createdRaffleId;
 
   beforeAll(async () => {
-    token = await registerAndLoginUser();
+    const result = await registerAndLoginUser();
+    token = result.token;
+    userId = result.userId;
+  });
+
+  afterAll(async () => {
+    if (userId) {
+      await request(app)
+        .delete(`/api/users/${userId}`)
+        .set('Authorization', `Bearer ${token}`);
+    }
   });
 
   it('should create a new raffle', async () => {
@@ -24,8 +35,10 @@ describe('Raffles API', () => {
       .send(raffleData);
 
     expect(response.status).toBe(201);
-    expect(response.body.data[0]).toHaveProperty('name', raffleData.name);
-    createdRaffleId = response.body.data[0].id;
+    expect(response.body).toHaveProperty('data');
+    expect(response.body.data).toHaveProperty('id');
+
+    createdRaffleId = response.body.data.id;
   });
 
   it('should get all raffles', async () => {

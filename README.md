@@ -101,23 +101,27 @@
 ┃ ┃   ┣ 📂repositories
 ┃ ┃   ┃ ┗ 📜user-repository.js
 ┃ ┃   ┣ 📂services
-┃ ┃   ┃ ┗ 📜user-service.js
+┃ ┃   ┃ ┣ 📜user-service.js
+┃ ┃   ┃ ┗ 📜user-sesion-service.js
 ┃ ┃   ┗ 📂validations
-┃ ┃     ┗ 📜user-validation.js
+┃ ┃     ┣ 📜user-create-validation.js
+┃ ┃     ┣ 📜user-criteria-validation.js
+┃ ┃     ┣ 📜user-login.js
+┃ ┃     ┗ 📜user-update-validation.js
 ┃ ┣ 📂routes
 ┃ ┃ ┗ 📜api-routes.js
 ┃ ┗ 📜server.js
 ┣ 📂tests
-┃ ┣ 📂auth
-┃ ┃ ┗ 📜auth.spec.js
 ┃ ┣ 📂countries
 ┃ ┃ ┗ 📜country.spec.js
 ┃ ┣ 📂factories
 ┃ ┃ ┗ 📜auth-factory.js
 ┃ ┣ 📂raffles
 ┃ ┃ ┗ 📜raffle.spec.js
-┃ ┗ 📂tickets
-┃   ┗ 📜ticket.spec.js
+┃ ┣ 📂tickets
+┃ ┃ ┗ 📜ticket.spec.js
+┃ ┗ 📂users
+┃   ┗ 📜user.spec.js
 ┣ 📜.dockerignore
 ┣ 📜.env
 ┣ 📜.env-example
