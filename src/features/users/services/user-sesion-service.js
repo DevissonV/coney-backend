@@ -23,31 +23,16 @@ class UserSessionService {
    */
   async login(credentials) {
     try {
-      const validateParams = validateUserLogin(credentials);
-      const dto = loginUserDto(validateParams);
+      const { email, password } = loginUserDto(validateUserLogin(credentials));
 
-      const user = await userRepository.findByEmail(dto.email);
-
-      if (!user) {
-        throw new AppError('Invalid username or password', 401);
-      }
-      const passwordMatch = await bcrypt.compare(dto.password, user.password);
-      if (!passwordMatch) {
-        throw new AppError('Invalid username or password', 401);
+      const user = await userRepository.findByEmail(email);
+      if (!user || !(await bcrypt.compare(password, user.password))) {
+        return Promise.reject(
+          new AppError('Invalid username or password', 401),
+        );
       }
 
-      const token = jwt.sign(
-        {
-          id: user.id,
-          email: user.email,
-          role: user.role,
-          first_name: user.first_name,
-          last_name: user.last_name,
-        },
-        envs.JWT_SECRET,
-        { expiresIn: envs.JWT_TIME_EXPIRES },
-      );
-
+      const token = this.generateToken(user);
       return { token, role: user.role };
     } catch (error) {
       getLogger().error(`Error logging in user: ${error.message}`);
@@ -56,6 +41,31 @@ class UserSessionService {
         error.statusCode || 500,
       );
     }
+  }
+
+  /**
+   * Generates a JWT token for an authenticated user.
+   *
+   * @param {Object} user - The user object.
+   * @param {number} user.id - The user's ID.
+   * @param {string} user.email - The user's email.
+   * @param {string} user.role - The user's role.
+   * @param {string} user.first_name - The user's first name.
+   * @param {string} user.last_name - The user's last name.
+   * @returns {string} The generated JWT token.
+   */
+  generateToken(user) {
+    return jwt.sign(
+      {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        first_name: user.first_name,
+        last_name: user.last_name,
+      },
+      envs.JWT_SECRET,
+      { expiresIn: envs.JWT_TIME_EXPIRES },
+    );
   }
 }
 
