@@ -1,36 +1,44 @@
+import BaseRepository from '#core/base/base-repository.js';
 import db from '#core/config/database.js';
 
 /**
- * Repository for managing user data in the database.
- * @namespace userRepository
+ * Repository for managing users data.
+ * @class UserRepository
+ * @extends BaseRepository
  */
-const userRepository = {
+class UserRepository extends BaseRepository {
   /**
-   * Finds a user by their username.
-   * @param {string} username - The username of the user to find.
-   * @returns {Promise<Object|null>} The user data if found, otherwise null.
+   * Initializes the repository with the `users` table.
    */
-  async findByUsername(username) {
-    return db('users').where({ username }).first();
-  },
+  constructor() {
+    super('users');
+  }
 
   /**
-   * Creates a new user.
-   * @param {Object} user - The user data to insert.
-   * @returns {Promise<Object>} The created user data.
+   * Removes sensitive fields (`password`) from a user record.
+   *
+   * @param {Object} record - The user record.
+   * @returns {Object} The sanitized user record.
+   * @protected
    */
-  async create(user) {
-    return db('users').insert(user).returning('*');
-  },
+  sanitizeRecord(record) {
+    const { password, ...sanitizedRecord } = record;
+    return sanitizedRecord;
+  }
 
   /**
-   * Deletes a user by their username.
-   * @param {string} username - The username of the user to delete.
-   * @returns {Promise<number>} The number of rows deleted.
+   * Retrieves a user by email.
+   * This method is primarily used for authentication and includes the password field.
+   *
+   * @param {string} email - The email of the user to search for.
+   * @returns {Promise<Object|null>} The user object if found, otherwise null.
    */
-  async deleteByUsername(username) {
-    return db('users').where({ username }).del();
-  },
-};
+  async findByEmail(email) {
+    return db('users')
+      .where({ email })
+      .select('id', 'email', 'first_name', 'last_name', 'role', 'password')
+      .first();
+  }
+}
 
-export default userRepository;
+export default new UserRepository();
