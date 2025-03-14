@@ -1,7 +1,7 @@
 import BaseController from '#core/base/base-controller.js';
+import { responseHandler } from '#core/utils/response/response-handler.js';
 import userService from '../services/user-service.js';
 import userSesionService from '../services/user-sesion-service.js';
-import { responseHandler } from '#core/utils/response/response-handler.js';
 
 /**
  * Controller for managing users.
