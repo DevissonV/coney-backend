@@ -39,7 +39,6 @@ const envVarsSchema = Joi.object({
   LOG_CLEANUP_SCHEDULE: Joi.string().required().default('0 0 * * 0').messages({
     'any.required': 'LOG_CLEANUP_SCHEDULE is required',
   }),
-  TICKET_GENERATION_COUNT: Joi.number().integer().min(1).default(100),
 }).unknown(true);
 
 /**

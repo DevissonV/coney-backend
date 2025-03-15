@@ -2,7 +2,8 @@ import { AppError } from '#core/utils/response/error-handler.js';
 import { getLogger } from '#core/utils/logger/logger.js';
 import GenericCriteria from '#core/filters/criteria/generic-criteria.js';
 import raffleRepository from '../repositories/raffle-repository.js';
-import { validateRaffle } from '../validations/raffle-validation.js';
+import { validateRaffleCreate } from '../validations/raffle-create-validation.js';
+import { validateRaffleUpdate } from '../validations/raffle-update-validation.js';
 import { validateRaffleCriteria } from '../validations/raffle-criteria-validation.js';
 import {
   createRaffleDto,
@@ -85,12 +86,12 @@ class RaffleService {
    */
   async create(data) {
     try {
-      validateRaffle(data);
+      validateRaffleCreate(data);
 
       const dto = createRaffleDto(data);
       const resCreatedRaffle = await raffleRepository.create(dto);
 
-      await this.#createTickets(resCreatedRaffle.id);
+      await this.#createTickets(resCreatedRaffle.id, dto.ticket_count);
 
       return resCreatedRaffle;
     } catch (error) {
@@ -111,7 +112,7 @@ class RaffleService {
   async update(id, data) {
     try {
       const raffle = await this.getById(id);
-      validateRaffle(data);
+      validateRaffleUpdate(data);
       const dto = updateRaffleDto(data);
       return await raffleRepository.update(raffle.id, dto);
     } catch (error) {
@@ -154,10 +155,8 @@ class RaffleService {
    * @returns {Promise<void>} A promise that resolves when all tickets have been created.
    * @throws {AppError} Throws an error if any ticket creation fails.
    */
-  async #createTickets(raffleId) {
+  async #createTickets(raffleId, ticketCount) {
     try {
-      const ticketCount = envs.TICKET_GENERATION_COUNT;
-
       for (let i = 1; i <= ticketCount; i++) {
         const dataTicket = {
           ticketNumber: i,
