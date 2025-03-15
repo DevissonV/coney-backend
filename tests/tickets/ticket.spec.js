@@ -21,6 +21,8 @@ describe('Tickets API', () => {
         description: 'Raffle for ticket testing',
         initDate: '2025-02-01T00:00:00.000Z',
         endDate: '2025-03-01T00:00:00.000Z',
+        price: 15000,
+        ticketCount: 10,
       });
 
     expect(raffleResponse.status).toBe(201);
@@ -45,7 +47,7 @@ describe('Tickets API', () => {
 
   it('should create a new ticket', async () => {
     const ticketData = {
-      ticketNumber: 1,
+      ticketNumber: 100000000,
       raffleId: createdRaffleId,
       userId: null,
     };
@@ -85,7 +87,8 @@ describe('Tickets API', () => {
   it('should update a ticket', async () => {
     const updatedData = {
       ticketNumber: 99,
-      userId: null,
+      userId: userId,
+      raffleId: createdRaffleId,
     };
 
     const response = await request(app)
