@@ -9,7 +9,7 @@ export const createRaffleDto = (data) => ({
   init_date: data.initDate,
   end_date: data.endDate,
   price: data.price,
-  ticket_count: data.ticketCount,
+  tickets_created: data.ticketCount,
 });
 
 /**

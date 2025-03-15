@@ -6,7 +6,7 @@ export const up = async (knex) => {
     table.timestamp('init_date', { useTz: true }).notNullable();
     table.timestamp('end_date', { useTz: true }).notNullable();
     table.decimal('price', 10, 2).notNullable().defaultTo(10000);
-    table.integer('ticket_count').notNullable().defaultTo(100);
+    table.integer('tickets_created').notNullable().defaultTo(100);
     table.timestamps(true, true);
   });
 };

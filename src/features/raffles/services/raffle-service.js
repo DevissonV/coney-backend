@@ -91,7 +91,7 @@ class RaffleService {
       const dto = createRaffleDto(data);
       const resCreatedRaffle = await raffleRepository.create(dto);
 
-      await this.#createTickets(resCreatedRaffle.id, dto.ticket_count);
+      await this.#createTickets(resCreatedRaffle.id, dto.tickets_created);
 
       return resCreatedRaffle;
     } catch (error) {
