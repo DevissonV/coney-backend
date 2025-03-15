@@ -1,11 +1,15 @@
 import app from '../../src/server.js';
 import request from 'supertest';
 import { registerAndLoginUser } from '../factories/auth-factory.js';
+import dayjs from 'dayjs';
 
 describe('Raffles API', () => {
   let token;
   let userId;
   let createdRaffleId;
+
+  const today = dayjs().add(1, 'day').toISOString();
+  const futureDate = dayjs().add(30, 'day').toISOString();
 
   beforeAll(async () => {
     const result = await registerAndLoginUser();
@@ -25,8 +29,8 @@ describe('Raffles API', () => {
     const raffleData = {
       name: 'Test Raffle',
       description: 'This is a test raffle',
-      initDate: '2025-02-01T00:00:00.000Z',
-      endDate: '2025-03-01T00:00:00.000Z',
+      initDate: today,
+      endDate: futureDate,
       price: 15000,
       ticketCount: 3,
     };
@@ -63,11 +67,14 @@ describe('Raffles API', () => {
   });
 
   it('should update a raffle', async () => {
+    const updatedInitDate = dayjs().add(5, 'day').toISOString();
+    const updatedEndDate = dayjs().add(35, 'day').toISOString();
+
     const updatedData = {
       name: 'Updated Test Raffle',
       description: 'Updated description',
-      initDate: '2025-03-01T00:00:00.000Z',
-      endDate: '2025-04-01T00:00:00.000Z',
+      initDate: updatedInitDate,
+      endDate: updatedEndDate,
       price: 20000,
     };
 

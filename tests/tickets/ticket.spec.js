@@ -1,12 +1,17 @@
 import app from '../../src/server.js';
 import request from 'supertest';
 import { registerAndLoginUser } from '../factories/auth-factory.js';
+import dayjs from 'dayjs';
 
 describe('Tickets API', () => {
   let token;
   let userId;
   let createdTicketId;
   let createdRaffleId;
+
+  // 📌 Fechas dinámicas para evitar errores de validación
+  const today = dayjs().add(1, 'day').toISOString();
+  const futureDate = dayjs().add(30, 'day').toISOString();
 
   beforeAll(async () => {
     const result = await registerAndLoginUser();
@@ -19,10 +24,10 @@ describe('Tickets API', () => {
       .send({
         name: 'Test Raffle for Tickets',
         description: 'Raffle for ticket testing',
-        initDate: '2025-02-01T00:00:00.000Z',
-        endDate: '2025-03-01T00:00:00.000Z',
+        initDate: today,
+        endDate: futureDate,
         price: 15000,
-        ticketCount: 10,
+        ticketCount: 10, // ✅ Se genera un máximo de 10 boletos
       });
 
     expect(raffleResponse.status).toBe(201);
@@ -86,7 +91,7 @@ describe('Tickets API', () => {
 
   it('should update a ticket', async () => {
     const updatedData = {
-      ticketNumber: 99,
+      ticketNumber: 999999,
       userId: userId,
       raffleId: createdRaffleId,
     };
@@ -100,6 +105,7 @@ describe('Tickets API', () => {
   });
 
   it('should delete a ticket', async () => {
+    expect(createdTicketId).toBeDefined();
     const response = await request(app)
       .delete(`/api/tickets/${createdTicketId}`)
       .set('Authorization', `Bearer ${token}`);

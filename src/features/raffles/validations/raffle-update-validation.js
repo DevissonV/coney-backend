@@ -1,15 +1,25 @@
 import Joi from 'joi';
+import dayjs from 'dayjs';
 import { AppError } from '#core/utils/response/error-handler.js';
 
 /**
+ * Get the current date in ISO format.
+ */
+const now = dayjs().toISOString();
+
+/**
  * Schema for updating a raffle.
- * `ticketCount` is removed because it should not be updated.
+ * Ensures `initDate` is in the future and `endDate` is after `initDate` if provided.
  */
 const updateRaffleSchema = Joi.object({
   name: Joi.string().max(100).optional(),
   description: Joi.string().max(255).allow(null, '').optional(),
-  initDate: Joi.date().iso().optional(),
-  endDate: Joi.date().iso().greater(Joi.ref('initDate')).optional(),
+  initDate: Joi.date().iso().min(now).optional().messages({
+    'date.min': 'initDate must be today or in the future',
+  }),
+  endDate: Joi.date().iso().greater(Joi.ref('initDate')).optional().messages({
+    'date.greater': 'endDate must be greater than initDate',
+  }),
   price: Joi.number().positive().optional(),
 });
 
