@@ -3,7 +3,7 @@ import db from '#core/config/database.js';
 
 /**
  * Repository for managing raffles data.
- * @class RafflesRepository
+ * @class RaffleRepository
  * @extends BaseRepository
  */
 class RaffleRepository extends BaseRepository {
@@ -12,8 +12,10 @@ class RaffleRepository extends BaseRepository {
   }
 
   /**
+   * Overrides the `getAll` method from `BaseRepository`.
    * Retrieves all raffles with filtering and pagination, including available ticket count.
    *
+   * @override
    * @param {GenericCriteria} criteria - Criteria object for query customization.
    * @returns {Promise<Object>} Paginated list of raffles with available ticket count.
    */
