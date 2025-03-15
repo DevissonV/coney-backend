@@ -10,8 +10,8 @@ const createRaffleSchema = Joi.object({
   description: Joi.string().max(255).allow(null, '').optional(),
   initDate: Joi.date().iso().required(),
   endDate: Joi.date().iso().greater(Joi.ref('initDate')).required(),
-  price: Joi.number().positive().required(), // ✅ Requerido
-  ticketCount: Joi.number().integer().min(1).required(), // ✅ Requerido SOLO en creación
+  price: Joi.number().positive().required(),
+  ticketCount: Joi.number().integer().min(1).required(),
 });
 
 /**

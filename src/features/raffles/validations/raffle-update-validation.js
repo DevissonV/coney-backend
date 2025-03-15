@@ -10,7 +10,7 @@ const updateRaffleSchema = Joi.object({
   description: Joi.string().max(255).allow(null, '').optional(),
   initDate: Joi.date().iso().optional(),
   endDate: Joi.date().iso().greater(Joi.ref('initDate')).optional(),
-  price: Joi.number().positive().optional(), // ✅ Se puede actualizar
+  price: Joi.number().positive().optional(),
 });
 
 /**
