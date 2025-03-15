@@ -27,6 +27,8 @@ describe('Raffles API', () => {
       description: 'This is a test raffle',
       initDate: '2025-02-01T00:00:00.000Z',
       endDate: '2025-03-01T00:00:00.000Z',
+      price: 15000,
+      ticketCount: 3,
     };
 
     const response = await request(app)
@@ -66,6 +68,7 @@ describe('Raffles API', () => {
       description: 'Updated description',
       initDate: '2025-03-01T00:00:00.000Z',
       endDate: '2025-04-01T00:00:00.000Z',
+      price: 20000,
     };
 
     const response = await request(app)
