@@ -93,25 +93,43 @@
 ┃ ┃ ┃ ┗ 📂validations
 ┃ ┃ ┃   ┣ 📜ticket-criteria-validation.js
 ┃ ┃ ┃   ┗ 📜ticket-validation.js
-┃ ┃ ┗ 📂users
+┃ ┃ ┣ 📂users
+┃ ┃ ┃ ┣ 📂api
+┃ ┃ ┃ ┃ ┗ 📜user-routes.js
+┃ ┃ ┃ ┣ 📂controllers
+┃ ┃ ┃ ┃ ┗ 📜user-controller.js
+┃ ┃ ┃ ┣ 📂dto
+┃ ┃ ┃ ┃ ┗ 📜user-dto.js
+┃ ┃ ┃ ┣ 📂migrations
+┃ ┃ ┃ ┃ ┗ 📜20241206173037_create_users_table.js
+┃ ┃ ┃ ┣ 📂repositories
+┃ ┃ ┃ ┃ ┗ 📜user-repository.js
+┃ ┃ ┃ ┣ 📂services
+┃ ┃ ┃ ┃ ┣ 📜user-service.js
+┃ ┃ ┃ ┃ ┗ 📜user-sesion-service.js
+┃ ┃ ┃ ┗ 📂validations
+┃ ┃ ┃   ┣ 📜user-create-validation.js
+┃ ┃ ┃   ┣ 📜user-criteria-validation.js
+┃ ┃ ┃   ┣ 📜user-login.js
+┃ ┃ ┃   ┗ 📜user-update-validation.js
+┃ ┃ ┗ 📂winners
 ┃ ┃   ┣ 📂api
-┃ ┃   ┃ ┗ 📜user-routes.js
+┃ ┃   ┃ ┗ 📜winner-routes.js
 ┃ ┃   ┣ 📂controllers
-┃ ┃   ┃ ┗ 📜user-controller.js
+┃ ┃   ┃ ┗ 📜winner-controller.js
 ┃ ┃   ┣ 📂dto
-┃ ┃   ┃ ┗ 📜user-dto.js
+┃ ┃   ┃ ┗ 📜winner-dto.js
 ┃ ┃   ┣ 📂migrations
-┃ ┃   ┃ ┗ 📜20241206173037_create_users_table.js
+┃ ┃   ┃ ┗ 📜20250317161154_create_winners_table.js
 ┃ ┃   ┣ 📂repositories
-┃ ┃   ┃ ┗ 📜user-repository.js
+┃ ┃   ┃ ┗ 📜winner-repository.js
 ┃ ┃   ┣ 📂services
-┃ ┃   ┃ ┣ 📜user-service.js
-┃ ┃   ┃ ┗ 📜user-sesion-service.js
+┃ ┃   ┃ ┣ 📜winner-dependencies.js
+┃ ┃   ┃ ┣ 📜winner-logic-service.js
+┃ ┃   ┃ ┗ 📜winner-service.js
 ┃ ┃   ┗ 📂validations
-┃ ┃     ┣ 📜user-create-validation.js
-┃ ┃     ┣ 📜user-criteria-validation.js
-┃ ┃     ┣ 📜user-login.js
-┃ ┃     ┗ 📜user-update-validation.js
+┃ ┃     ┣ 📜winner-criteria-validation.js
+┃ ┃     ┗ 📜winner-validation.js
 ┃ ┣ 📂routes
 ┃ ┃ ┗ 📜api-routes.js
 ┃ ┗ 📜server.js
@@ -120,12 +138,16 @@
 ┃ ┃ ┗ 📜country.spec.js
 ┃ ┣ 📂factories
 ┃ ┃ ┗ 📜auth-factory.js
+┃ ┣ 📂health-checks
+┃ ┃ ┗ 📜health-check.spec.js
 ┃ ┣ 📂raffles
 ┃ ┃ ┗ 📜raffle.spec.js
 ┃ ┣ 📂tickets
 ┃ ┃ ┗ 📜ticket.spec.js
-┃ ┗ 📂users
-┃   ┗ 📜user.spec.js
+┃ ┣ 📂users
+┃ ┃ ┗ 📜user.spec.js
+┃ ┗ 📂winners
+┃   ┗ 📜winner.spec.js
 ┣ 📜.dockerignore
 ┣ 📜.env
 ┣ 📜.env-example
