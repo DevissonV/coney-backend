@@ -69,10 +69,13 @@
 ┃ ┃ ┃ ┣ 📂repositories
 ┃ ┃ ┃ ┃ ┗ 📜raffle-repository.js
 ┃ ┃ ┃ ┣ 📂services
-┃ ┃ ┃ ┃ ┗ 📜raffle-service.js
+┃ ┃ ┃ ┃ ┣ 📜raffle-dependencies.js
+┃ ┃ ┃ ┃ ┣ 📜raffle-service.js
+┃ ┃ ┃ ┃ ┗ 📜raffle-ticket-service.js
 ┃ ┃ ┃ ┗ 📂validations
+┃ ┃ ┃   ┣ 📜raffle-create-validation.js
 ┃ ┃ ┃   ┣ 📜raffle-criteria-validation.js
-┃ ┃ ┃   ┗ 📜raffle-validation.js
+┃ ┃ ┃   ┗ 📜raffle-update-validation.js
 ┃ ┃ ┣ 📂tickets
 ┃ ┃ ┃ ┣ 📂api
 ┃ ┃ ┃ ┃ ┗ 📜ticket-routes.js
@@ -85,6 +88,7 @@
 ┃ ┃ ┃ ┣ 📂repositories
 ┃ ┃ ┃ ┃ ┗ 📜ticket-repository.js
 ┃ ┃ ┃ ┣ 📂services
+┃ ┃ ┃ ┃ ┣ 📜ticket-management-service.js
 ┃ ┃ ┃ ┃ ┗ 📜ticket-service.js
 ┃ ┃ ┃ ┗ 📂validations
 ┃ ┃ ┃   ┣ 📜ticket-criteria-validation.js
@@ -137,6 +141,7 @@
 ┣ 📜LICENSE
 ┣ 📜package.json
 ┗ 📜README.md
+
 
 ```
 
