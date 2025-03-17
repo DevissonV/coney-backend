@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 /**
  * Transforms the validated country data into a DTO for creation.
  * @param {Object} data - The validated country data.
@@ -14,7 +16,7 @@ export const createCountryDto = (data) => ({
  */
 export const updateCountryDto = (data) => ({
   name: data.name.trim(),
-  updated_at: new Date().toISOString(),
+  updated_at: dayjs().toISOString(),
 });
 
 /**

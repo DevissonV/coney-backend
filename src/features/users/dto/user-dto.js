@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 /**
  * Transforms the validated users data into a DTO for creation.
  * @param {Object} data - The validated users data.
@@ -23,7 +25,7 @@ export const updateUserDto = (data) => {
     first_name: data.firstName,
     last_name: data.lastName,
     role: data.role,
-    updated_at: new Date().toISOString(),
+    updated_at: dayjs().toISOString(),
   };
 
   if (data.password) {

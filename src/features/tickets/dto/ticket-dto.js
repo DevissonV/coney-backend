@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 /**
  * Transforms the validated ticket data into a DTO for creation.
  * @param {Object} data - The validated ticket data.
@@ -18,7 +20,7 @@ export const updateTicketDto = (data) => ({
   ticket_number: data.ticketNumber,
   raffle_id: data.raffleId ?? null,
   user_id: data.userId ?? null,
-  updated_at: new Date().toISOString(),
+  updated_at: dayjs().toISOString(),
 });
 
 /**
