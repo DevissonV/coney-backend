@@ -9,7 +9,6 @@ describe('Tickets API', () => {
   let createdTicketId;
   let createdRaffleId;
 
-  // 📌 Fechas dinámicas para evitar errores de validación
   const today = dayjs().add(1, 'day').toISOString();
   const futureDate = dayjs().add(30, 'day').toISOString();
 
@@ -27,7 +26,7 @@ describe('Tickets API', () => {
         initDate: today,
         endDate: futureDate,
         price: 15000,
-        ticketCount: 10, // ✅ Se genera un máximo de 10 boletos
+        ticketCount: 10,
       });
 
     expect(raffleResponse.status).toBe(201);
@@ -78,6 +77,15 @@ describe('Tickets API', () => {
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty('data');
     expect(Array.isArray(response.body.data)).toBe(true);
+  });
+
+  it('should get available tickets', async () => {
+    const response = await request(app).get(
+      `/api/tickets/availables?raffle_id=${createdRaffleId}`,
+    );
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('data');
   });
 
   it('should get a single ticket by ID', async () => {

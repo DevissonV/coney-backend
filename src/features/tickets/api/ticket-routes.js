@@ -5,7 +5,14 @@ import ticketController from '../controllers/ticket-controller.js';
 
 const router = Router();
 
-router.get('/', ticketController.getAll);
+router.get('/availables', ticketController.getAvailables);
+
+router.get(
+  '/',
+  authenticate,
+  authorize([envs.ROLE_ADMIN]),
+  ticketController.getAll,
+);
 router.get(
   '/:id',
   authenticate,
