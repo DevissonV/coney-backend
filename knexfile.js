@@ -25,6 +25,7 @@ const directoryMigrations = [
   './src/features/raffles/migrations',
   './src/features/countries/migrations',
   './src/features/tickets/migrations',
+  './src/features/winners/migrations',
 ];
 
 const directorySeed = ['./src/features/countries/seed'];

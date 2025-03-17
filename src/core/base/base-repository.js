@@ -26,7 +26,7 @@ export default class BaseRepository {
    * @protected
    */
   sanitizeRecord(record) {
-    return record; // By default, no modification is made
+    return record;
   }
 
   /**

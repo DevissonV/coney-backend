@@ -3,7 +3,7 @@ import db from '#core/config/database.js';
 
 /**
  * Repository for managing tickets data.
- * @class TicketsRepository
+ * @class TicketRepository
  * @extends BaseRepository
  */
 class TicketRepository extends BaseRepository {
@@ -40,6 +40,22 @@ class TicketRepository extends BaseRepository {
       page: criteria.getPagination().page,
       totalPages: Math.ceil(total / criteria.getPagination().limit),
     };
+  }
+
+  /**
+   * Retrieves all reserved tickets for a given raffle.
+   * Reserved tickets are those that have a user_id assigned.
+   *
+   * @param {number} raffle_id - The raffle ID.
+   * @returns {Promise<Object[]>} List of reserved tickets.
+   */
+  async getReservedTickets(raffle_id) {
+    const reservedTickets = await db(this.tableName)
+      .select('*')
+      .where({ raffle_id })
+      .whereNotNull('user_id');
+
+    return reservedTickets.map(this.sanitizeRecord.bind(this));
   }
 }
 
