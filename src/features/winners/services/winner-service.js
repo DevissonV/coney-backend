@@ -2,14 +2,14 @@ import { AppError } from '#core/utils/response/error-handler.js';
 import { getLogger } from '#core/utils/logger/logger.js';
 import GenericCriteria from '#core/filters/criteria/generic-criteria.js';
 import winnerRepository from '../repositories/winner-repository.js';
-import raffleRepository from '../../raffles/repositories/raffle-repository.js';
-import ticketRepository from '../../tickets/repositories/ticket-repository.js';
 import { validateWinner } from '../validations/winner-validation.js';
 import { validateWinnerCriteria } from '../validations/winner-criteria-validation.js';
 import { createWinnerDto, searchWinnerDto } from '../dto/winner-dto.js';
+import { winnerLogicService } from './winner-dependencies.js';
 
 /**
- * Service class for handling winner business logic.
+ * Service class for handling winner CRUD operations.
+ * Delegates extra business logic to WinnerLogicService.
  * @class WinnerService
  */
 class WinnerService {
@@ -26,7 +26,6 @@ class WinnerService {
         ticket_id: { column: 'ticket_id', operator: '=' },
         user_id: { column: 'user_id', operator: '=' },
       });
-
       return await winnerRepository.getAll(criteria);
     } catch (error) {
       getLogger().error(`Error getAll winners: ${error.message}`);
@@ -57,32 +56,16 @@ class WinnerService {
   }
 
   /**
-   * Creates a new winner, selecting one automatically based on raffle tickets.
-   * This method verifies that the raffle exists, that it does not have a winner yet,
-   * and then selects a random eligible ticket (i.e., one that has a user_id assigned)
-   * to determine the winner. Uniqueness is enforced by the database.
-   *
-   * @param {Object} data - Winner details containing at least the raffle_id.
+   * Creates a new winner by delegating to WinnerLogicService.
+   * @param {Object} data - Winner data.
    * @returns {Promise<Object>} Created winner data.
    */
-  async createWinner(data) {
+  async create(data) {
     try {
       validateWinner(data);
       const { raffle_id } = data;
 
-      await this.validateRaffleAndExistingWinner(raffle_id);
-
-      const winnerTicket = await this.getRandomEligibleTicket(raffle_id);
-
-      if (!winnerTicket) throw new AppError('No eligible tickets found', 400);
-
-      const dto = createWinnerDto({
-        raffle_id,
-        ticket_id: winnerTicket.id,
-        user_id: winnerTicket.user_id,
-      });
-
-      return await winnerRepository.create(dto);
+      return await winnerLogicService.createWinner(raffle_id, createWinnerDto);
     } catch (error) {
       if (error.code === '23505') {
         getLogger().error(
@@ -102,18 +85,9 @@ class WinnerService {
   }
 
   /**
-   * Alias for createWinner to comply with BaseController.
-   * @param {Object} data - Winner data.
-   * @returns {Promise<Object>} Created winner data.
-   */
-  async create(data) {
-    return await this.createWinner(data);
-  }
-
-  /**
    * Deletes a winner by ID.
    * @param {number} id - Winner ID.
-   * @returns {Promise<void>} Resolves when the deletion is complete.
+   * @returns {Promise<void>} Resolves when deletion is complete.
    */
   async delete(id) {
     try {
@@ -126,45 +100,6 @@ class WinnerService {
         error.statusCode || 500,
       );
     }
-  }
-
-  /**
-   * Validates that a raffle exists and does not already have a winner.
-   * @param {number} raffle_id - The raffle ID to check.
-   * @throws {AppError} If the raffle doesn't exist or already has a winner.
-   */
-  async validateRaffleAndExistingWinner(raffle_id) {
-    const raffle = await raffleRepository.getById(raffle_id);
-    if (!raffle)
-      throw new AppError(`Raffle with ID ${raffle_id} not found`, 404);
-
-    const criteria = new GenericCriteria(
-      { raffle_id },
-      {
-        raffle_id: { column: 'raffle_id', operator: '=' },
-      },
-    );
-
-    const winnersResult = await winnerRepository.getAll(criteria);
-    if (winnersResult.total > 0) {
-      throw new AppError(
-        `A winner has already been selected for raffle ${raffle_id}`,
-        400,
-      );
-    }
-  }
-
-  /**
-   * Retrieves a random eligible ticket for a given raffle.
-   * @param {number} raffle_id - The raffle ID.
-   * @returns {Promise<Object|null>} The selected ticket or null if none are eligible.
-   */
-  async getRandomEligibleTicket(raffle_id) {
-    const eligibleTickets =
-      await ticketRepository.getReservedTickets(raffle_id);
-    return eligibleTickets.length
-      ? eligibleTickets[Math.floor(Math.random() * eligibleTickets.length)]
-      : null;
   }
 }
 
