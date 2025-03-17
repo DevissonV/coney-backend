@@ -11,7 +11,6 @@ import {
   searchRaffleDto,
 } from '../dto/raffle-dto.js';
 import ticketService from '#features/tickets/services/ticket-service.js';
-import { envs } from '#core/config/envs.js';
 
 /**
  * Service class for handling raffle business logic.
