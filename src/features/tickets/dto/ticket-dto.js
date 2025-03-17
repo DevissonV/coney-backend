@@ -18,6 +18,7 @@ export const updateTicketDto = (data) => ({
   ticket_number: data.ticketNumber,
   raffle_id: data.raffleId ?? null,
   user_id: data.userId ?? null,
+  updated_at: new Date().toISOString(),
 });
 
 /**

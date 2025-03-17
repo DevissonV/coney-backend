@@ -23,6 +23,7 @@ export const updateRaffleDto = (data) => ({
   init_date: data.initDate,
   end_date: data.endDate,
   price: data.price,
+  updated_at: new Date().toISOString(),
 });
 
 /**

@@ -14,6 +14,7 @@ export const createCountryDto = (data) => ({
  */
 export const updateCountryDto = (data) => ({
   name: data.name.trim(),
+  updated_at: new Date().toISOString(),
 });
 
 /**
