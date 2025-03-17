@@ -1,14 +1,17 @@
+import { jest } from '@jest/globals';
 import request from 'supertest';
 import app from '../../src/server.js';
 import { registerAndLoginUser } from '../factories/auth-factory.js';
 import dayjs from 'dayjs';
+import winnerRepository from '../../src/features/winners/repositories/winner-repository.js';
+import { winnerLogicService } from '../../src/features/winners/services/winner-dependencies.js';
 
 const today = dayjs().add(1, 'day').toISOString();
 const futureDate = dayjs().add(30, 'day').toISOString();
 
 /**
- * Create a stress test.
- * @param {string} token
+ * Crea una rifa de prueba y retorna los datos creados.
+ * @param {string} token - Token de autenticación.
  * @returns {Promise<Object>}
  */
 async function createTestRaffle(token) {
@@ -21,34 +24,32 @@ async function createTestRaffle(token) {
     ticketCount: 10,
   };
 
-  const raffleResponse = await request(app)
+  const res = await request(app)
     .post('/api/raffles/')
     .set('Authorization', `Bearer ${token}`)
     .send(raffleData);
 
-  expect(raffleResponse.status).toBe(201);
-  expect(raffleResponse.body).toHaveProperty('data');
-  return raffleResponse.body.data;
+  expect(res.status).toBe(201);
+  expect(res.body).toHaveProperty('data');
+  return res.body.data;
 }
 
 /**
- * Reserve the first available raffle ticket.
- * @param {string} token
- * @param {number} raffleId
- * @param {number} userId
+ * Reserva el primer ticket disponible de la rifa asignándole el userId.
+ * @param {string} token - Token de autenticación.
+ * @param {number} raffleId - ID de la rifa.
+ * @param {number} userId - ID del usuario a asignar.
  * @returns {Promise<Object>}
  */
 async function reserveFirstTicket(token, raffleId, userId) {
-  const ticketsResponse = await request(app)
+  const resTickets = await request(app)
     .get(`/api/tickets/?raffle_id=${raffleId}&limit=1&page=1`)
     .set('Authorization', `Bearer ${token}`);
+  expect(resTickets.status).toBe(200);
+  expect(resTickets.body.data.length).toBeGreaterThan(0);
 
-  expect(ticketsResponse.status).toBe(200);
-  expect(ticketsResponse.body.data.length).toBeGreaterThan(0);
-
-  const ticket = ticketsResponse.body.data[0];
-
-  const ticketUpdateResponse = await request(app)
+  const ticket = resTickets.body.data[0];
+  const resUpdate = await request(app)
     .patch(`/api/tickets/${ticket.id}`)
     .set('Authorization', `Bearer ${token}`)
     .send({
@@ -56,25 +57,20 @@ async function reserveFirstTicket(token, raffleId, userId) {
       raffleId: raffleId,
       userId: userId,
     });
-  expect(ticketUpdateResponse.status).toBe(200);
-  return ticketUpdateResponse.body.data;
+  expect(resUpdate.status).toBe(200);
+  return resUpdate.body.data;
 }
 
-describe('Winners API', () => {
-  let token;
-  let userId;
-  let createdRaffleId;
-  let winnerId;
-  let reservedTicketId;
+describe('Winners API - Happy Path', () => {
+  let token, userId, createdRaffleId, winnerId, reservedTicketId;
 
   beforeAll(async () => {
-    const authResult = await registerAndLoginUser();
-    token = authResult.token;
-    userId = authResult.userId;
+    const auth = await registerAndLoginUser();
+    token = auth.token;
+    userId = auth.userId;
 
     const raffle = await createTestRaffle(token);
     createdRaffleId = raffle.id;
-
     const reservedTicket = await reserveFirstTicket(
       token,
       createdRaffleId,
@@ -96,49 +92,128 @@ describe('Winners API', () => {
     }
   });
 
-  it('should get winners (initially empty)', async () => {
-    const response = await request(app)
+  it('should return an empty winners list initially', async () => {
+    const res = await request(app)
       .get('/api/winners/?limit=3&page=1')
       .set('Authorization', `Bearer ${token}`);
-    expect(response.status).toBe(200);
-    expect(Array.isArray(response.body.data)).toBe(true);
+    expect(res.status).toBe(200);
+    expect(Array.isArray(res.body.data)).toBe(true);
   });
 
-  it('should create a winner for a raffle', async () => {
-    const response = await request(app)
+  it('should create a winner for the raffle', async () => {
+    const res = await request(app)
       .post('/api/winners')
       .set('Authorization', `Bearer ${token}`)
       .send({ raffle_id: createdRaffleId });
-    expect(response.status).toBeLessThan(300);
-    expect(response.body).toHaveProperty('data');
-    expect(response.body.data).toHaveProperty('raffle_id', createdRaffleId);
-    winnerId = response.body.data.id;
+    expect(res.status).toBeLessThan(300);
+    expect(res.body).toHaveProperty('data');
+    expect(res.body.data).toHaveProperty('raffle_id', createdRaffleId);
+    winnerId = res.body.data.id;
   });
 
-  it('should not create a winner if one already exists for the raffle', async () => {
-    const response = await request(app)
+  it('should not create a winner if one already exists', async () => {
+    const res = await request(app)
       .post('/api/winners')
       .set('Authorization', `Bearer ${token}`)
       .send({ raffle_id: createdRaffleId });
-    expect(response.status).toBe(400);
+    expect(res.status).toBe(400);
   });
 
   it('should get a winner by ID', async () => {
-    const response = await request(app)
+    const res = await request(app)
       .get(`/api/winners/${winnerId}`)
       .set('Authorization', `Bearer ${token}`);
-    expect(response.status).toBe(200);
-    expect(response.body.data).toHaveProperty('id', winnerId);
+    expect(res.status).toBe(200);
+    expect(res.body.data).toHaveProperty('id', winnerId);
   });
 
   it('should delete the created winner', async () => {
-    const response = await request(app)
+    const resDel = await request(app)
       .delete(`/api/winners/${winnerId}`)
       .set('Authorization', `Bearer ${token}`);
-    expect(response.status).toBe(200);
-    const getResponse = await request(app)
+    expect(resDel.status).toBe(200);
+    const resGet = await request(app)
       .get(`/api/winners/${winnerId}`)
       .set('Authorization', `Bearer ${token}`);
-    expect(getResponse.status).toBe(404);
+    expect(resGet.status).toBe(404);
+  });
+});
+
+describe('Winners API - Error Scenarios', () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  let token, createdRaffleId;
+
+  beforeAll(async () => {
+    const auth = await registerAndLoginUser();
+    token = auth.token;
+    const raffle = await createTestRaffle(token);
+    createdRaffleId = raffle.id;
+  });
+
+  afterAll(async () => {
+    if (createdRaffleId) {
+      await request(app)
+        .delete(`/api/raffles/${createdRaffleId}`)
+        .set('Authorization', `Bearer ${token}`);
+    }
+  });
+
+  it('should return 500 when getAll fails', async () => {
+    jest
+      .spyOn(winnerRepository, 'getAll')
+      .mockRejectedValue(new Error('Test error getAll'));
+    const res = await request(app)
+      .get('/api/winners/?limit=3&page=1')
+      .set('Authorization', `Bearer ${token}`);
+    expect(res.status).toBe(500);
+  });
+
+  it('should return 400 when duplicate error occurs on create', async () => {
+    const duplicateError = Object.assign(new Error('Duplicate error'), {
+      code: '23505',
+    });
+    jest
+      .spyOn(winnerLogicService, 'createWinner')
+      .mockRejectedValue(duplicateError);
+    const res = await request(app)
+      .post('/api/winners')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ raffle_id: createdRaffleId });
+    expect(res.status).toBe(400);
+  });
+
+  it('should return 500 when a generic error occurs on create', async () => {
+    jest
+      .spyOn(winnerLogicService, 'createWinner')
+      .mockRejectedValue(new Error('Generic create error'));
+    const res = await request(app)
+      .post('/api/winners')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ raffle_id: createdRaffleId });
+    expect(res.status).toBe(500);
+  });
+
+  it('should return 500 when delete fails due to getById error', async () => {
+    jest
+      .spyOn(winnerRepository, 'getById')
+      .mockRejectedValue(new Error('Not found error'));
+    const res = await request(app)
+      .delete('/api/winners/99999')
+      .set('Authorization', `Bearer ${token}`);
+    expect(res.status).toBe(500);
+  });
+
+  it('should return 500 when delete fails due to repository.delete error', async () => {
+    jest.spyOn(winnerRepository, 'getById').mockResolvedValue({ id: 123 });
+    jest
+      .spyOn(winnerRepository, 'delete')
+      .mockRejectedValue(new Error('Delete error'));
+    const res = await request(app)
+      .delete('/api/winners/123')
+      .set('Authorization', `Bearer ${token}`);
+    expect(res.status).toBe(500);
   });
 });
