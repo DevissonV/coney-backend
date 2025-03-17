@@ -3,7 +3,7 @@ services:
     image: postgres:16.2
     container_name: BD-Coney
     ports:
-      - "${DB_PORT}:${DB_PORT}"
+      - "${DB_PORT}:5432"
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
@@ -19,6 +19,9 @@ services:
 
   backend:
     container_name: Backend-Coney
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
     build:
       context: .
       dockerfile: .docker/Dockerfile.dev
