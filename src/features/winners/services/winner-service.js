@@ -21,9 +21,7 @@ class WinnerService {
   async getAll(params) {
     try {
       const validatedParams = validateWinnerCriteria(params);
-
-      const dto = searchWinnerDto(validatedParams);
-      const criteria = new GenericCriteria(dto, {
+      const criteria = new GenericCriteria(searchWinnerDto(validatedParams), {
         raffle_id: { column: 'raffle_id', operator: '=' },
         ticket_id: { column: 'ticket_id', operator: '=' },
         user_id: { column: 'user_id', operator: '=' },
@@ -140,9 +138,12 @@ class WinnerService {
     if (!raffle)
       throw new AppError(`Raffle with ID ${raffle_id} not found`, 404);
 
-    const criteria = new GenericCriteria({
-      raffle_id: { column: 'raffle_id', operator: '=' },
-    });
+    const criteria = new GenericCriteria(
+      { raffle_id },
+      {
+        raffle_id: { column: 'raffle_id', operator: '=' },
+      },
+    );
 
     const winnersResult = await winnerRepository.getAll(criteria);
     if (winnersResult.total > 0) {
