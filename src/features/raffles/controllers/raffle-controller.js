@@ -1,5 +1,5 @@
 import BaseController from '#core/base/base-controller.js';
-import raffleService from '../services/raffle-service.js';
+import { raffleService } from '../services/raffle-dependencies.js';
 
 /**
  * Controller for managing raffles.

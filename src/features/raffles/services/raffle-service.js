@@ -10,27 +10,17 @@ import {
   updateRaffleDto,
   searchRaffleDto,
 } from '../dto/raffle-dto.js';
-import ticketService from '#features/tickets/services/ticket-service.js';
 
 /**
  * Service class for handling raffle business logic.
  * @class RaffleService
  */
 class RaffleService {
-  /** @private */
-  #ticketService;
-
   /**
-   * inject instance of TicketService.
-   *
-   * @param {Object} ticketService -
+   * @param {Object} raffleTicketService - Instance of the raffle ticket service.
    */
-  constructor(ticketService) {
-    /**
-     * @private
-     * @type {Object}
-     */
-    this.#ticketService = ticketService;
+  constructor(raffleTicketService) {
+    this.raffleTicketService = raffleTicketService;
   }
 
   /**
@@ -90,7 +80,10 @@ class RaffleService {
       const dto = createRaffleDto(data);
       const resCreatedRaffle = await raffleRepository.create(dto);
 
-      await this.#createTickets(resCreatedRaffle.id, dto.tickets_created);
+      await this.raffleTicketService.generateTicketsForRaffle(
+        resCreatedRaffle.id,
+        dto.tickets_created,
+      );
 
       return resCreatedRaffle;
     } catch (error) {
@@ -140,41 +133,6 @@ class RaffleService {
       );
     }
   }
-
-  /**
-   * Generates tickets associated with a given raffle.
-   *
-   * This method creates tickets sequentially by calling the ticket service.
-   * Each ticket is associated with the raffle provided in the data parameter.
-   * The number of tickets generated is defined by the TICKET_GENERATION_COUNT
-   * environment variable.
-   *
-   * @private
-   * @param {number} raffleId - The unique identifier of the raffle.
-   * @returns {Promise<void>} A promise that resolves when all tickets have been created.
-   * @throws {AppError} Throws an error if any ticket creation fails.
-   */
-  async #createTickets(raffleId, ticketCount) {
-    try {
-      for (let i = 1; i <= ticketCount; i++) {
-        const dataTicket = {
-          ticketNumber: i,
-          raffleId: raffleId,
-          userId: null,
-        };
-
-        await this.#ticketService.create(dataTicket);
-      }
-    } catch (error) {
-      getLogger().error(
-        `Error create tickets in module of raffle: ${error.message}`,
-      );
-      throw new AppError(
-        error.message || 'Database error while creating raffle',
-        error.statusCode || 500,
-      );
-    }
-  }
 }
 
-export default new RaffleService(ticketService);
+export default RaffleService;
