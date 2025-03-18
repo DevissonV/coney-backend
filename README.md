@@ -57,6 +57,17 @@
 ┃ ┃ ┃ ┃ ┗ 📜health-check-routes.js
 ┃ ┃ ┃ ┗ 📂controllers
 ┃ ┃ ┃   ┗ 📜health-check-controller.js
+┃ ┃ ┣ 📂payments
+┃ ┃ ┃ ┣ 📂api
+┃ ┃ ┃ ┃ ┗ 📜payment-routes.js
+┃ ┃ ┃ ┣ 📂controller
+┃ ┃ ┃ ┃ ┗ 📜payment-controller.js
+┃ ┃ ┃ ┣ 📂dto
+┃ ┃ ┃ ┃ ┗ 📜payment-session-dto.js
+┃ ┃ ┃ ┗ 📂services
+┃ ┃ ┃   ┣ 📜channel-service.js
+┃ ┃ ┃   ┣ 📜payment-container.js
+┃ ┃ ┃   ┗ 📜payment-service.js
 ┃ ┃ ┣ 📂raffles
 ┃ ┃ ┃ ┣ 📂api
 ┃ ┃ ┃ ┃ ┗ 📜raffle-routes.js
