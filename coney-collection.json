@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "5614b31e-69af-4a69-8a0a-9ed5698c725c",
+		"_postman_id": "6fd0eb46-9370-4891-9cb7-51e7c856961c",
 		"name": "Coney-Backend-API",
 		"description": "API collection for Coney Backend endpoints",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "24174844"
+		"_exporter_id": "10141207"
 	},
 	"item": [
 		{
@@ -12,6 +12,9 @@
 			"item": [
 				{
 					"name": "get-all",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -25,8 +28,17 @@
 						},
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{url}}/api/raffles/?limit=3&page=1",
+							"raw": "{{url}}/api/raffles/?limit=3&page=1&name=Rifa",
 							"host": [
 								"{{url}}"
 							],
@@ -43,6 +55,10 @@
 								{
 									"key": "page",
 									"value": "1"
+								},
+								{
+									"key": "name",
+									"value": "Rifa"
 								}
 							]
 						}
@@ -118,7 +134,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Devisson Vasquez\",\n  \"hire_date\": \"2023-01-01\",\n  \"salary\": 1000\n}"
+							"raw": "{\n    \"name\": \"marrano de lora\",\n    \"description\": \"Rifa noche en ecaelt\",\n    \"initDate\": \"2025-04-26T14:30:00Z\",\n    \"endDate\": \"2025-04-27T14:30:00Z\",\n    \"price\": 800.0000,\n    \"ticketCount\": 24\n}"
 						},
 						"url": {
 							"raw": "{{url}}/api/raffles/",
@@ -156,7 +172,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Lionel Messi\",\n  \"hire_date\": \"2025-01-01\",\n  \"salary\": 60000\n}"
+							"raw": "{\n    \"name\": \"Rifa 2 para gamers\",\n    \"description\": \"Rifa pro fondos mundial de e sports 2\",\n    \"initDate\": \"2025-09-26T14:30:00Z\",\n    \"endDate\": \"2025-10-26T14:30:00Z\",\n    \"price\": 10.000\n}"
 						},
 						"url": {
 							"raw": "{{url}}/api/raffles/:id",
@@ -234,7 +250,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/countries/?limit=3&page=1",
+							"raw": "{{url}}/api/countries/?limit=3&page=3&",
 							"host": [
 								"{{url}}"
 							],
@@ -250,7 +266,11 @@
 								},
 								{
 									"key": "page",
-									"value": "1"
+									"value": "3"
+								},
+								{
+									"key": "",
+									"value": null
 								}
 							]
 						}
@@ -285,13 +305,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/raffles/:id",
+							"raw": "{{url}}/api/countries/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
-								"raffles",
+								"countries",
 								":id"
 							],
 							"variable": [
@@ -326,16 +346,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Devisson Vasquez\",\n  \"hire_date\": \"2023-01-01\",\n  \"salary\": 1000\n}"
+							"raw": "{\n  \"name\": \"NuncaJamas\"\n}"
 						},
 						"url": {
-							"raw": "{{url}}/api/raffles/",
+							"raw": "{{url}}/api/countries/",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
-								"raffles",
+								"countries",
 								""
 							]
 						}
@@ -364,16 +384,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Lionel Messi\",\n  \"hire_date\": \"2025-01-01\",\n  \"salary\": 60000\n}"
+							"raw": "{\n  \"name\": \"Libertylandia\"\n}"
 						},
 						"url": {
-							"raw": "{{url}}/api/raffles/:id",
+							"raw": "{{url}}/api/countries/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
-								"raffles",
+								"countries",
 								":id"
 							],
 							"variable": [
@@ -402,13 +422,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/raffles/:id",
+							"raw": "{{url}}/api/countries/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
-								"raffles",
+								"countries",
 								":id"
 							],
 							"variable": [
@@ -618,7 +638,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/tickets/?limit=3&page=1",
+							"raw": "{{url}}/api/tickets/?page=1&limit=100&",
 							"host": [
 								"{{url}}"
 							],
@@ -629,12 +649,77 @@
 							],
 							"query": [
 								{
-									"key": "limit",
-									"value": "3"
+									"key": "page",
+									"value": "1"
 								},
+								{
+									"key": "user_id",
+									"value": "null",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "100"
+								},
+								{
+									"key": "",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-availables",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/tickets/availables/?page=1&limit=100&raffle_id=4",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"tickets",
+								"availables",
+								""
+							],
+							"query": [
 								{
 									"key": "page",
 									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "100"
+								},
+								{
+									"key": "raffle_id",
+									"value": "4"
 								}
 							]
 						}
@@ -710,7 +795,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"ticket_number\": \"3\",\n  \"raffle_id\": 22,\n  \"user_id\": 1\n}"
+							"raw": "{\n  \"ticketNumber\": \"3\",\n  \"raffleId\": 1,\n  \"userId\": 1\n}"
 						},
 						"url": {
 							"raw": "{{url}}/api/tickets/",
@@ -748,22 +833,22 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Lionel Messi\",\n  \"hire_date\": \"2025-01-01\",\n  \"salary\": 60000\n}"
+							"raw": "{\n  \"ticketNumber\": \"2\",\n  \"raffleId\": 1,\n  \"userId\": 1\n}"
 						},
 						"url": {
-							"raw": "{{url}}/api/raffles/:id",
+							"raw": "{{url}}/api/tickets/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
-								"raffles",
+								"tickets",
 								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": "1"
+									"value": "2"
 								}
 							]
 						}
@@ -786,19 +871,19 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/raffles/:id",
+							"raw": "{{url}}/api/tickets/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
-								"raffles",
+								"tickets",
 								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": "1"
+									"value": "2"
 								}
 							]
 						}
@@ -811,13 +896,23 @@
 			"name": "Users",
 			"item": [
 				{
-					"name": "register",
+					"name": "update",
 					"request": {
-						"method": "POST",
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"securepassword123\",\r\n  \"role\": \"admin\"\r\n}",
+							"raw": "{\r\n  \"email\": \"daniel@prueba.com\",\r\n  \"firstName\": \"Daniel\",\r\n  \"lastName\": \"vasquez\",\r\n  \"password\": \"123456\",\r\n  \"role\": \"admin\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -825,14 +920,20 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/users/register",
+							"raw": "{{url}}/api/users/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
 								"users",
-								"register"
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4"
+								}
 							]
 						}
 					},
@@ -860,7 +961,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"securepassword123\"\r\n}",
+							"raw": "{\r\n  \"email\": \"admin@prueba.com\",\r\n  \"password\": \"123456\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -898,7 +999,41 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"admin\"\r\n}",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/users/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@prueba.com\",\n  \"firstName\": \"admin\",\n  \"lastName\": \"admin\",\n  \"password\": \"123456\",\n  \"role\": \"admin\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -914,6 +1049,97 @@
 								"api",
 								"users",
 								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-by-ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/users/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-all",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/users/?limit=3&page=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								""
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "3"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
 							]
 						}
 					},
@@ -957,51 +1183,6 @@
 								"api",
 								"health-checks",
 								"test-response-error"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "OpenAI",
-			"item": [
-				{
-					"name": "New Request",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer "
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"model\": \"gpt-4o-mini\",\n    \"messages\": [\n        {\n            \"role\": \"user\",\n            \"content\": \"Say this is a test!\"\n        }\n    ],\n    \"temperature\": 0.7\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://api.openai.com/v1/chat/completions",
-							"protocol": "https",
-							"host": [
-								"api",
-								"openai",
-								"com"
-							],
-							"path": [
-								"v1",
-								"chat",
-								"completions"
 							]
 						}
 					},
@@ -1115,7 +1296,7 @@
 					"response": []
 				},
 				{
-					"name": "seccess",
+					"name": "success",
 					"request": {
 						"auth": {
 							"type": "bearer",
