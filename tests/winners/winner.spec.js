@@ -62,7 +62,7 @@ async function reserveFirstTicket(token, raffleId, userId) {
 }
 
 describe('Winners API - Happy Path', () => {
-  let token, userId, createdRaffleId, winnerId, reservedTicketId;
+  let token, userId, createdRaffleId, winnerId;
 
   beforeAll(async () => {
     const auth = await registerAndLoginUser();
@@ -71,12 +71,8 @@ describe('Winners API - Happy Path', () => {
 
     const raffle = await createTestRaffle(token);
     createdRaffleId = raffle.id;
-    const reservedTicket = await reserveFirstTicket(
-      token,
-      createdRaffleId,
-      userId,
-    );
-    reservedTicketId = reservedTicket.id;
+
+    await reserveFirstTicket(token, createdRaffleId, userId);
   });
 
   afterAll(async () => {
