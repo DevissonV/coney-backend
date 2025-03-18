@@ -1,3 +1,4 @@
+import { validatePaymentSession } from '#features/payments/validations/payment-session-validation.js';
 import { createPaymentSessionDto } from '#features/payments/dto/payment-session-dto.js';
 
 /**
@@ -32,7 +33,8 @@ class PaymentService {
   }
 
   async createPaymentSession(payment) {
-    const dto = createPaymentSessionDto(payment);
+    const validData = validatePaymentSession(payment);
+    const dto = createPaymentSessionDto(validData);
     const session = await this.#stripeService.checkout.sessions.create({
       payment_intent_data: {
         metadata: {},
