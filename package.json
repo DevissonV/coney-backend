@@ -10,9 +10,11 @@
     "start-docker-dev": "npm run migrations && npm run seed && npm run dev",
     "start-docker-prod": "npm run migrations && npm run start",
     "migrations": "npx knex migrate:latest",
+    "rollback": "npx knex migrate:rollback --all && npx knex migrate:latest",
     "seed": "npx knex seed:run",
     "test": "cross-env NODE_ENV=development NODE_OPTIONS=--experimental-vm-modules jest --runInBand",
-    "generate-module": "node scripts/generate-module.js"
+    "generate-module": "node scripts/generate-module.js",
+    "lint": "npx eslint . --fix && npx prettier --write ."
   },
   "license": "ISC",
   "dependencies": {
