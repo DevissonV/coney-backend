@@ -39,6 +39,9 @@ const envVarsSchema = Joi.object({
   LOG_CLEANUP_SCHEDULE: Joi.string().required().default('0 0 * * 0').messages({
     'any.required': 'LOG_CLEANUP_SCHEDULE is required',
   }),
+  STRIPE_SECRET_KEY: Joi.string().required().messages({
+    'any.required': 'STRIPE_SECRET_KEY is required',
+  }),
 }).unknown(true);
 
 /**

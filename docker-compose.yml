@@ -19,6 +19,9 @@ services:
 
   backend:
     container_name: Backend-Coney
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
     build:
       context: .
       dockerfile: .docker/Dockerfile.dev
