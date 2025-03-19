@@ -2,8 +2,14 @@ import Joi from 'joi';
 import { AppError } from '#core/utils/response/error-handler.js';
 
 /**
- * Schema definition for payments.
- * @constant {Joi.ObjectSchema}
+ * Schema for validating a payment session object.
+ *
+ * @typedef {Object} PaymentSession
+ * @property {number} amount - The payment amount. Must be a positive number.
+ * @property {number[]} tickets - An array of ticket IDs. Each ticket ID must be a positive integer. At least one ticket is required.
+ * @property {number} raffleId - The ID of the raffle. Must be a positive integer.
+ * @property {string} [currency='COP'] - The currency for the payment. Defaults to 'COP'.
+ *
  */
 const paymentSessionSchema = Joi.object({
   amount: Joi.number().positive().required().messages({
@@ -25,15 +31,20 @@ const paymentSessionSchema = Joi.object({
     'number.positive': 'Raffle ID must be a positive number',
     'any.required': 'Raffle ID is required',
   }),
+  currency: Joi.string().default('COP').messages({
+    'string.base': 'Currency must be a string',
+  }),
 });
 
 /**
- * Validates winner data against the schema.
- * @param {Object} data - Winner data to be validated.
- * @throws {Error} If validation fails.
+ * Validates the payment session data against the defined schema.
+ *
+ * @param {Object} data - The payment session data to validate.
+ * @throws {AppError} Throws an error with a message and status code 400 if validation fails.
+ * @returns {Object} The validated payment session data.
  */
 export const validatePaymentSession = (data) => {
   const { error, value } = paymentSessionSchema.validate(data);
   if (error) throw new AppError(error.details[0].message, 400);
-  return data;
+  return value;
 };
