@@ -1194,42 +1194,7 @@
 			"name": "Payments",
 			"item": [
 				{
-					"name": "buy",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{TOKEN}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/api/payments/:id",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"payments",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "20"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "create-payment-session",
+					"name": "create",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1245,7 +1210,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"amount\": 10000,\n    \"tickets\": [\n        1,\n        2,\n        3,\n        4\n    ],\n    \"raffleId\": 1\n}",
+							"raw": "{\n    \"amount\": 10000,\n    \"tickets\": [\n        1,\n        2,\n        3,\n        4\n    ],\n    \"raffleId\": 4\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1253,43 +1218,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/payments/create-payment-session",
+							"raw": "{{url}}/api/payments/",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
 								"payments",
-								"create-payment-session"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "webhook",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{TOKEN}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/api/payments/webhook",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"payments",
-								"webhook"
+								""
 							]
 						}
 					},
@@ -1348,6 +1284,138 @@
 								"api",
 								"payments",
 								"cancel"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-all",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/payments/?limit=3&page=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"payments",
+								""
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "3"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/payments/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"payments",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"completed\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/payments/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"payments",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2"
+								}
 							]
 						}
 					},

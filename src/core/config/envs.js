@@ -42,6 +42,14 @@ const envVarsSchema = Joi.object({
   STRIPE_SECRET_KEY: Joi.string().required().messages({
     'any.required': 'STRIPE_SECRET_KEY is required',
   }),
+  STRIPE_SUCCESS_URL: Joi.string().uri().required().messages({
+    'string.uri': 'cancel_url_payment must be a valid URL',
+    'any.required': 'cancel_url_payment is required',
+  }),
+  STRIPE_CANCEL_URL: Joi.string().uri().required().messages({
+    'string.uri': 'success_url_payment must be a valid URL',
+    'any.required': 'success_url_payment is required',
+  }),
 }).unknown(true);
 
 /**
