@@ -1,5 +1,6 @@
 import { AppError } from '#core/utils/response/error-handler.js';
 import { getLogger } from '#core/utils/logger/logger.js';
+import { envs } from '#core/config/envs.js';
 import { validatePaymentSession } from '#features/payments/validations/payment-session-validation.js';
 
 class PaymentExternalService {
@@ -36,8 +37,8 @@ class PaymentExternalService {
           },
         ],
         mode: 'payment',
-        success_url: 'http://localhost:5000/api/payments/success',
-        cancel_url: 'http://localhost:5000/api/payments/cancel',
+        cancel_url: envs.STRIPE_CANCEL_URL,
+        success_url: envs.STRIPE_SUCCESS_URL,
       });
 
       getLogger().info('External payment session created: ' + session.id);
