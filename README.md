@@ -60,14 +60,23 @@
 ┃ ┃ ┣ 📂payments
 ┃ ┃ ┃ ┣ 📂api
 ┃ ┃ ┃ ┃ ┗ 📜payment-routes.js
-┃ ┃ ┃ ┣ 📂controller
+┃ ┃ ┃ ┣ 📂controllers
 ┃ ┃ ┃ ┃ ┗ 📜payment-controller.js
 ┃ ┃ ┃ ┣ 📂dto
-┃ ┃ ┃ ┃ ┗ 📜payment-session-dto.js
-┃ ┃ ┃ ┗ 📂services
-┃ ┃ ┃   ┣ 📜channel-service.js
-┃ ┃ ┃   ┣ 📜payment-container.js
-┃ ┃ ┃   ┗ 📜payment-service.js
+┃ ┃ ┃ ┃ ┗ 📜payment-dto.js
+┃ ┃ ┃ ┣ 📂migrations
+┃ ┃ ┃ ┃ ┗ 📜20250318142148_create_payments_table.js
+┃ ┃ ┃ ┣ 📂repositories
+┃ ┃ ┃ ┃ ┗ 📜payment-repository.js
+┃ ┃ ┃ ┣ 📂services
+┃ ┃ ┃ ┃ ┣ 📜payment-dependencies.js
+┃ ┃ ┃ ┃ ┣ 📜payment-external-service.js
+┃ ┃ ┃ ┃ ┗ 📜payment-service.js
+┃ ┃ ┃ ┗ 📂validations
+┃ ┃ ┃   ┣ 📜payment-create-validation.js
+┃ ┃ ┃   ┣ 📜payment-criteria-validation.js
+┃ ┃ ┃   ┣ 📜payment-session-validation.js
+┃ ┃ ┃   ┗ 📜payment-update-validation.js
 ┃ ┃ ┣ 📂raffles
 ┃ ┃ ┃ ┣ 📂api
 ┃ ┃ ┃ ┃ ┗ 📜raffle-routes.js
@@ -151,6 +160,8 @@
 ┃ ┃ ┗ 📜auth-factory.js
 ┃ ┣ 📂health-checks
 ┃ ┃ ┗ 📜health-check.spec.js
+┃ ┣ 📂payments
+┃ ┃ ┗ 📜payment.spec.js
 ┃ ┣ 📂raffles
 ┃ ┃ ┗ 📜raffle.spec.js
 ┃ ┣ 📂tickets

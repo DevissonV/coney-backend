@@ -54,10 +54,6 @@ class PaymentExternalService {
       throw new AppError('Error creating payment session', 500);
     }
   }
-
-  async webhookService() {
-    return 'Webhook successfully processed.';
-  }
 }
 
 export default PaymentExternalService;
