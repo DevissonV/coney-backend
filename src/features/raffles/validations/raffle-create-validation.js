@@ -21,7 +21,7 @@ const createRaffleSchema = Joi.object({
     'date.greater': 'endDate must be greater than initDate',
   }),
   price: Joi.number().positive().required(),
-  ticketCount: Joi.number().integer().min(1).required(),
+  ticketCount: Joi.number().integer().min(10).required(),
 });
 
 /**
