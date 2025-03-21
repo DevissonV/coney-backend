@@ -17,9 +17,7 @@ export const createTicketDto = (data) => ({
  * @returns {Object} A DTO containing only the properties that can be updated.
  */
 export const updateTicketDto = (data) => ({
-  ticket_number: data.ticketNumber,
-  raffle_id: data.raffleId ?? null,
-  user_id: data.userId ?? null,
+  user_id: data.userId,
   updated_at: dayjs().toISOString(),
 });
 
