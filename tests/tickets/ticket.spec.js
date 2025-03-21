@@ -99,9 +99,7 @@ describe('Tickets API', () => {
 
   it('should update a ticket', async () => {
     const updatedData = {
-      ticketNumber: 999999,
       userId: userId,
-      raffleId: createdRaffleId,
     };
 
     const response = await request(app)
