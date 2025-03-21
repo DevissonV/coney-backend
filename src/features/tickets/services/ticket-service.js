@@ -2,7 +2,8 @@ import { AppError } from '#core/utils/response/error-handler.js';
 import { getLogger } from '#core/utils/logger/logger.js';
 import GenericCriteria from '#core/filters/criteria/generic-criteria.js';
 import ticketRepository from '../repositories/ticket-repository.js';
-import { validateTicket } from '../validations/ticket-validation.js';
+import { validateTicketCreate } from '../validations/ticket-create-validation.js';
+import { validateTicketUpdate } from '../validations/ticket-update-validation.js';
 import { validateTicketCriteria } from '../validations/ticket-criteria-validation.js';
 import {
   createTicketDto,
@@ -67,7 +68,7 @@ class TicketService {
    */
   async create(data) {
     try {
-      validateTicket(data);
+      validateTicketCreate(data);
       const dto = createTicketDto(data);
 
       return await ticketRepository.create(dto);
@@ -89,7 +90,7 @@ class TicketService {
   async update(id, data) {
     try {
       const ticket = await this.getById(id);
-      validateTicket(data);
+      validateTicketUpdate(data);
       const dto = updateTicketDto(data);
       return await ticketRepository.update(ticket.id, dto);
     } catch (error) {

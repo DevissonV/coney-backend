@@ -111,8 +111,9 @@
 ┃ ┃ ┃ ┃ ┣ 📜ticket-management-service.js
 ┃ ┃ ┃ ┃ ┗ 📜ticket-service.js
 ┃ ┃ ┃ ┗ 📂validations
+┃ ┃ ┃   ┣ 📜ticket-create-validation.js
 ┃ ┃ ┃   ┣ 📜ticket-criteria-validation.js
-┃ ┃ ┃   ┗ 📜ticket-validation.js
+┃ ┃ ┃   ┗ 📜ticket-update-validation.js
 ┃ ┃ ┣ 📂users
 ┃ ┃ ┃ ┣ 📂api
 ┃ ┃ ┃ ┃ ┗ 📜user-routes.js

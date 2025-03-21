@@ -32,7 +32,7 @@ describe('Raffles API', () => {
       initDate: today,
       endDate: futureDate,
       price: 15000,
-      ticketCount: 3,
+      ticketCount: 10,
     };
 
     const response = await request(app)

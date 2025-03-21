@@ -38,7 +38,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/raffles/?limit=3&page=1&name=Rifa",
+							"raw": "{{url}}/api/raffles/?page=2",
 							"host": [
 								"{{url}}"
 							],
@@ -49,16 +49,23 @@
 							],
 							"query": [
 								{
-									"key": "limit",
-									"value": "3"
-								},
-								{
 									"key": "page",
-									"value": "1"
+									"value": "2"
 								},
 								{
 									"key": "name",
-									"value": "Rifa"
+									"value": "cr7",
+									"disabled": true
+								},
+								{
+									"key": "init_date",
+									"value": "2025-02-26T14:30:00.000Z",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "2",
+									"disabled": true
 								}
 							]
 						}
@@ -105,7 +112,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "2"
+									"value": "958"
 								}
 							]
 						}
@@ -134,7 +141,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"marrano de lora\",\n    \"description\": \"Rifa noche en ecaelt\",\n    \"initDate\": \"2025-04-26T14:30:00Z\",\n    \"endDate\": \"2025-04-27T14:30:00Z\",\n    \"price\": 800.0000,\n    \"ticketCount\": 24\n}"
+							"raw": "{\n    \"name\": \"marrano de lora\",\n    \"description\": \"Rifa noche en ecaelt\",\n    \"initDate\": \"2025-03-26T14:30:00Z\",\n    \"endDate\": \"2025-04-27T14:30:00Z\",\n    \"price\": 250.000,\n    \"ticketCount\": 20\n}"
 						},
 						"url": {
 							"raw": "{{url}}/api/raffles/",
@@ -566,16 +573,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"marrano de lora\",\n    \"description\": \"Rifa noche en ecaelt\",\n    \"initDate\": \"2025-04-26T14:30:00Z\",\n    \"endDate\": \"2025-04-27T14:30:00Z\",\n    \"price\": 800.0000,\n    \"ticketCount\": 24\n}"
+							"raw": "{\n  \"raffle_id\": 4\n}"
 						},
 						"url": {
-							"raw": "{{url}}/api/raffles/",
+							"raw": "{{url}}/api/winners/",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
-								"raffles",
+								"winners",
 								""
 							]
 						}
@@ -833,7 +840,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"ticketNumber\": \"2\",\n  \"raffleId\": 1,\n  \"userId\": 1\n}"
+							"raw": "{\n  \"userId\": 3\n}"
 						},
 						"url": {
 							"raw": "{{url}}/api/tickets/:id",
@@ -848,7 +855,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "2"
+									"value": "8408"
 								}
 							]
 						}
