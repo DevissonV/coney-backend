@@ -23,7 +23,7 @@ app.use((req, res) => {
 
 app.use(errorMiddleware);
 
-app.listen(envs.APP_PORT, () => {
+app.listen(envs.APP_PORT, '0.0.0.0', () => {
   logger.info(`Server running on port ${envs.APP_PORT}`);
 });
 
