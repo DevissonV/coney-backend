@@ -1,22 +1,4 @@
 services:
-  db:
-    image: postgres:16.2
-    container_name: BD-Coney
-    ports:
-      - "${DB_PORT}:${DB_PORT}"
-    environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME} || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 5s
-
   backend:
     container_name: Backend-Coney
     dns:
@@ -25,9 +7,6 @@ services:
     build:
       context: .
       dockerfile: .docker/Dockerfile.dev
-    depends_on:
-      db:
-        condition: service_healthy
     ports:
       - "${APP_PORT}:${APP_PORT}"
     environment:
@@ -43,5 +22,3 @@ services:
       - .:/var/www/app
       - /var/www/app/node_modules
 
-volumes:
-  postgres_data:
