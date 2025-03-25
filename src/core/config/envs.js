@@ -6,7 +6,7 @@ import Joi from 'joi';
  * @constant {Object} envVarsSchema
  */
 const envVarsSchema = Joi.object({
-  APP_PORT: Joi.number().required().default(5000),
+  APP_PORT: process.env.PORT || process.env.APP_PORT || 5000,
   DB_HOST: Joi.string().required().default('localhost'),
   DB_PORT: Joi.number().required().default(5432),
   DB_USER: Joi.string().required(),
