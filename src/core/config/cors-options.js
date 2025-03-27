@@ -11,6 +11,6 @@ export const corsOptions = {
   origin: envs.CORS_ORIGINS.split(','),
   credentials: true,
   optionsSuccessStatus: 204,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
 };
