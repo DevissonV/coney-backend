@@ -22,6 +22,7 @@ const createRaffleSchema = Joi.object({
   }),
   price: Joi.number().positive().required(),
   ticketCount: Joi.number().integer().min(10).required(),
+  createdBy: Joi.number().integer().positive().required(),
 });
 
 /**

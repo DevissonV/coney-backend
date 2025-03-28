@@ -7,7 +7,21 @@ export const up = async (knex) => {
     table.timestamp('end_date', { useTz: true }).notNullable();
     table.decimal('price', 10, 2).notNullable().defaultTo(10000);
     table.integer('tickets_created').notNullable().defaultTo(100);
-    table.timestamps(true, true);
+    table.boolean('is_active').notNullable().defaultTo(true);
+    table
+      .integer('created_by')
+      .unsigned()
+      .notNullable()
+      .references('id')
+      .inTable('users');
+    table
+      .integer('updated_by')
+      .unsigned()
+      .nullable()
+      .references('id')
+      .inTable('users');
+    table.timestamp('created_at', { useTz: true }).defaultTo(knex.fn.now());
+    table.timestamp('updated_at', { useTz: true });
   });
 };
 
