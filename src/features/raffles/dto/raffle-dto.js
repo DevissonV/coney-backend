@@ -12,6 +12,7 @@ export const createRaffleDto = (data) => ({
   end_date: data.endDate,
   price: data.price,
   tickets_created: data.ticketCount,
+  created_by: data.createdBy,
 });
 
 /**
@@ -25,6 +26,8 @@ export const updateRaffleDto = (data) => ({
   init_date: data.initDate,
   end_date: data.endDate,
   price: data.price,
+  is_active: data.isActive,
+  updated_by: data.updatedBy,
   updated_at: dayjs().toISOString(),
 });
 
