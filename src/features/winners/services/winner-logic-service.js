@@ -9,14 +9,14 @@ class WinnerLogicService {
   /**
    * Creates an instance of WinnerLogicService.
    * @param {Object} deps - The dependencies needed by the service.
-   * @param {Object} deps.raffleRepository - Repository for raffles.
    * @param {Object} deps.ticketRepository - Repository for tickets.
    * @param {Object} deps.winnerRepository - Repository for winners.
+   * @param {Object} deps.raffleService    - Service for raffles.
    */
-  constructor({ raffleRepository, ticketRepository, winnerRepository }) {
-    this.raffleRepository = raffleRepository;
+  constructor({ ticketRepository, winnerRepository, raffleService }) {
     this.ticketRepository = ticketRepository;
     this.winnerRepository = winnerRepository;
+    this.raffleService = raffleService;
   }
 
   /**
@@ -26,10 +26,8 @@ class WinnerLogicService {
    * @throws {AppError} If the raffle doesn't exist or already has a winner.
    */
   async validateRaffleAndExistingWinner(raffle_id) {
-    const raffle = await this.raffleRepository.getById(raffle_id);
-    if (!raffle) {
-      throw new AppError(`Raffle with ID ${raffle_id} not found`, 404);
-    }
+    await this.raffleService.getById(raffle_id);
+
     const criteria = new GenericCriteria(
       { raffle_id },
       {
@@ -65,9 +63,10 @@ class WinnerLogicService {
    *
    * @param {number} raffle_id - The raffle ID.
    * @param {Function} createWinnerDto - Function to transform data into a DTO.
+   * @param {number} userSessionId - ID the session user.
    * @returns {Promise<Object>} The created winner record.
    */
-  async createWinner(raffle_id, createWinnerDto) {
+  async createWinner(raffle_id, createWinnerDto, userSessionId) {
     await this.validateRaffleAndExistingWinner(raffle_id);
     const winnerTicket = await this.getRandomReservedTicket(raffle_id);
     if (!winnerTicket) {
@@ -78,7 +77,17 @@ class WinnerLogicService {
       ticket_id: winnerTicket.id,
       user_id: winnerTicket.user_id,
     });
-    return await this.winnerRepository.create(dto);
+
+    await this.winnerRepository.create(dto);
+
+    return await this.raffleService.update(
+      raffle_id,
+      {
+        isActive: false,
+        updatedBy: userSessionId,
+      },
+      { id: userSessionId },
+    );
   }
 }
 
