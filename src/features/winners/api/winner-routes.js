@@ -8,7 +8,7 @@ const router = Router();
 router.get(
   '/',
   authenticate,
-  authorize([envs.ROLE_ADMIN]),
+  authorize([envs.ROLE_ADMIN, envs.ROLE_USER]),
   winnerController.getAll,
 );
 router.get(
@@ -20,7 +20,7 @@ router.get(
 router.post(
   '/',
   authenticate,
-  authorize([envs.ROLE_ADMIN]),
+  authorize([envs.ROLE_ADMIN, envs.ROLE_USER]),
   winnerController.create,
 );
 router.delete(
