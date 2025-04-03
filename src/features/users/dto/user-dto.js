@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
  * @returns {Object} A DTO containing only the necessary properties.
  */
 export const createUserDto = (data) => ({
-  email: data.email,
+  email: data.email?.toLowerCase().trim(),
   first_name: data.firstName,
   last_name: data.lastName,
   password: data.password,
@@ -66,6 +66,6 @@ export const searchUserDto = (data) => ({
  * @returns {Object} The DTO for user login.
  */
 export const loginUserDto = (data) => ({
-  email: data.email,
+  email: data.email?.toLowerCase().trim(),
   password: data.password,
 });
