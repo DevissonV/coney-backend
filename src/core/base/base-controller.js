@@ -90,7 +90,7 @@ export default class BaseController {
    */
   async create(req, res, next) {
     this.#service
-      .create(req.body)
+      .create(req.body, req.user)
       .then((data) =>
         responseHandler.success(
           res,
@@ -101,7 +101,6 @@ export default class BaseController {
       )
       .catch(next);
   }
-
   /**
    * Updates an existing record by ID.
    * @param {import("express").Request} req - Express request object containing the ID and update data.
@@ -111,7 +110,7 @@ export default class BaseController {
    */
   async update(req, res, next) {
     this.#service
-      .update(req.params.id, req.body)
+      .update(req.params.id, req.body, req.user)
       .then((data) =>
         responseHandler.success(
           res,

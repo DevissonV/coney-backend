@@ -37,6 +37,9 @@ class RaffleService {
         name: { column: 'name', operator: 'like' },
         init_date: { column: 'init_date', operator: '>=' },
         end_date: { column: 'end_date', operator: '<=' },
+        is_active: { column: 'is_active', operator: '=' },
+        created_by: { column: 'created_by', operator: '=' },
+        updated_by: { column: 'updated_by', operator: '=' },
       });
 
       return await raffleRepository.getAll(criteria);
@@ -71,10 +74,12 @@ class RaffleService {
   /**
    * Creates a new raffles.
    * @param {Object} data - Raffles details.
+   * @param {Object} sessionUser - user token information
    * @returns {Promise<Object>} Created raffles data.
    */
-  async create(data) {
+  async create(data, sessionUser) {
     try {
+      data.createdBy = sessionUser.id;
       validateRaffleCreate(data);
 
       const dto = createRaffleDto(data);
@@ -99,12 +104,16 @@ class RaffleService {
    * Updates an existing raffle.
    * @param {number} id - Raffle ID.
    * @param {Object} data - Updated Raffle details.
+   * @param {Object} sessionUser - user token information
    * @returns {Promise<Object>} Updated raffle data.
    */
-  async update(id, data) {
+  async update(id, data, sessionUser) {
     try {
       const raffle = await this.getById(id);
+
+      data.updatedBy = sessionUser.id;
       validateRaffleUpdate(data);
+
       const dto = updateRaffleDto(data);
       return await raffleRepository.update(raffle.id, dto);
     } catch (error) {

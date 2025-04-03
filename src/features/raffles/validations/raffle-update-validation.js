@@ -21,6 +21,8 @@ const updateRaffleSchema = Joi.object({
     'date.greater': 'endDate must be greater than initDate',
   }),
   price: Joi.number().positive().optional(),
+  isActive: Joi.boolean().optional(),
+  updatedBy: Joi.number().integer().positive().required(),
 });
 
 /**

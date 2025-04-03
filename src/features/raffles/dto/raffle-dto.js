@@ -12,6 +12,7 @@ export const createRaffleDto = (data) => ({
   end_date: data.endDate,
   price: data.price,
   tickets_created: data.ticketCount,
+  created_by: data.createdBy,
 });
 
 /**
@@ -25,6 +26,8 @@ export const updateRaffleDto = (data) => ({
   init_date: data.initDate,
   end_date: data.endDate,
   price: data.price,
+  is_active: data.isActive,
+  updated_by: data.updatedBy,
   updated_at: dayjs().toISOString(),
 });
 
@@ -37,6 +40,9 @@ export const searchRaffleDto = (data) => ({
   name: data.name,
   init_date: data.init_date,
   end_date: data.end_date,
+  is_active: data.is_active,
+  created_by: data.created_by,
+  updated_by: data.updated_by,
   limit: data.limit,
   page: data.page,
 });
