@@ -9,25 +9,25 @@ router.get('/', raffleController.getAll);
 router.get(
   '/:id',
   authenticate,
-  authorize([envs.ROLE_ADMIN]),
+  authorize([envs.ROLE_ADMIN, envs.ROLE_USER]),
   raffleController.getById,
 );
 router.post(
   '/',
   authenticate,
-  authorize([envs.ROLE_ADMIN]),
+  authorize([envs.ROLE_ADMIN, envs.ROLE_USER]),
   raffleController.create,
 );
 router.patch(
   '/:id',
   authenticate,
-  authorize([envs.ROLE_ADMIN]),
+  authorize([envs.ROLE_ADMIN, envs.ROLE_USER]),
   raffleController.update,
 );
 router.delete(
   '/:id',
   authenticate,
-  authorize([envs.ROLE_ADMIN]),
+  authorize([envs.ROLE_ADMIN, envs.ROLE_USER]),
   raffleController.delete,
 );
 
