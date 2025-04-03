@@ -95,6 +95,9 @@ class UserService {
     try {
       const user = await this.getById(id);
       validateUserUpdate(data);
+      if (data.password) {
+        data.password = await bcrypt.hash(data.password, 10);
+      }
       const dto = updateUserDto(data);
       return await userRepository.update(user.id, dto);
     } catch (error) {
