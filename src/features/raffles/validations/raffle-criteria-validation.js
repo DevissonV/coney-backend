@@ -11,6 +11,7 @@ const raffleCriteriaSchema = Joi.object({
   end_date: Joi.date().iso().optional(),
   created_by: Joi.number().integer().min(1).optional(),
   updated_by: Joi.number().integer().min(1).optional(),
+  is_active: Joi.boolean().optional(),
   limit: Joi.number().integer().min(1).optional(),
   page: Joi.number().integer().min(1).optional(),
 });

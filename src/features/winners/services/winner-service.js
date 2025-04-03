@@ -58,14 +58,20 @@ class WinnerService {
   /**
    * Creates a new winner by delegating to WinnerLogicService.
    * @param {Object} data - Winner data.
+   * @param {Object} sessionUser - info session users.
    * @returns {Promise<Object>} Created winner data.
    */
-  async create(data) {
+  async create(data, sessionUser) {
     try {
+      data.createdBy = sessionUser.id;
       validateWinner(data);
-      const { raffle_id } = data;
+      const { raffle_id, createdBy } = data;
 
-      return await winnerLogicService.createWinner(raffle_id, createWinnerDto);
+      return await winnerLogicService.createWinner(
+        raffle_id,
+        createWinnerDto,
+        createdBy,
+      );
     } catch (error) {
       if (error.code === '23505') {
         getLogger().error(

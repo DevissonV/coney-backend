@@ -8,6 +8,7 @@ import { AppError } from '#core/utils/response/error-handler.js';
  */
 const winnerSchema = Joi.object({
   raffle_id: Joi.number().integer().required(),
+  createdBy: Joi.number().integer().required(),
 });
 
 /**

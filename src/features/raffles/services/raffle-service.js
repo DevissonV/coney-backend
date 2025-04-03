@@ -37,6 +37,7 @@ class RaffleService {
         name: { column: 'name', operator: 'like' },
         init_date: { column: 'init_date', operator: '>=' },
         end_date: { column: 'end_date', operator: '<=' },
+        is_active: { column: 'is_active', operator: '=' },
         created_by: { column: 'created_by', operator: '=' },
         updated_by: { column: 'updated_by', operator: '=' },
       });

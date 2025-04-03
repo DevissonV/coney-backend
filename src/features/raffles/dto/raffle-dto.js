@@ -40,6 +40,9 @@ export const searchRaffleDto = (data) => ({
   name: data.name,
   init_date: data.init_date,
   end_date: data.end_date,
+  is_active: data.is_active,
+  created_by: data.created_by,
+  updated_by: data.updated_by,
   limit: data.limit,
   page: data.page,
 });
