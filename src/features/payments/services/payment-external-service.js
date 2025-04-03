@@ -31,7 +31,7 @@ class PaymentExternalService {
             price_data: {
               currency: validData.currency || 'COP',
               product_data: { name: 'Ticket' },
-              unit_amount: validData.amount,
+              unit_amount: validData.amount * 100,
             },
             quantity: validData.tickets.length,
           },
