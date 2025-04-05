@@ -14,12 +14,15 @@ const now = dayjs().toISOString();
 const createRaffleSchema = Joi.object({
   name: Joi.string().max(100).required(),
   description: Joi.string().max(255).allow(null, '').optional(),
-  initDate: Joi.date().iso().min(now).required().messages({
-    'date.min': 'initDate must be today or in the future',
-  }),
-  endDate: Joi.date().iso().greater(Joi.ref('initDate')).required().messages({
-    'date.greater': 'endDate must be greater than initDate',
-  }),
+  initDate: Joi.date().iso().required(),
+  endDate: Joi.date()
+    .iso()
+    .min(now)
+    .greater(Joi.ref('initDate'))
+    .required()
+    .messages({
+      'date.greater': 'endDate must be greater than initDate',
+    }),
   price: Joi.number().positive().required(),
   ticketCount: Joi.number().integer().min(10).required(),
   createdBy: Joi.number().integer().positive().required(),
