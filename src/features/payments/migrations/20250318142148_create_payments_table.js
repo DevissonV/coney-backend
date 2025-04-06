@@ -11,7 +11,7 @@ export const up = async (knex) => {
       .inTable('raffles')
       .onDelete('CASCADE');
     table.jsonb('tickets').notNullable();
-    table.string('stripe_session_id').notNullable().unique();
+    table.string('stripe_session_id').unique();
     table
       .enum('status', ['pending', 'completed', 'failed'])
       .defaultTo('pending');

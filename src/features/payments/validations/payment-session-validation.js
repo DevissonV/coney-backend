@@ -12,6 +12,7 @@ import { AppError } from '#core/utils/response/error-handler.js';
  *
  */
 const paymentSessionSchema = Joi.object({
+  id: Joi.number().integer().positive().required(),
   amount: Joi.number().positive().required().messages({
     'number.base': 'Amount must be a number',
     'number.positive': 'Amount must be a positive number',

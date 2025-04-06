@@ -70,22 +70,26 @@ class PaymentService {
    */
   async create(data) {
     try {
-      const paymentSessionDto = generatePaymentDto(data);
+      const validatedData = validatePaymentCreate(data);
+      const paymentDto = createPaymentDto(validatedData);
+      const payment = await paymentRepository.create(paymentDto);
+
+      const paymentSessionDto = generatePaymentDto({
+        ...validatedData,
+        id: payment.id,
+      });
+
       const { sessionId, sessionUrl } =
         await paymentExternalService.createSession(paymentSessionDto);
 
-      validatePaymentCreate({
-        ...data,
-        stripeSessionId: sessionId,
-      });
-
-      const paymentDto = createPaymentDto({
-        ...data,
+      await paymentRepository.update(payment.id, {
         stripe_session_id: sessionId,
       });
 
-      const payment = await paymentRepository.create(paymentDto);
-      return { ...payment, stripe_session_url: sessionUrl };
+      return {
+        ...payment,
+        stripe_session_url: sessionUrl,
+      };
     } catch (error) {
       getLogger().error(`Error create payment: ${error.message}`);
       throw new AppError(
