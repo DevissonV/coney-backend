@@ -19,7 +19,7 @@ const updateRaffleSchema = Joi.object({
     .iso()
     .min(now)
     .greater(Joi.ref('initDate'))
-    .required()
+    .optional()
     .messages({
       'date.greater': 'endDate must be greater than initDate',
     }),
