@@ -42,4 +42,5 @@ export const generatePaymentDto = (data) => ({
   raffleId: data.raffleId,
   tickets: data.tickets,
   currency: 'cop',
+  id: data.id,
 });
