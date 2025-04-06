@@ -78,9 +78,9 @@ class WinnerLogicService {
       user_id: winnerTicket.user_id,
     });
 
-    await this.winnerRepository.create(dto);
+    const winnerResponse = await this.winnerRepository.create(dto);
 
-    return await this.raffleService.update(
+    await this.raffleService.update(
       raffle_id,
       {
         isActive: false,
@@ -88,6 +88,8 @@ class WinnerLogicService {
       },
       { id: userSessionId },
     );
+
+    return winnerResponse;
   }
 }
 
