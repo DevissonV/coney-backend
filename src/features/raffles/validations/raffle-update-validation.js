@@ -14,7 +14,7 @@ const now = dayjs().toISOString();
 const updateRaffleSchema = Joi.object({
   name: Joi.string().max(100).optional(),
   description: Joi.string().max(255).allow(null, '').optional(),
-  initDate: Joi.date().iso().required(),
+  initDate: Joi.date().iso().optional(),
   endDate: Joi.date()
     .iso()
     .min(now)
