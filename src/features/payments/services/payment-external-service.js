@@ -23,6 +23,8 @@ class PaymentExternalService {
    */
   async createSession(payment) {
     const validData = validatePaymentSession(payment);
+    const successUrl = `${envs.STRIPE_SUCCESS_URL}${payment.id}`;
+    const cancelUrl = `${envs.STRIPE_CANCEL_URL}${payment.id}`;
     try {
       const session = await this.#stripeService.checkout.sessions.create({
         payment_intent_data: { metadata: {} },
@@ -37,8 +39,8 @@ class PaymentExternalService {
           },
         ],
         mode: 'payment',
-        cancel_url: envs.STRIPE_CANCEL_URL,
-        success_url: envs.STRIPE_SUCCESS_URL,
+        cancel_url: cancelUrl,
+        success_url: successUrl,
       });
 
       getLogger().info('External payment session created: ' + session.id);
