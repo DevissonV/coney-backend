@@ -22,7 +22,7 @@ router.get(
 router.post(
   '/',
   authenticate,
-  authorize([envs.ROLE_ADMIN]),
+  authorize([envs.ROLE_ADMIN, envs.ROLE_USER]),
   paymentController.create,
 );
 router.patch(
