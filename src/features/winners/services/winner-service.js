@@ -22,9 +22,9 @@ class WinnerService {
     try {
       const validatedParams = validateWinnerCriteria(params);
       const criteria = new GenericCriteria(searchWinnerDto(validatedParams), {
-        raffle_id: { column: 'raffle_id', operator: '=' },
-        ticket_id: { column: 'ticket_id', operator: '=' },
-        user_id: { column: 'user_id', operator: '=' },
+        raffle_id: { column: 'w.raffle_id', operator: '=' },
+        ticket_id: { column: 'w.ticket_id', operator: '=' },
+        user_id: { column: 'w.user_id', operator: '=' },
       });
       return await winnerRepository.getAll(criteria);
     } catch (error) {
