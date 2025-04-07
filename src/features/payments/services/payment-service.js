@@ -82,12 +82,16 @@ class PaymentService {
       const { sessionId, sessionUrl } =
         await paymentExternalService.createSession(paymentSessionDto);
 
-      await paymentRepository.update(payment.id, {
+      const ticketIds = JSON.parse(paymentDto.tickets);
+      const totalAmount = paymentDto.amount * ticketIds.length;
+
+      const paymentUpdated = await paymentRepository.update(payment.id, {
         stripe_session_id: sessionId,
+        amount: totalAmount,
       });
 
       return {
-        ...payment,
+        ...paymentUpdated,
         stripe_session_url: sessionUrl,
       };
     } catch (error) {
