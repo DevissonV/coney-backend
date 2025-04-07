@@ -6,8 +6,8 @@ import { AppError } from '#core/utils/response/error-handler.js';
  * @constant {Joi.ObjectSchema}
  */
 const paymentCriteriaSchema = Joi.object({
-  raffleId: Joi.number().integer().positive().optional(),
-  stripeSessionId: Joi.string().optional(),
+  raffle_id: Joi.number().integer().positive().optional(),
+  stripe_session_id: Joi.string().optional(),
   status: Joi.string().valid('pending', 'completed', 'failed').optional(),
   limit: Joi.number().integer().min(1).optional(),
   page: Joi.number().integer().min(1).optional(),
