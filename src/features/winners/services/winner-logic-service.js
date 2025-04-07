@@ -31,7 +31,7 @@ class WinnerLogicService {
     const criteria = new GenericCriteria(
       { raffle_id },
       {
-        raffle_id: { column: 'raffle_id', operator: '=' },
+        raffle_id: { column: 'w.raffle_id', operator: '=' },
       },
     );
     const winnersResult = await this.winnerRepository.getAll(criteria);
