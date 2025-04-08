@@ -6,6 +6,7 @@ import countryRoutes from '#features/countries/api/country-routes.js';
 import ticketRoutes from '#features/tickets/api/ticket-routes.js';
 import winnerRoutes from '#features/winners/api/winner-routes.js';
 import paymentRoutes from '#features/payments/api/payment-routes.js';
+import passwordRecoveryController from '#features/send-emails/password-recovery/api/password-recovery-routes.js';
 
 const apiRoutes = Router();
 
@@ -16,5 +17,6 @@ apiRoutes.use('/countries', countryRoutes);
 apiRoutes.use('/tickets', ticketRoutes);
 apiRoutes.use('/winners', winnerRoutes);
 apiRoutes.use('/payments', paymentRoutes);
+apiRoutes.use('/password-recovery', passwordRecoveryController);
 
 export default apiRoutes;
