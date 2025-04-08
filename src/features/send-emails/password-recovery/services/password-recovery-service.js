@@ -43,7 +43,7 @@ class PasswordRecoveryService {
 
       await createRecoveryToken(user.id, token, expiresAt);
 
-      const resetUrl = `${process.env.FRONTEND_URL}/?token=${token}`;
+      const resetUrl = `${envs.FRONTEND_URL}/?token=${token}`;
 
       await sendEmail({
         to: user.email,

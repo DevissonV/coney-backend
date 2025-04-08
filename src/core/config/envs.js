@@ -50,6 +50,30 @@ const envVarsSchema = Joi.object({
     'string.uri': 'success_url_payment must be a valid URL',
     'any.required': 'success_url_payment is required',
   }),
+  FRONTEND_URL: Joi.string().uri().required().messages({
+    'string.uri': 'FRONTEND_URL must be a valid URL',
+    'any.required': 'FRONTEND_URL is required',
+  }),
+  SMTP_HOST: Joi.string().required().messages({
+    'any.required': 'SMTP_HOST is required',
+  }),
+  SMTP_PORT: Joi.number().required().messages({
+    'any.required': 'SMTP_PORT is required',
+  }),
+  SMTP_SECURE: Joi.string().valid('true', 'false').required().messages({
+    'any.only': 'SMTP_SECURE must be "true" or "false"',
+    'any.required': 'SMTP_SECURE is required',
+  }),
+  SMTP_USER: Joi.string().required().messages({
+    'any.required': 'SMTP_USER is required',
+  }),
+  SMTP_PASS: Joi.string().required().messages({
+    'any.required': 'SMTP_PASS is required',
+  }),
+  SMTP_FROM: Joi.string().email().required().messages({
+    'string.email': 'SMTP_FROM must be a valid email address',
+    'any.required': 'SMTP_FROM is required',
+  }),
 }).unknown(true);
 
 /**
