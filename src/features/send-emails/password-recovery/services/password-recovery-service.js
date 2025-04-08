@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import dayjs from 'dayjs';
 import { AppError } from '#core/utils/response/error-handler.js';
 import { getLogger } from '#core/utils/logger/logger.js';
+import { envs } from '#core/config/envs.js';
 import { validatePasswordRecovery } from '../validations/password-recovery-validation.js';
 import { validatePasswordReset } from '../validations/password-reset-validation.js';
 import {
