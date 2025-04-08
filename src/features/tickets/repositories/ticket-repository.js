@@ -57,6 +57,20 @@ class TicketRepository extends BaseRepository {
 
     return reservedTickets.map(this.sanitizeRecord.bind(this));
   }
+
+  /**
+   * Marks multiple tickets as paid using a single update operation.
+   *
+   * @param {number[]} ticketIds - Array of ticket IDs to update.
+   * @returns {Promise<number>} The number of updated rows.
+   */
+  async markTicketsAsPaid(ticketIds) {
+    const result = await db(this.tableName)
+      .whereIn('id', ticketIds)
+      .update({ is_paid: true, updated_at: db.fn.now() });
+
+    return result;
+  }
 }
 
 export default new TicketRepository();
