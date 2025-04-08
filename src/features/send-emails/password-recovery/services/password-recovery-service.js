@@ -1,22 +1,19 @@
 import crypto from 'crypto';
 import bcrypt from 'bcryptjs';
+import dayjs from 'dayjs';
 import { AppError } from '#core/utils/response/error-handler.js';
 import { getLogger } from '#core/utils/logger/logger.js';
-
-import { validatePasswordRecoveryRequest } from '../validations/password-recovery-validation.js';
-import { validatePasswordResetRequest } from '../validations/password-reset-validation.js';
-
+import { validatePasswordRecovery } from '../validations/password-recovery-validation.js';
+import { validatePasswordReset } from '../validations/password-reset-validation.js';
 import {
   createPasswordRecoveryDto,
   createResetPasswordDto,
 } from '../dto/password-recovery-dto.js';
-
 import {
   createRecoveryToken,
   findValidToken,
   markTokenAsUsed,
 } from '../repositories/password-recovery-repository.js';
-
 import { EMAIL_TYPES } from '../../email-types.js';
 import { sendEmail } from '../../email-sender.js';
 import userRepository from '#features/users/repositories/user-repository.js';
@@ -33,7 +30,7 @@ class PasswordRecoveryService {
    */
   async requestRecovery(data) {
     try {
-      const validated = validatePasswordRecoveryRequest(data);
+      const validated = validatePasswordRecovery(data);
       const { email } = createPasswordRecoveryDto(validated);
 
       const user = await userRepository.findByEmail(email);
@@ -42,11 +39,11 @@ class PasswordRecoveryService {
       }
 
       const token = crypto.randomBytes(32).toString('hex');
-      const expiresAt = new Date(Date.now() + 30 * 60 * 1000);
+      const expiresAt = dayjs().add(30, 'minute').toISOString();
 
       await createRecoveryToken(user.id, token, expiresAt);
 
-      const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
+      const resetUrl = `${process.env.FRONTEND_URL}/?token=${token}`;
 
       await sendEmail({
         to: user.email,
@@ -71,7 +68,7 @@ class PasswordRecoveryService {
    */
   async resetPassword(data) {
     try {
-      const validated = validatePasswordResetRequest(data);
+      const validated = validatePasswordReset(data);
       const { token, newPassword } = createResetPasswordDto(validated);
 
       const tokenRecord = await findValidToken(token);
@@ -79,8 +76,14 @@ class PasswordRecoveryService {
         throw new AppError('Invalid or expired token', 400);
       }
 
+      const userId = tokenRecord.user_id;
       const hashedPassword = await bcrypt.hash(newPassword, 10);
-      await userRepository.updatePassword(tokenRecord.user_id, hashedPassword);
+
+      await userRepository.update(userId, {
+        password: hashedPassword,
+        updated_at: dayjs().toISOString(),
+      });
+
       await markTokenAsUsed(token);
 
       return { passwordUpdated: true };

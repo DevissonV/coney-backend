@@ -17,7 +17,7 @@ const schema = Joi.object({
  * @returns {Object} The validated data.
  * @throws {AppError} If validation fails.
  */
-export const validatePasswordRecoveryRequest = (data) => {
+export const validatePasswordRecovery = (data) => {
   const { error, value } = schema.validate(data, { abortEarly: false });
   if (error) {
     throw new AppError(error.details[0].message, 400);

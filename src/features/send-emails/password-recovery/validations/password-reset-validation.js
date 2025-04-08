@@ -8,9 +8,9 @@ const schema = Joi.object({
   token: Joi.string().required().messages({
     'string.empty': 'Token is required',
   }),
-  newPassword: Joi.string().min(8).required().messages({
+  newPassword: Joi.string().min(6).required().messages({
     'string.empty': 'New password is required',
-    'string.min': 'Password must be at least 8 characters long',
+    'string.min': 'Password must be at least 6 characters long',
   }),
 });
 
@@ -20,7 +20,7 @@ const schema = Joi.object({
  * @returns {Object} The validated data.
  * @throws {AppError} If validation fails.
  */
-export const validatePasswordResetRequest = (data) => {
+export const validatePasswordReset = (data) => {
   const { error, value } = schema.validate(data, { abortEarly: false });
   if (error) {
     throw new AppError(error.details[0].message, 400);
