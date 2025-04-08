@@ -53,7 +53,8 @@ class TicketRepository extends BaseRepository {
     const reservedTickets = await db(this.tableName)
       .select('*')
       .where({ raffle_id })
-      .whereNotNull('user_id');
+      .whereNotNull('user_id')
+      .andWhere('is_paid', true);
 
     return reservedTickets.map(this.sanitizeRecord.bind(this));
   }
