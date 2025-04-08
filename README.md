@@ -96,6 +96,28 @@
 ┃ ┃ ┃   ┣ 📜raffle-create-validation.js
 ┃ ┃ ┃   ┣ 📜raffle-criteria-validation.js
 ┃ ┃ ┃   ┗ 📜raffle-update-validation.js
+┃ ┃ ┣ 📂send-emails
+┃ ┃ ┃ ┣ 📂password-recovery
+┃ ┃ ┃ ┃ ┣ 📂api
+┃ ┃ ┃ ┃ ┃ ┗ 📜password-recovery-routes.js
+┃ ┃ ┃ ┃ ┣ 📂controllers
+┃ ┃ ┃ ┃ ┃ ┗ 📜password-recovery-controller.js
+┃ ┃ ┃ ┃ ┣ 📂dto
+┃ ┃ ┃ ┃ ┃ ┗ 📜password-recovery-dto.js
+┃ ┃ ┃ ┃ ┣ 📂migrations
+┃ ┃ ┃ ┃ ┃ ┗ 📜20250407120000_create_password_recovery_tokens_table.js
+┃ ┃ ┃ ┃ ┣ 📂repositories
+┃ ┃ ┃ ┃ ┃ ┗ 📜password-recovery-repository.js
+┃ ┃ ┃ ┃ ┣ 📂services
+┃ ┃ ┃ ┃ ┃ ┗ 📜password-recovery-service.js
+┃ ┃ ┃ ┃ ┗ 📂validations
+┃ ┃ ┃ ┃   ┣ 📜password-recovery-validation.js
+┃ ┃ ┃ ┃   ┗ 📜password-reset-validation.js
+┃ ┃ ┃ ┣ 📂templates
+┃ ┃ ┃ ┃ ┗ 📜password-recovery-template.js
+┃ ┃ ┃ ┣ 📜email-factory.js
+┃ ┃ ┃ ┣ 📜email-sender.js
+┃ ┃ ┃ ┗ 📜email-types.js
 ┃ ┃ ┣ 📂tickets
 ┃ ┃ ┃ ┣ 📂api
 ┃ ┃ ┃ ┃ ┗ 📜ticket-routes.js

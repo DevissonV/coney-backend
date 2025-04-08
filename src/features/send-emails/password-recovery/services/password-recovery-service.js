@@ -42,7 +42,7 @@ class PasswordRecoveryService {
       }
 
       const token = crypto.randomBytes(32).toString('hex');
-      const expiresAt = new Date(Date.now() + 30 * 60 * 1000); // 30 minutos
+      const expiresAt = new Date(Date.now() + 30 * 60 * 1000);
 
       await createRecoveryToken(user.id, token, expiresAt);
 

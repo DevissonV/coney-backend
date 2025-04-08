@@ -38,7 +38,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/raffles/?page=2",
+							"raw": "{{url}}/api/raffles/",
 							"host": [
 								"{{url}}"
 							],
@@ -50,21 +50,37 @@
 							"query": [
 								{
 									"key": "page",
-									"value": "2"
+									"value": "1",
+									"disabled": true
 								},
 								{
 									"key": "name",
-									"value": "cr7",
+									"value": "",
 									"disabled": true
 								},
 								{
 									"key": "init_date",
-									"value": "2025-02-26T14:30:00.000Z",
+									"value": "",
 									"disabled": true
 								},
 								{
 									"key": "limit",
 									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "is_active",
+									"value": "true",
+									"disabled": true
+								},
+								{
+									"key": "raffle_id",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "created_by",
+									"value": "",
 									"disabled": true
 								}
 							]
@@ -141,7 +157,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"marrano de lora\",\n    \"description\": \"Rifa noche en ecaelt\",\n    \"initDate\": \"2025-03-26T14:30:00Z\",\n    \"endDate\": \"2025-04-27T14:30:00Z\",\n    \"price\": 250.000,\n    \"ticketCount\": 20\n}"
+							"raw": "{\n    \"name\": \"Luxury For Emma\",\n    \"description\": \"Recaudo para que Ema vaya a ECAELT\",\n    \"initDate\": \"2025-04-26T13:30:00Z\",\n    \"endDate\": \"2025-05-27T16:30:00Z\",\n    \"price\": 10000,\n    \"ticketCount\": 10\n}"
 						},
 						"url": {
 							"raw": "{{url}}/api/raffles/",
@@ -179,7 +195,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Rifa 2 para gamers\",\n    \"description\": \"Rifa pro fondos mundial de e sports 2\",\n    \"initDate\": \"2025-09-26T14:30:00Z\",\n    \"endDate\": \"2025-10-26T14:30:00Z\",\n    \"price\": 10.000\n}"
+							"raw": "{\n    \"name\": \"Rifa 2 para gamers\",\n    \"description\": \"Rifa pro fondos mundial de e sports 2\",\n    \"initDate\": \"2025-09-26T14:30:00Z\",\n    \"endDate\": \"2025-10-26T14:30:00Z\",\n    \"price\": 10000,\n    \"isActive\": true\n}"
 						},
 						"url": {
 							"raw": "{{url}}/api/raffles/:id",
@@ -194,7 +210,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "1"
+									"value": "2"
 								}
 							]
 						}
@@ -573,7 +589,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"raffle_id\": 4\n}"
+							"raw": "{\n  \"raffle_id\": 121\n}"
 						},
 						"url": {
 							"raw": "{{url}}/api/winners/",
@@ -919,7 +935,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"email\": \"daniel@prueba.com\",\r\n  \"firstName\": \"Daniel\",\r\n  \"lastName\": \"vasquez\",\r\n  \"password\": \"123456\",\r\n  \"role\": \"admin\"\r\n}",
+							"raw": "{\r\n  \"firstName\": \"Daniel\",\r\n  \"lastName\": \"vasquez\",\r\n  \"password\": \"123456\",\r\n  \"role\": \"admin\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -939,7 +955,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "4"
+									"value": "22"
 								}
 							]
 						}
@@ -1026,7 +1042,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "4"
+									"value": "22"
 								}
 							]
 						}
@@ -1217,7 +1233,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"amount\": 10000,\n    \"tickets\": [\n        1,\n        2,\n        3,\n        4\n    ],\n    \"raffleId\": 4\n}",
+							"raw": "{\n    \"amount\": 10000,\n    \"tickets\": [\n        1,\n        2,\n        3,\n        4,\n        5\n    ],\n    \"raffleId\": 94\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1331,8 +1347,8 @@
 									"value": "1"
 								},
 								{
-									"key": "",
-									"value": "",
+									"key": "status",
+									"value": "pending",
 									"disabled": true
 								}
 							]
@@ -1427,6 +1443,138 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "get-by-ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/payments/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"payments",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "97"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Emails",
+			"item": [
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "password-recovery",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"devissonvasquez99@gmail.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/password-recovery",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"password-recovery"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "reset",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"token\": \"abc123\",\n  \"newPassword\": \"NuevaContraseñaSegura123!\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/password-recovery/reset",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"password-recovery",
+										"reset"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		}
@@ -1460,8 +1608,14 @@
 			"type": "string"
 		},
 		{
+			"key": "url",
+			"value": "https://coney-backend.up.railway.app",
+			"type": "string",
+			"disabled": true
+		},
+		{
 			"key": "TOKEN",
-			"value": ""
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBwcnVlYmEuY29tIiwicm9sZSI6ImFkbWluIiwiZmlyc3RfbmFtZSI6ImFkbWluIiwibGFzdF9uYW1lIjoiYWRtaW4iLCJpYXQiOjE3NDI2NTkwMDgsImV4cCI6MTc0MjY2MjYwOH0.UI0l46isQzzfqVP2MS552Wi7PApvKAzfXTcD-qxlLAY"
 		}
 	]
 }
