@@ -88,12 +88,10 @@ class PaymentService {
       const paymentUpdated = await paymentRepository.update(payment.id, {
         stripe_session_id: sessionId,
         amount: totalAmount,
+        stripe_session_url: sessionUrl,
       });
 
-      return {
-        ...paymentUpdated,
-        stripe_session_url: sessionUrl,
-      };
+      return paymentUpdated;
     } catch (error) {
       getLogger().error(`Error create payment: ${error.message}`);
       throw new AppError(

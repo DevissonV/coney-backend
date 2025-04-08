@@ -24,6 +24,7 @@ class PaymentRepository extends BaseRepository {
         'p.currency',
         'p.status',
         'p.stripe_session_id',
+        'p.stripe_session_url',
         'p.created_at',
         'p.updated_at',
         'r.id as raffle_id',
@@ -86,6 +87,7 @@ class PaymentRepository extends BaseRepository {
       currency: row.currency,
       status: row.status,
       stripe_session_id: row.stripe_session_id,
+      stripe_session_url: row.stripe_session_url,
       created_at: row.created_at,
       updated_at: row.updated_at,
       raffle: {
