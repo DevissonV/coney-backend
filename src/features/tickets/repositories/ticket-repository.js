@@ -53,7 +53,8 @@ class TicketRepository extends BaseRepository {
     const reservedTickets = await db(this.tableName)
       .select('*')
       .where({ raffle_id })
-      .whereNotNull('user_id');
+      .whereNotNull('user_id')
+      .andWhere('is_paid', true);
 
     return reservedTickets.map(this.sanitizeRecord.bind(this));
   }
@@ -70,6 +71,18 @@ class TicketRepository extends BaseRepository {
       .update({ is_paid: true, updated_at: db.fn.now() });
 
     return result;
+  }
+
+  /**
+   * Releases tickets by setting user_id to NULL for the given ticket IDs.
+   *
+   * @param {number[]} ticketIds - Array of ticket IDs to update.
+   * @returns {Promise<number>} The number of updated rows.
+   */
+  async releaseTickets(ticketIds) {
+    return db(this.tableName)
+      .whereIn('id', ticketIds)
+      .update({ user_id: null, updated_at: db.fn.now() });
   }
 }
 

@@ -2,6 +2,7 @@ import BaseController from '#core/base/base-controller.js';
 import paymentService from '../services/payment-service.js';
 import { responseHandler } from '#core/utils/response/response-handler.js';
 import { PaymentCompletionService } from '../services/payment-completion-service.js';
+import { PaymentValidationService } from '../services/payment-validation-service.js';
 
 /**
  * Controller for managing payments.
@@ -41,6 +42,25 @@ class PaymentController extends BaseController {
           res,
           data,
           'Payment marked as completed and tickets updated',
+        ),
+      )
+      .catch(next);
+  }
+
+  /**
+   * Validates expired pending payments and releases associated tickets.
+   * @param {import("express").Request} req - Express request object.
+   * @param {import("express").Response} res - Express response object.
+   * @param {import("express").NextFunction} next - Express next middleware function.
+   * @returns {Promise<void>}
+   */
+  async validateExpiredPayments(_, res, next) {
+    PaymentValidationService()
+      .then((result) =>
+        responseHandler.success(
+          res,
+          result,
+          'Expired pending payments validated successfully',
         ),
       )
       .catch(next);

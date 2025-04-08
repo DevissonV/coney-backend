@@ -43,5 +43,11 @@ router.patch(
   authorize([envs.ROLE_ADMIN, envs.ROLE_USER]),
   paymentController.markAsCompleted,
 );
+router.post(
+  '/validate-expired',
+  authenticate,
+  authorize([envs.ROLE_ADMIN, envs.ROLE_USER]),
+  paymentController.validateExpiredPayments,
+);
 
 export default router;

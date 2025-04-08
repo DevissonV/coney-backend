@@ -72,7 +72,8 @@
 ┃ ┃ ┃ ┃ ┣ 📜payment-completion-service.js
 ┃ ┃ ┃ ┃ ┣ 📜payment-dependencies.js
 ┃ ┃ ┃ ┃ ┣ 📜payment-external-service.js
-┃ ┃ ┃ ┃ ┗ 📜payment-service.js
+┃ ┃ ┃ ┃ ┣ 📜payment-service.js
+┃ ┃ ┃ ┃ ┗ 📜payment-validation-service.js
 ┃ ┃ ┃ ┗ 📂validations
 ┃ ┃ ┃   ┣ 📜payment-create-validation.js
 ┃ ┃ ┃   ┣ 📜payment-criteria-validation.js
