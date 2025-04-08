@@ -1492,6 +1492,44 @@
 					"response": []
 				},
 				{
+					"name": "validate-expired",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/payments/validate-expired",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"payments",
+								"validate-expired"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "mark-completed",
 					"request": {
 						"auth": {
