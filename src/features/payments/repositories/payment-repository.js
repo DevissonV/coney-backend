@@ -111,6 +111,19 @@ class PaymentRepository extends BaseRepository {
       totalPages: Math.ceil(total / criteria.getPagination().limit),
     };
   }
+
+  /**
+   * Gets all pending payments that are older than a given timestamp.
+   *
+   * @param {string} cutoffISO - ISO timestamp to compare against.
+   * @returns {Promise<Object[]>} List of expired pending payments.
+   */
+  async getExpiredPendingPayments(cutoffISO) {
+    return db(this.tableName)
+      .select('*')
+      .where('status', 'pending')
+      .andWhere('created_at', '<', cutoffISO);
+  }
 }
 
 export default new PaymentRepository();

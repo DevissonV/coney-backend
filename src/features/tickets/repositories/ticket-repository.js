@@ -72,6 +72,18 @@ class TicketRepository extends BaseRepository {
 
     return result;
   }
+
+  /**
+   * Releases tickets by setting user_id to NULL for the given ticket IDs.
+   *
+   * @param {number[]} ticketIds - Array of ticket IDs to update.
+   * @returns {Promise<number>} The number of updated rows.
+   */
+  async releaseTickets(ticketIds) {
+    return db(this.tableName)
+      .whereIn('id', ticketIds)
+      .update({ user_id: null, updated_at: db.fn.now() });
+  }
 }
 
 export default new TicketRepository();
