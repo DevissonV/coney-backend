@@ -9,6 +9,7 @@ export const up = async (knex) => {
       .references('id')
       .inTable('raffles')
       .onDelete('CASCADE');
+    table.boolean('is_paid').notNullable().defaultTo(false);
     table
       .integer('user_id')
       .unsigned()

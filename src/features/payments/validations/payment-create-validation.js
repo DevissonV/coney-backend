@@ -13,6 +13,7 @@ const paymentCreateSchema = Joi.object({
     .min(1)
     .required(),
   stripeSessionId: Joi.string().optional(),
+  stripeSessionUrl: Joi.string().uri().max(512).optional(),
   status: Joi.string()
     .valid('pending', 'completed', 'failed')
     .default('pending'),

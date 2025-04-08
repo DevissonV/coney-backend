@@ -15,6 +15,7 @@ export const up = async (knex) => {
     table
       .enum('status', ['pending', 'completed', 'failed'])
       .defaultTo('pending');
+    table.string('stripe_session_url', 512);
     table.timestamps(true, true);
   });
 };

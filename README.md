@@ -6,8 +6,8 @@
 ┣ 📂.docker
 ┃ ┗ 📜Dockerfile.dev
 ┣ 📂logs
-┃ ┣ 📜app-old.log
-┃ ┗ 📜app-new.log
+┃ ┣ 📜app-2025-04-07_08-10.log
+┃ ┣ 📜app-2025-04-07_08-27.log
 ┣ 📂scripts
 ┃ ┗ 📜generate-module.js
 ┣ 📂src
@@ -69,6 +69,7 @@
 ┃ ┃ ┃ ┣ 📂repositories
 ┃ ┃ ┃ ┃ ┗ 📜payment-repository.js
 ┃ ┃ ┃ ┣ 📂services
+┃ ┃ ┃ ┃ ┣ 📜payment-completion-service.js
 ┃ ┃ ┃ ┃ ┣ 📜payment-dependencies.js
 ┃ ┃ ┃ ┃ ┣ 📜payment-external-service.js
 ┃ ┃ ┃ ┃ ┗ 📜payment-service.js

@@ -37,5 +37,11 @@ router.delete(
   authorize([envs.ROLE_ADMIN]),
   paymentController.delete,
 );
+router.patch(
+  '/:id/mark-completed',
+  authenticate,
+  authorize([envs.ROLE_ADMIN, envs.ROLE_USER]),
+  paymentController.markAsCompleted,
+);
 
 export default router;
