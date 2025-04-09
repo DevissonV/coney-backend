@@ -74,13 +74,13 @@ const envVarsSchema = Joi.object({
     'string.email': 'SMTP_FROM must be a valid email address',
     'any.required': 'SMTP_FROM is required',
   }),
-  PENDING_PAYMENT_TIMEOUT_MINUTES: Joi.number()
+  PAYMENT_PENDING_EXPIRATION_MINUTES: Joi.number()
     .integer()
     .min(1)
     .default(60)
     .required()
     .messages({
-      'any.required': 'PENDING_PAYMENT_TIMEOUT_MINUTES is required',
+      'any.required': 'PAYMENT_PENDING_EXPIRATION_MINUTES is required',
     }),
 }).unknown(true);
 
