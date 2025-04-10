@@ -2,7 +2,9 @@ import { Router } from 'express';
 import { authenticate, authorize } from '#core/middlewares/auth-middleware.js';
 import { envs } from '#core/config/envs.js';
 import userController from '../controllers/user-controller.js';
+import multer from 'multer';
 
+const upload = multer();
 const router = Router();
 
 router.get(
@@ -31,5 +33,13 @@ router.delete(
   userController.delete,
 );
 router.post('/login', userController.login);
+
+router.post(
+  '/:id/photo',
+  authenticate,
+  authorize([envs.ROLE_ADMIN, envs.ROLE_USER]),
+  upload.single('photo'),
+  userController.uploadPhoto,
+);
 
 export default router;

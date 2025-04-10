@@ -82,6 +82,18 @@ const envVarsSchema = Joi.object({
     .messages({
       'any.required': 'PAYMENT_PENDING_EXPIRATION_MINUTES is required',
     }),
+  S3_ACCESS_KEY_ID: Joi.string().required().messages({
+    'any.required': 'S3_ACCESS_KEY_ID is required',
+  }),
+  S3_SECRET_ACCESS_KEY: Joi.string().required().messages({
+    'any.required': 'S3_SECRET_ACCESS_KEY is required',
+  }),
+  S3_BUCKET_NAME: Joi.string().required().messages({
+    'any.required': 'S3_BUCKET_NAME is required',
+  }),
+  S3_REGION: Joi.string().required().messages({
+    'any.required': 'S3_REGION is required',
+  }),
 }).unknown(true);
 
 /**
