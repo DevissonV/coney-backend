@@ -1167,6 +1167,52 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "upload-file",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "photo",
+									"type": "file",
+									"src": "/home/devisson/Imágenes/Capturas de pantalla/Captura desde 2025-04-09 19-39-16.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/users/:id/photo",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								":id",
+								"photo"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "56"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},

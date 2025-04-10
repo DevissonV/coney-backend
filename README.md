@@ -6,8 +6,8 @@
 ┣ 📂.docker
 ┃ ┗ 📜Dockerfile.dev
 ┣ 📂logs
-┃ ┣ 📜app-2025-04-07_08-10.log
-┃ ┣ 📜app-2025-04-07_08-27.log
+┃ ┣ 📜app-2025-04-09_21-08.log
+┃ ┣ 📜app-2025-04-09_21-10.log
 ┣ 📂scripts
 ┃ ┗ 📜generate-module.js
 ┣ 📂src
@@ -25,6 +25,9 @@
 ┃ ┃ ┣ 📂middlewares
 ┃ ┃ ┃ ┣ 📜auth-middleware.js
 ┃ ┃ ┃ ┗ 📜error-middleware.js
+┃ ┃ ┣ 📂s3
+┃ ┃ ┃ ┣ 📜s3-client.js
+┃ ┃ ┃ ┗ 📜s3-uploader.js
 ┃ ┃ ┗ 📂utils
 ┃ ┃   ┣ 📂logger
 ┃ ┃   ┃ ┣ 📜log-manager.js
@@ -138,6 +141,13 @@
 ┃ ┃ ┃   ┣ 📜ticket-create-validation.js
 ┃ ┃ ┃   ┣ 📜ticket-criteria-validation.js
 ┃ ┃ ┃   ┗ 📜ticket-update-validation.js
+┃ ┃ ┣ 📂uploads
+┃ ┃ ┃ ┣ 📂services
+┃ ┃ ┃ ┃ ┗ 📜upload-service.js
+┃ ┃ ┃ ┣ 📂utils
+┃ ┃ ┃ ┃ ┗ 📜uploader-helper.js
+┃ ┃ ┃ ┗ 📂validations
+┃ ┃ ┃   ┗ 📜upload-validation.js
 ┃ ┃ ┣ 📂users
 ┃ ┃ ┃ ┣ 📂api
 ┃ ┃ ┃ ┃ ┗ 📜user-routes.js
@@ -146,16 +156,19 @@
 ┃ ┃ ┃ ┣ 📂dto
 ┃ ┃ ┃ ┃ ┗ 📜user-dto.js
 ┃ ┃ ┃ ┣ 📂migrations
-┃ ┃ ┃ ┃ ┗ 📜20241206173037_create_users_table.js
+┃ ┃ ┃ ┃ ┣ 📜20241206173037_create_users_table.js
+┃ ┃ ┃ ┃ ┗ 📜20250409000000_add_photo_url_to_users.js
 ┃ ┃ ┃ ┣ 📂repositories
 ┃ ┃ ┃ ┃ ┗ 📜user-repository.js
 ┃ ┃ ┃ ┣ 📂services
+┃ ┃ ┃ ┃ ┣ 📜user-photo-service.js
 ┃ ┃ ┃ ┃ ┣ 📜user-service.js
 ┃ ┃ ┃ ┃ ┗ 📜user-sesion-service.js
 ┃ ┃ ┃ ┗ 📂validations
 ┃ ┃ ┃   ┣ 📜user-create-validation.js
 ┃ ┃ ┃   ┣ 📜user-criteria-validation.js
 ┃ ┃ ┃   ┣ 📜user-login.js
+┃ ┃ ┃   ┣ 📜user-photo-validation.js
 ┃ ┃ ┃   ┗ 📜user-update-validation.js
 ┃ ┃ ┗ 📂winners
 ┃ ┃   ┣ 📂api

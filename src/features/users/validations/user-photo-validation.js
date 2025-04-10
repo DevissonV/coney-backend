@@ -12,26 +12,6 @@ const userPhotoSchema = Joi.object({
     'number.positive': 'User ID must be greater than zero.',
     'any.required': 'User ID is required.',
   }),
-
-  originalName: Joi.string()
-    .pattern(/\.(jpg|jpeg|png|webp)$/i)
-    .required()
-    .messages({
-      'string.pattern.base':
-        'Invalid image format. Only .jpg, .jpeg, .png, and .webp are allowed.',
-      'any.required': 'Image filename is required.',
-    }),
-
-  buffer: Joi.binary()
-    .min(100)
-    .max(5 * 1024 * 1024)
-    .required()
-    .messages({
-      'binary.base': 'Image must be a binary file.',
-      'binary.min': 'Image file is too small.',
-      'binary.max': 'Image must not exceed 5MB.',
-      'any.required': 'Image file is required.',
-    }),
 });
 
 /**

@@ -8,7 +8,7 @@ export const up = async (knex) => {
     table.boolean('is_email_validated').defaultTo(false);
     table.boolean('is_user_authorized').defaultTo(false);
     table.string('role').notNullable().defaultTo('user');
-    table.string('photo_url', 500);
+    table.string('photo_url', 250);
     table.timestamp('created_at', { useTz: true }).defaultTo(knex.fn.now());
     table.timestamp('updated_at', { useTz: true });
   });

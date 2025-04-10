@@ -1,6 +1,6 @@
 export const up = async (knex) => {
   await knex.schema.alterTable('users', (table) => {
-    table.string('photo_url', 500);
+    table.string('photo_url', 250);
   });
 };
 
