@@ -6,8 +6,8 @@
 ┣ 📂.docker
 ┃ ┗ 📜Dockerfile.dev
 ┣ 📂logs
-┃ ┣ 📜app-2025-04-09_21-08.log
-┃ ┣ 📜app-2025-04-09_21-10.log
+┃ ┣ 📜old.log
+┃ ┗ 📜new.log
 ┣ 📂scripts
 ┃ ┗ 📜generate-module.js
 ┣ 📂src
@@ -161,6 +161,7 @@
 ┃ ┃ ┃ ┣ 📂repositories
 ┃ ┃ ┃ ┃ ┗ 📜user-repository.js
 ┃ ┃ ┃ ┣ 📂services
+┃ ┃ ┃ ┃ ┣ 📜user-dependencies.js
 ┃ ┃ ┃ ┃ ┣ 📜user-photo-service.js
 ┃ ┃ ┃ ┃ ┣ 📜user-service.js
 ┃ ┃ ┃ ┃ ┗ 📜user-sesion-service.js

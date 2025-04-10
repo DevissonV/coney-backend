@@ -24,6 +24,5 @@ export const generateS3Key = (originalName, folder) => {
   const timestamp = dayjs().format('YYYYMMDD');
   const uuid = uuidv4();
 
-  console.log(`${folder}/${shortBase}-${timestamp}-${uuid}.${extension}`);
   return `${folder}/${shortBase}-${timestamp}-${uuid}.${extension}`;
 };

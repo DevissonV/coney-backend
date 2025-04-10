@@ -3,7 +3,7 @@ import { responseHandler } from '#core/utils/response/response-handler.js';
 import { getSuccessMessage } from '#core/utils/response/api-response-templates.js';
 import userService from '../services/user-service.js';
 import userSesionService from '../services/user-sesion-service.js';
-import { saveUserProfilePicture } from '../services/user-photo-service.js';
+import { userPhotoService } from '../services/user-dependencies.js';
 
 /**
  * Controller for managing users.
@@ -31,19 +31,16 @@ class UserController extends BaseController {
   }
 
   /**
-   * Handles the upload of a user's photo.
+   * Handles the upload of a user's profile photo.
    * @param {Object} req - The HTTP request object.
    * @param {Object} res - The HTTP response object.
-   * @param {Function} next - The next middleware function.
-   * @returns {Promise<void>} Resolves when the photo upload process is complete.
-   * @throws Passes any errors to the next middleware.
+   * @param {Function} next - The next middleware function in the stack.
+   * @returns {Promise<void>} Resolves when the photo is successfully uploaded and a response is sent.
+   * @throws {Error} Passes any errors to the next middleware.
    */
   async uploadPhoto(req, res, next) {
-    saveUserProfilePicture(
-      req.file.buffer,
-      req.file.originalname,
-      req.params.id,
-    )
+    userPhotoService
+      .saveProfilePicture(req.file.buffer, req.file.originalname, req.params.id)
       .then((data) =>
         responseHandler.success(
           res,
