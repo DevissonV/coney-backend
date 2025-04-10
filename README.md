@@ -6,8 +6,8 @@
 ┣ 📂.docker
 ┃ ┗ 📜Dockerfile.dev
 ┣ 📂logs
-┃ ┣ 📜old.log
-┃ ┗ 📜new.log
+┃ ┣ 📜app-2025-04-09_22-14.log
+┃ ┗ 📜app-2025-04-09_22-15.log
 ┣ 📂scripts
 ┃ ┗ 📜generate-module.js
 ┣ 📂src
@@ -90,16 +90,19 @@
 ┃ ┃ ┃ ┣ 📂dto
 ┃ ┃ ┃ ┃ ┗ 📜raffle-dto.js
 ┃ ┃ ┃ ┣ 📂migrations
-┃ ┃ ┃ ┃ ┗ 📜20250225031050_create_raffles_table.js
+┃ ┃ ┃ ┃ ┣ 📜20250225031050_create_raffles_table.js
+┃ ┃ ┃ ┃ ┗ 📜20250409000100_add_image_url_to_raffles.js
 ┃ ┃ ┃ ┣ 📂repositories
 ┃ ┃ ┃ ┃ ┗ 📜raffle-repository.js
 ┃ ┃ ┃ ┣ 📂services
 ┃ ┃ ┃ ┃ ┣ 📜raffle-dependencies.js
+┃ ┃ ┃ ┃ ┣ 📜raffle-photo-service.js
 ┃ ┃ ┃ ┃ ┣ 📜raffle-service.js
 ┃ ┃ ┃ ┃ ┗ 📜raffle-ticket-service.js
 ┃ ┃ ┃ ┗ 📂validations
 ┃ ┃ ┃   ┣ 📜raffle-create-validation.js
 ┃ ┃ ┃   ┣ 📜raffle-criteria-validation.js
+┃ ┃ ┃   ┣ 📜raffle-photo-validation.js
 ┃ ┃ ┃   ┗ 📜raffle-update-validation.js
 ┃ ┃ ┣ 📂send-emails
 ┃ ┃ ┃ ┣ 📂password-recovery

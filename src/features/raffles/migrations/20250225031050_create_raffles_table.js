@@ -20,6 +20,7 @@ export const up = async (knex) => {
       .nullable()
       .references('id')
       .inTable('users');
+    table.string('photo_url', 250);
     table.timestamp('created_at', { useTz: true }).defaultTo(knex.fn.now());
     table.timestamp('updated_at', { useTz: true });
   });
