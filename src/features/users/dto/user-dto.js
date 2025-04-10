@@ -40,6 +40,10 @@ export const updateUserDto = (data) => {
     dto.is_user_authorized = data.isUserAuthorized;
   }
 
+  if (data.photoUrl) {
+    dto.photo_url = data.photoUrl;
+  }
+
   return dto;
 };
 
