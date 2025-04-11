@@ -10,13 +10,13 @@ router.get('/availables', ticketController.getAvailables);
 router.get(
   '/',
   authenticate,
-  authorize([envs.ROLE_ADMIN]),
+  authorize([envs.ROLE_ADMIN, envs.ROLE_USER]),
   ticketController.getAll,
 );
 router.get(
   '/:id',
   authenticate,
-  authorize([envs.ROLE_ADMIN]),
+  authorize([envs.ROLE_ADMIN, envs.ROLE_USER]),
   ticketController.getById,
 );
 router.post(
