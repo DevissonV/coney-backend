@@ -1,8 +1,8 @@
+import { AppError } from '#core/utils/response/error-handler.js';
+import { getLogger } from '#core/utils/logger/logger.js';
 import { EMAIL_TYPES } from '#features/send-emails/email-types.js';
 import { sendEmail } from '#features/send-emails/email-sender.js';
 import ticketRepository from '#features/tickets/repositories/ticket-repository.js';
-import { AppError } from '#core/utils/response/error-handler.js';
-import { getLogger } from '#core/utils/getLogger()/getLogger().js';
 
 /**
  * Sends an email to all users who participated in the raffle,
