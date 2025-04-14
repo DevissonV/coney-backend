@@ -15,9 +15,10 @@ class WinnerNotificationService {
    *
    * @param {Object} raffle - Raffle object (must include id and name).
    * @param {number} winningNumber - Winning ticket number.
+   * @param {Object} creatorUser - Creator user object (must include first_name, last_name, email).
    * @returns {Promise<void>}
    */
-  async notifyParticipantsOfWinner(raffle, winningNumber) {
+  async notifyParticipantsOfWinner(raffle, winningNumber, creatorUser) {
     try {
       const participants = await ticketRepository.getUsersByRaffleId(raffle.id);
 
@@ -32,6 +33,8 @@ class WinnerNotificationService {
               data: {
                 raffleName: raffle.name,
                 winningNumber,
+                creatorFullName: `${creatorUser.first_name} ${creatorUser.last_name}`,
+                creatorEmail: creatorUser.email,
               },
             });
 
@@ -60,9 +63,10 @@ class WinnerNotificationService {
    * @param {Object} winnerUser - Winner user object (must include email, first_name, last_name).
    * @param {Object} raffle - Raffle object (must include name and description).
    * @param {number} winningNumber - Winning ticket number.
+   * @param {Object} creatorUser - Creator user object (must include first_name, last_name, email).
    * @returns {Promise<void>}
    */
-  async notifyWinnerUser(winnerUser, raffle, winningNumber) {
+  async notifyWinnerUser(winnerUser, raffle, winningNumber, creatorUser) {
     try {
       await sendEmail({
         to: winnerUser.email,
@@ -72,6 +76,8 @@ class WinnerNotificationService {
           raffleName: raffle.name,
           raffleDescription: raffle.description,
           winningNumber,
+          creatorFullName: `${creatorUser.first_name} ${creatorUser.last_name}`,
+          creatorEmail: creatorUser.email,
         },
       });
 

@@ -1,6 +1,5 @@
 import { AppError } from '#core/utils/response/error-handler.js';
 import GenericCriteria from '#core/filters/criteria/generic-criteria.js';
-import db from '#core/config/database.js';
 
 /**
  * Service for handling the extra business logic related to winner selection.
@@ -20,11 +19,13 @@ class WinnerLogicService {
     winnerRepository,
     raffleService,
     winnerNotificationService,
+    userRepository,
   }) {
     this.ticketRepository = ticketRepository;
     this.winnerRepository = winnerRepository;
     this.raffleService = raffleService;
     this.winnerNotificationService = winnerNotificationService;
+    this.userRepository = userRepository;
   }
 
   /**
@@ -102,20 +103,25 @@ class WinnerLogicService {
 
     const raffle = await this.raffleService.getById(raffle_id);
 
-    const winnerUser = await db('users')
-      .select('id', 'email', 'first_name', 'last_name')
-      .where('id', winnerTicket.user_id)
-      .first();
+    const winnerUser = await this.userRepository.getBasicInfoById(
+      winnerTicket.user_id,
+    );
+
+    const creatorUser = await this.userRepository.getBasicInfoById(
+      raffle.created_by,
+    );
 
     this.winnerNotificationService.notifyParticipantsOfWinner(
       raffle,
       winnerTicket.ticket_number,
+      creatorUser,
     );
 
     this.winnerNotificationService.notifyWinnerUser(
       winnerUser,
       raffle,
       winnerTicket.ticket_number,
+      creatorUser,
     );
 
     return winnerResponse;
