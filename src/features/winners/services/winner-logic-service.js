@@ -1,9 +1,5 @@
 import { AppError } from '#core/utils/response/error-handler.js';
 import GenericCriteria from '#core/filters/criteria/generic-criteria.js';
-import {
-  notifyParticipantsOfWinner,
-  notifyWinnerUser,
-} from './winner-notification-service.js';
 import db from '#core/config/database.js';
 
 /**
@@ -16,12 +12,19 @@ class WinnerLogicService {
    * @param {Object} deps - The dependencies needed by the service.
    * @param {Object} deps.ticketRepository - Repository for tickets.
    * @param {Object} deps.winnerRepository - Repository for winners.
-   * @param {Object} deps.raffleService    - Service for raffles.
+   * @param {Object} deps.raffleService - Service for raffles.
+   * @param {Object} deps.winnerNotificationService - Service for sending emails related to winners.
    */
-  constructor({ ticketRepository, winnerRepository, raffleService }) {
+  constructor({
+    ticketRepository,
+    winnerRepository,
+    raffleService,
+    winnerNotificationService,
+  }) {
     this.ticketRepository = ticketRepository;
     this.winnerRepository = winnerRepository;
     this.raffleService = raffleService;
+    this.winnerNotificationService = winnerNotificationService;
   }
 
   /**
@@ -39,6 +42,7 @@ class WinnerLogicService {
         raffle_id: { column: 'w.raffle_id', operator: '=' },
       },
     );
+
     const winnersResult = await this.winnerRepository.getAll(criteria);
     if (winnersResult.total > 0) {
       throw new AppError(
@@ -68,7 +72,7 @@ class WinnerLogicService {
    *
    * @param {number} raffle_id - The raffle ID.
    * @param {Function} createWinnerDto - Function to transform data into a DTO.
-   * @param {number} userSessionId - ID the session user.
+   * @param {number} userSessionId - ID of the session user.
    * @returns {Promise<Object>} The created winner record.
    */
   async createWinner(raffle_id, createWinnerDto, userSessionId) {
@@ -103,8 +107,16 @@ class WinnerLogicService {
       .where('id', winnerTicket.user_id)
       .first();
 
-    await notifyParticipantsOfWinner(raffle, winnerTicket.ticket_number);
-    await notifyWinnerUser(winnerUser, raffle, winnerTicket.ticket_number);
+    this.winnerNotificationService.notifyParticipantsOfWinner(
+      raffle,
+      winnerTicket.ticket_number,
+    );
+
+    this.winnerNotificationService.notifyWinnerUser(
+      winnerUser,
+      raffle,
+      winnerTicket.ticket_number,
+    );
 
     return winnerResponse;
   }

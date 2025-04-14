@@ -1,5 +1,5 @@
 import { EMAIL_TYPES } from './email-types.js';
-import { getPasswordRecoveryTemplate } from './templates/password-recovery-template.js';
+import { getPasswordRecoveryTemplate } from './templates/users/password-recovery-template.js';
 import { getWinnerAnnouncementTemplate } from './templates/winners/winner-announcement-template.js';
 import { getWinnerNotificationTemplate } from './templates/winners/winner-notification-template.js';
 
