@@ -11,12 +11,21 @@ class WinnerLogicService {
    * @param {Object} deps - The dependencies needed by the service.
    * @param {Object} deps.ticketRepository - Repository for tickets.
    * @param {Object} deps.winnerRepository - Repository for winners.
-   * @param {Object} deps.raffleService    - Service for raffles.
+   * @param {Object} deps.raffleService - Service for raffles.
+   * @param {Object} deps.winnerNotificationService - Service for sending emails related to winners.
    */
-  constructor({ ticketRepository, winnerRepository, raffleService }) {
+  constructor({
+    ticketRepository,
+    winnerRepository,
+    raffleService,
+    winnerNotificationService,
+    userRepository,
+  }) {
     this.ticketRepository = ticketRepository;
     this.winnerRepository = winnerRepository;
     this.raffleService = raffleService;
+    this.winnerNotificationService = winnerNotificationService;
+    this.userRepository = userRepository;
   }
 
   /**
@@ -34,6 +43,7 @@ class WinnerLogicService {
         raffle_id: { column: 'w.raffle_id', operator: '=' },
       },
     );
+
     const winnersResult = await this.winnerRepository.getAll(criteria);
     if (winnersResult.total > 0) {
       throw new AppError(
@@ -63,15 +73,17 @@ class WinnerLogicService {
    *
    * @param {number} raffle_id - The raffle ID.
    * @param {Function} createWinnerDto - Function to transform data into a DTO.
-   * @param {number} userSessionId - ID the session user.
+   * @param {number} userSessionId - ID of the session user.
    * @returns {Promise<Object>} The created winner record.
    */
   async createWinner(raffle_id, createWinnerDto, userSessionId) {
     await this.validateRaffleAndExistingWinner(raffle_id);
+
     const winnerTicket = await this.getRandomReservedTicket(raffle_id);
     if (!winnerTicket) {
       throw new AppError('No eligible tickets found', 400);
     }
+
     const dto = createWinnerDto({
       raffle_id,
       ticket_id: winnerTicket.id,
@@ -87,6 +99,29 @@ class WinnerLogicService {
         updatedBy: userSessionId,
       },
       { id: userSessionId },
+    );
+
+    const raffle = await this.raffleService.getById(raffle_id);
+
+    const winnerUser = await this.userRepository.getBasicInfoById(
+      winnerTicket.user_id,
+    );
+
+    const creatorUser = await this.userRepository.getBasicInfoById(
+      raffle.created_by,
+    );
+
+    this.winnerNotificationService.notifyParticipantsOfWinner(
+      raffle,
+      winnerTicket.ticket_number,
+      creatorUser,
+    );
+
+    this.winnerNotificationService.notifyWinnerUser(
+      winnerUser,
+      raffle,
+      winnerTicket.ticket_number,
+      creatorUser,
     );
 
     return winnerResponse;

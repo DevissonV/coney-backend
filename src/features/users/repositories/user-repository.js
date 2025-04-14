@@ -39,6 +39,19 @@ class UserRepository extends BaseRepository {
       .select('id', 'email', 'first_name', 'last_name', 'role', 'password')
       .first();
   }
+
+  /**
+   * Retrieves basic public user information by ID.
+   *
+   * @param {number} userId - The user ID.
+   * @returns {Promise<Object|null>} The user object if found, otherwise null.
+   */
+  async getBasicInfoById(userId) {
+    return db(this.tableName)
+      .where({ id: userId })
+      .select('id', 'email', 'first_name', 'last_name')
+      .first();
+  }
 }
 
 export default new UserRepository();

@@ -84,6 +84,26 @@ class TicketRepository extends BaseRepository {
       .whereIn('id', ticketIds)
       .update({ user_id: null, updated_at: db.fn.now() });
   }
+
+  /**
+   * Retrieves distinct users who participated in a specific raffle (paid tickets only).
+   *
+   * @param {number} raffleId - The raffle ID.
+   * @returns {Promise<Object[]>} List of user data { id, email, first_name, last_name }
+   */
+  async getUsersByRaffleId(raffleId) {
+    return await db(this.tableName)
+      .join('users', `${this.tableName}.user_id`, 'users.id')
+      .where(`${this.tableName}.raffle_id`, raffleId)
+      .whereNotNull(`${this.tableName}.user_id`)
+      .andWhere(`${this.tableName}.is_paid`, true)
+      .distinct(
+        'users.id',
+        'users.first_name',
+        'users.last_name',
+        'users.email',
+      );
+  }
 }
 
 export default new TicketRepository();
