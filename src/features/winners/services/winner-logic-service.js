@@ -1,5 +1,10 @@
 import { AppError } from '#core/utils/response/error-handler.js';
 import GenericCriteria from '#core/filters/criteria/generic-criteria.js';
+import {
+  notifyParticipantsOfWinner,
+  notifyWinnerUser,
+} from './winner-notification-service.js';
+import db from '#core/config/database.js';
 
 /**
  * Service for handling the extra business logic related to winner selection.
@@ -68,10 +73,12 @@ class WinnerLogicService {
    */
   async createWinner(raffle_id, createWinnerDto, userSessionId) {
     await this.validateRaffleAndExistingWinner(raffle_id);
+
     const winnerTicket = await this.getRandomReservedTicket(raffle_id);
     if (!winnerTicket) {
       throw new AppError('No eligible tickets found', 400);
     }
+
     const dto = createWinnerDto({
       raffle_id,
       ticket_id: winnerTicket.id,
@@ -88,6 +95,16 @@ class WinnerLogicService {
       },
       { id: userSessionId },
     );
+
+    const raffle = await this.raffleService.getById(raffle_id);
+
+    const winnerUser = await db('users')
+      .select('id', 'email', 'first_name', 'last_name')
+      .where('id', winnerTicket.user_id)
+      .first();
+
+    await notifyParticipantsOfWinner(raffle, winnerTicket.ticket_number);
+    await notifyWinnerUser(winnerUser, raffle, winnerTicket.ticket_number);
 
     return winnerResponse;
   }

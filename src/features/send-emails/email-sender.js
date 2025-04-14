@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import { generateEmailContent } from './email-factory.js';
+import { emailFactory } from './email-factory.js';
 import { getLogger } from '#core/utils/logger/logger.js';
 import { envs } from '#core/config/envs.js';
 
@@ -24,7 +24,7 @@ const transporter = nodemailer.createTransport({
  */
 export const sendEmail = async ({ to, type, data }) => {
   try {
-    const { subject, html } = generateEmailContent(type, data);
+    const { subject, html } = emailFactory(type, data);
 
     await transporter.sendMail({
       from: `"Coney" <${envs.SMTP_FROM}>`,
