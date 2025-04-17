@@ -16,11 +16,13 @@ class WinnerNotificationService {
    * @param {Object} raffle - Raffle object (must include id and name).
    * @param {number} winningNumber - Winning ticket number.
    * @param {Object} creatorUser - Creator user object (must include first_name, last_name, email).
+   * @param {number} winnerUserId - User ID of the raffle winner.
    * @returns {Promise<void>}
    */
-  async notifyParticipantsOfWinner(raffle, winningNumber, creatorUser) {
+  async notifyParticipantsOfWinner(raffle, winningNumber, creatorUser, winnerUserId) {
     try {
-      const participants = await ticketRepository.getUsersByRaffleId(raffle.id);
+      const participants = (await ticketRepository.getUsersByRaffleId(raffle.id))
+        .filter((user) => user.id !== winnerUserId);
 
       await Promise.all(
         participants.map(async (user) => {

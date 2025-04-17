@@ -142,6 +142,7 @@ class WinnerLogicService {
       raffle,
       ticketNumber,
       creatorUser,
+      winnerUser.id
     );
 
     this.winnerNotificationService.notifyWinnerUser(
