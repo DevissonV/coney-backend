@@ -6,8 +6,8 @@
 ┣ 📂.docker
 ┃ ┗ 📜Dockerfile.dev
 ┣ 📂logs
-┃ ┣ 📜app-2025-04-09_22-14.log
-┃ ┗ 📜app-2025-04-09_22-15.log
+┃ ┣ 📜app-old.log
+┃ ┣ 📜app-new.log
 ┣ 📂scripts
 ┃ ┗ 📜generate-module.js
 ┣ 📂src
@@ -82,6 +82,28 @@
 ┃ ┃ ┃   ┣ 📜payment-criteria-validation.js
 ┃ ┃ ┃   ┣ 📜payment-session-validation.js
 ┃ ┃ ┃   ┗ 📜payment-update-validation.js
+┃ ┃ ┣ 📂raffle-authorizations
+┃ ┃ ┃ ┣ 📂api
+┃ ┃ ┃ ┃ ┗ 📜authorization-routes.js
+┃ ┃ ┃ ┣ 📂controllers
+┃ ┃ ┃ ┃ ┗ 📜authorization-controller.js
+┃ ┃ ┃ ┣ 📂dto
+┃ ┃ ┃ ┃ ┗ 📜authorization-dto.js
+┃ ┃ ┃ ┣ 📂migrations
+┃ ┃ ┃ ┃ ┣ 📜20250418190000_create_raffle_authorizations_table.js
+┃ ┃ ┃ ┃ ┗ 📜20250418190500_create_raffle_authorization_documents_table.js
+┃ ┃ ┃ ┣ 📂repositories
+┃ ┃ ┃ ┃ ┣ 📜authorization-document-repository.js
+┃ ┃ ┃ ┃ ┗ 📜authorization-repository.js
+┃ ┃ ┃ ┣ 📂services
+┃ ┃ ┃ ┃ ┣ 📜authorization-dependencies.js
+┃ ┃ ┃ ┃ ┣ 📜authorization-document-service.js
+┃ ┃ ┃ ┃ ┣ 📜authorization-service.js
+┃ ┃ ┃ ┃ ┗ 📜authorization-upload-service.js
+┃ ┃ ┃ ┗ 📂validations
+┃ ┃ ┃   ┣ 📜authorization-create-validation.js
+┃ ┃ ┃   ┣ 📜authorization-document-validation.js
+┃ ┃ ┃   ┗ 📜authorization-status-update-validation.js
 ┃ ┃ ┣ 📂raffles
 ┃ ┃ ┃ ┣ 📂api
 ┃ ┃ ┃ ┃ ┗ 📜raffle-routes.js
@@ -90,8 +112,7 @@
 ┃ ┃ ┃ ┣ 📂dto
 ┃ ┃ ┃ ┃ ┗ 📜raffle-dto.js
 ┃ ┃ ┃ ┣ 📂migrations
-┃ ┃ ┃ ┃ ┣ 📜20250225031050_create_raffles_table.js
-┃ ┃ ┃ ┃ ┗ 📜20250409000100_add_image_url_to_raffles.js
+┃ ┃ ┃ ┃ ┗ 📜20250225031050_create_raffles_table.js
 ┃ ┃ ┃ ┣ 📂repositories
 ┃ ┃ ┃ ┃ ┗ 📜raffle-repository.js
 ┃ ┃ ┃ ┣ 📂services
@@ -122,7 +143,15 @@
 ┃ ┃ ┃ ┃   ┣ 📜password-recovery-validation.js
 ┃ ┃ ┃ ┃   ┗ 📜password-reset-validation.js
 ┃ ┃ ┃ ┣ 📂templates
-┃ ┃ ┃ ┃ ┗ 📜password-recovery-template.js
+┃ ┃ ┃ ┃ ┣ 📂users
+┃ ┃ ┃ ┃ ┃ ┗ 📜password-recovery-template.js
+┃ ┃ ┃ ┃ ┗ 📂winners
+┃ ┃ ┃ ┃   ┣ 📜winner-announcement-template.js
+┃ ┃ ┃ ┃   ┗ 📜winner-notification-template.js
+┃ ┃ ┃ ┣ 📂winner-notifications
+┃ ┃ ┃ ┃ ┣ 📂services
+┃ ┃ ┃ ┃ ┃ ┗ 📜winner-notification-service.js
+┃ ┃ ┃ ┃ ┗ 📂validations
 ┃ ┃ ┃ ┣ 📜email-factory.js
 ┃ ┃ ┃ ┣ 📜email-sender.js
 ┃ ┃ ┃ ┗ 📜email-types.js
@@ -159,8 +188,7 @@
 ┃ ┃ ┃ ┣ 📂dto
 ┃ ┃ ┃ ┃ ┗ 📜user-dto.js
 ┃ ┃ ┃ ┣ 📂migrations
-┃ ┃ ┃ ┃ ┣ 📜20241206173037_create_users_table.js
-┃ ┃ ┃ ┃ ┗ 📜20250409000000_add_photo_url_to_users.js
+┃ ┃ ┃ ┃ ┗ 📜20241206173037_create_users_table.js
 ┃ ┃ ┃ ┣ 📂repositories
 ┃ ┃ ┃ ┃ ┗ 📜user-repository.js
 ┃ ┃ ┃ ┣ 📂services
