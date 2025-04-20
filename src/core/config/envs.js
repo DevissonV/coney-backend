@@ -94,6 +94,7 @@ const envVarsSchema = Joi.object({
   S3_REGION: Joi.string().required().messages({
     'any.required': 'S3_REGION is required',
   }),
+  AWS_SIGNED_URL_EXPIRES: Joi.number().integer().min(60).default(300),
 }).unknown(true);
 
 /**

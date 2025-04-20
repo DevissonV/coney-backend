@@ -108,4 +108,16 @@ export default class BaseRepository {
   async delete(id) {
     return await db(this.tableName).where({ id }).del();
   }
+
+  /**
+   * Retrieves all records that match a specific field.
+   *
+   * @param {string} field - The column name to filter by.
+   * @param {any} value - The value to match.
+   * @returns {Promise<Object[]>} Array of matching records.
+   */
+  async findManyByField(field, value) {
+    const records = await db(this.tableName).where(field, value);
+    return records.map(this.sanitizeRecord.bind(this));
+  }
 }
