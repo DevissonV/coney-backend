@@ -1,8 +1,7 @@
 import { AppError } from '#core/utils/response/error-handler.js';
 import { getLogger } from '#core/utils/logger/logger.js';
+import { generateSignedUrl } from '#core/s3/s3-signer.js';
 import authorizationDocumentRepository from '../repositories/authorization-document-repository.js';
-import { validateAuthorizationCreate } from '../validations/authorization-create-validation.js';
-import { validateAuthorizationUpdate } from '../validations/authorization-status-update-validation.js';
 
 /**
  * Service class for handling CRUD operations on authorization documents.
@@ -61,15 +60,19 @@ class AuthorizationDocumentService {
    * @throws {AppError} If retrieval fails.
    */
   async getByAuthorizationId(authorizationId) {
-    try {
-      return await authorizationDocumentRepository.findManyByField(
-        'authorization_id',
-        authorizationId,
-      );
-    } catch (error) {
-      getLogger().error(`Error fetching documents: ${error.message}`);
-      throw new AppError('Failed to fetch documents', 500);
-    }
+    const docs = await authorizationDocumentRepository.findManyByField(
+      'authorization_id',
+      authorizationId,
+    );
+
+    const withSignedUrls = await Promise.all(
+      docs.map(async (doc) => ({
+        ...doc,
+        file_url: await generateSignedUrl(doc.file_url),
+      })),
+    );
+
+    return withSignedUrls;
   }
 }
 

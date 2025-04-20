@@ -27,3 +27,19 @@ export const uploadPublicFile = async (fileBuffer, fileName, folder) => {
 
   return `https://${envs.S3_BUCKET_NAME}.s3.${envs.S3_REGION}.amazonaws.com/${key}`;
 };
+/**
+ * Uploads a private file to an S3 bucket using a fully defined key.
+ * @param {Buffer} fileBuffer - The buffer of the file.
+ * @param {string} key - The full path (including folder and filename) where the file will be stored.
+ * @returns {Promise<void>}
+ */
+export const uploadPrivateFile = async (fileBuffer, key) => {
+  const command = new PutObjectCommand({
+    Bucket: envs.S3_BUCKET_NAME,
+    Key: key,
+    Body: fileBuffer,
+    ContentType: `application/octet-stream`,
+  });
+
+  await s3.send(command);
+};
