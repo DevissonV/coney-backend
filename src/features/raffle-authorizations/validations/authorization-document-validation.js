@@ -21,24 +21,6 @@ export const ALLOWED_DOCUMENT_TYPES = [
  * Ensures file type, buffer, and raffle ID are valid.
  */
 const uploadSchema = Joi.object({
-  originalname: Joi.string()
-    .pattern(/\.(pdf|jpg|jpeg|png)$/i)
-    .required()
-    .messages({
-      'string.pattern.base':
-        'Invalid file format. Only .pdf, .jpg, .jpeg, and .png are allowed.',
-      'any.required': 'Filename is required.',
-    }),
-  buffer: Joi.binary()
-    .min(100)
-    .max(5 * 1024 * 1024)
-    .required()
-    .messages({
-      'binary.base': 'File must be binary.',
-      'binary.min': 'File is too small.',
-      'binary.max': 'File exceeds maximum size (5MB).',
-      'any.required': 'File buffer is required.',
-    }),
   type: Joi.string()
     .valid(...ALLOWED_DOCUMENT_TYPES)
     .required()
