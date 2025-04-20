@@ -32,3 +32,18 @@ export const updateAuthorizationDto = (data) => ({
   ...(data.rejectionReason && { rejection_reason: data.rejectionReason }),
   updated_at: dayjs().toISOString(),
 });
+
+/**
+ * Transforms validated data into a DTO for creating a document record.
+ *
+ * @param {Object} data - Validated document data.
+ * @param {number} data.authorizationId - ID of the authorization.
+ * @param {string} data.type - Type of the document.
+ * @param {string} data.fileUrl - Path of the file in S3.
+ * @returns {Object} DTO for insertion into the database.
+ */
+export const createAuthorizationDocumentDto = (data) => ({
+  authorization_id: data.authorizationId,
+  type: data.type,
+  file_url: data.fileUrl,
+});
