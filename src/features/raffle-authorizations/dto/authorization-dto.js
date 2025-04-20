@@ -47,3 +47,17 @@ export const createAuthorizationDocumentDto = (data) => ({
   type: data.type,
   file_url: data.fileUrl,
 });
+
+/**
+ * Transforms validated search params into a DTO.
+ *
+ * @param {Object} data
+ * @returns {Object}
+ */
+export const searchAuthorizationDto = (data) => ({
+  raffle_id: data.raffle_id,
+  status: data.status,
+  created_by: data.created_by,
+  limit: data.limit,
+  page: data.page,
+});

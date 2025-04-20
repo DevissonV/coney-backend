@@ -1,12 +1,17 @@
 import { AppError } from '#core/utils/response/error-handler.js';
 import { getLogger } from '#core/utils/logger/logger.js';
+import GenericCriteria from '#core/filters/criteria/generic-criteria.js';
+import { generateSignedUrl } from '#core/s3/s3-signer.js';
 import authorizationRepository from '../repositories/authorization-repository.js';
+import authorizationDocumentRepository from '../repositories/authorization-document-repository.js';
 import {
   createAuthorizationDto,
   updateAuthorizationDto,
+  searchAuthorizationDto,
 } from '../dto/authorization-dto.js';
 import { validateAuthorizationCreate } from '../validations/authorization-create-validation.js';
-import { validateAuthorizationUpdate } from '../validations/authorization-status-update-validation.js';
+import { validateAuthorizationUpdate } from '../validations/authorization-update-validation.js';
+import { validateAuthorizationCriteria } from '../validations/authorization-criteria-validation.js';
 
 /**
  * Service for managing raffle authorization records.
@@ -14,6 +19,59 @@ import { validateAuthorizationUpdate } from '../validations/authorization-status
  * @class AuthorizationService
  */
 class AuthorizationService {
+  /**
+   * Retrieves all authorizations with optional filtering, including signed document URLs.
+   *
+   * @param {Object} params - Query params
+   * @returns {Promise<Object>} Paginated result with documents
+   */
+  async getAll(params) {
+    try {
+      const validated = validateAuthorizationCriteria(params);
+      const dto = searchAuthorizationDto(validated);
+
+      const criteria = new GenericCriteria(dto, {
+        raffle_id: { column: 'raffle_id', operator: '=' },
+        status: { column: 'status', operator: '=' },
+        created_by: { column: 'created_by', operator: '=' },
+      });
+
+      const result = await authorizationRepository.getAll(criteria);
+
+      const enriched = await Promise.all(
+        result.data.map(async (auth) => {
+          const documents =
+            await authorizationDocumentRepository.findManyByField(
+              'authorization_id',
+              auth.id,
+            );
+
+          const docsWithUrls = await Promise.all(
+            documents.map(async (doc) => ({
+              id: doc.id,
+              type: doc.type,
+              uploaded_at: doc.uploaded_at,
+              file_url: await generateSignedUrl(doc.file_url),
+            })),
+          );
+
+          return {
+            ...auth,
+            documents: docsWithUrls,
+          };
+        }),
+      );
+
+      return {
+        ...result,
+        data: enriched,
+      };
+    } catch (error) {
+      getLogger().error(`Error getAll authorizations: ${error.message}`);
+      throw new AppError('Database error while retrieving authorizations', 500);
+    }
+  }
+
   /**
    * Creates a new authorization entry.
    *

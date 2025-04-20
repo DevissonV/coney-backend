@@ -7,6 +7,13 @@ import authorizationController from '../controllers/authorization-controller.js'
 const router = Router();
 const upload = multer();
 
+router.get(
+  '/',
+  authenticate,
+  authorize([envs.ROLE_ADMIN, envs.ROLE_USER]),
+  authorizationController.getAll,
+);
+
 router.post(
   '/',
   authenticate,

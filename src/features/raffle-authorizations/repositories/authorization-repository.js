@@ -1,13 +1,53 @@
 import BaseRepository from '#core/base/base-repository.js';
+import db from '#core/config/database.js';
 
-/**
- * Repository for managing raffle authorization records in the database.
- * @class AuthorizationRepository
- * @extends BaseRepository
- */
 class AuthorizationRepository extends BaseRepository {
   constructor() {
     super('raffle_authorizations');
+  }
+
+  /**
+   * Retrieves paginated and filtered authorizations, including creator data.
+   * @param {GenericCriteria} criteria
+   * @returns {Promise<Object>}
+   */
+  async getAll(criteria) {
+    const query = db(`${this.tableName} as a`)
+      .leftJoin('users as u', 'a.created_by', 'u.id')
+      .select(
+        'a.id',
+        'a.raffle_id',
+        'a.status',
+        'a.ticket_text',
+        'a.rejection_reason',
+        'a.created_at',
+        'a.updated_at',
+        db.raw(`
+          json_build_object(
+            'id', u.id,
+            'first_name', u.first_name,
+            'last_name', u.last_name,
+            'email', u.email
+          ) as created_by
+        `),
+      );
+
+    criteria.applyFilters(query);
+    criteria.applyPagination(query);
+
+    const countQuery = db(`${this.tableName} as a`).count('* as count');
+    criteria.applyFilters(countQuery);
+    const countResult = await countQuery.first();
+    const total = countResult ? parseInt(countResult.count, 10) : 0;
+
+    const data = await query;
+
+    return {
+      data,
+      total,
+      page: criteria.getPagination().page,
+      totalPages: Math.ceil(total / criteria.getPagination().limit),
+    };
   }
 }
 
