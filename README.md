@@ -27,6 +27,7 @@
 ┃ ┃ ┃ ┗ 📜error-middleware.js
 ┃ ┃ ┣ 📂s3
 ┃ ┃ ┃ ┣ 📜s3-client.js
+┃ ┃ ┃ ┣ 📜s3-signer.js
 ┃ ┃ ┃ ┗ 📜s3-uploader.js
 ┃ ┃ ┗ 📂utils
 ┃ ┃   ┣ 📂logger
@@ -102,8 +103,9 @@
 ┃ ┃ ┃ ┃ ┗ 📜authorization-upload-service.js
 ┃ ┃ ┃ ┗ 📂validations
 ┃ ┃ ┃   ┣ 📜authorization-create-validation.js
+┃ ┃ ┃   ┣ 📜authorization-criteria-validation.js
 ┃ ┃ ┃   ┣ 📜authorization-document-validation.js
-┃ ┃ ┃   ┗ 📜authorization-status-update-validation.js
+┃ ┃ ┃   ┗ 📜authorization-update-validation.js
 ┃ ┃ ┣ 📂raffles
 ┃ ┃ ┃ ┣ 📂api
 ┃ ┃ ┃ ┃ ┗ 📜raffle-routes.js
@@ -175,6 +177,7 @@
 ┃ ┃ ┃   ┗ 📜ticket-update-validation.js
 ┃ ┃ ┣ 📂uploads
 ┃ ┃ ┃ ┣ 📂services
+┃ ┃ ┃ ┃ ┣ 📜upload-private-service.js
 ┃ ┃ ┃ ┃ ┗ 📜upload-service.js
 ┃ ┃ ┃ ┣ 📂utils
 ┃ ┃ ┃ ┃ ┗ 📜uploader-helper.js
