@@ -18,9 +18,11 @@ import {
 class RaffleService {
   /**
    * @param {Object} raffleTicketService - Instance of the raffle ticket service.
+   * @param {Object} authorizationService - Instance of the raffle authorization service.
    */
-  constructor(raffleTicketService) {
+  constructor(raffleTicketService, authorizationService) {
     this.raffleTicketService = raffleTicketService;
+    this.authorizationService = authorizationService;
   }
 
   /**
@@ -90,6 +92,14 @@ class RaffleService {
         resCreatedRaffle.id,
         dto.tickets_created,
       );
+
+      const ticketText = `${dto.name} - ${dto.description}. (Este mensaje se mostrará en el boleto como referencia de la rifa.)`;
+
+      await this.authorizationService.create({
+        raffleId: resCreatedRaffle.id,
+        createdBy: sessionUser.id,
+        ticketText,
+      });
 
       return resCreatedRaffle;
     } catch (error) {
