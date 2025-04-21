@@ -27,6 +27,7 @@ class AuthorizationRepository extends BaseRepository {
             'id', r.id,
             'name', r.name,
             'description', r.description,
+            'image_url', r.photo_url,
             'init_date', r.init_date,
             'end_date', r.end_date,
             'created_at', r.created_at
