@@ -43,6 +43,7 @@ export const searchRaffleDto = (data) => ({
   is_active: data.is_active,
   created_by: data.created_by,
   updated_by: data.updated_by,
+  authorization_status: data.authorization_status,
   limit: data.limit,
   page: data.page,
 });

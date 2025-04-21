@@ -13,27 +13,34 @@ class RaffleRepository extends BaseRepository {
 
   /**
    * Overrides the `getAll` method from `BaseRepository`.
-   * Retrieves all raffles with filtering and pagination, including available ticket count.
+   * Retrieves all raffles with filtering and pagination, including available ticket count and authorization status.
    *
    * @override
    * @param {GenericCriteria} criteria - Criteria object for query customization.
-   * @returns {Promise<Object>} Paginated list of raffles with available ticket count.
+   * @returns {Promise<Object>} Paginated list of raffles.
    */
   async getAll(criteria) {
     const query = db(this.tableName)
       .leftJoin('tickets', 'raffles.id', 'tickets.raffle_id')
+      .leftJoin('raffle_authorizations as a', 'raffles.id', 'a.raffle_id')
       .select(
         'raffles.*',
+        'a.status as authorization_status',
         db.raw(
           'COUNT(CASE WHEN tickets.user_id IS NULL THEN 1 END) AS available_tickets',
         ),
       )
-      .groupBy('raffles.id');
+      .groupBy('raffles.id', 'a.status');
 
     criteria.applyFilters(query);
     criteria.applyPagination(query);
 
-    const countQuery = db(this.tableName);
+    const countQuery = db(this.tableName).leftJoin(
+      'raffle_authorizations as a',
+      'raffles.id',
+      'a.raffle_id',
+    );
+
     criteria.applyFilters(countQuery);
 
     const totalResult = await countQuery.count('* as count').first();

@@ -40,6 +40,7 @@ class RaffleService {
         is_active: { column: 'is_active', operator: '=' },
         created_by: { column: 'created_by', operator: '=' },
         updated_by: { column: 'updated_by', operator: '=' },
+        authorization_status: { column: 'a.status', operator: '=' },
       });
 
       return await raffleRepository.getAll(criteria);
