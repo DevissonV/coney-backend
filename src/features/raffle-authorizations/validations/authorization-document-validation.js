@@ -6,11 +6,11 @@ import { AppError } from '#core/utils/response/error-handler.js';
  * @type {string[]}
  */
 export const ALLOWED_DOCUMENT_TYPES = [
-  'identification_document_id', // Copia de la cédula
-  'tax_certificate_pdf', // Copia del RUT (PDF)
-  'prize_invoice_pdf', // Copia facturas de los premios
-  'prize_appraisal_pdf', // Copia avalúo comercial de los premios
-  'guarantee_insurance_pdf', // Copia seguro garantía de cumplimiento
+  'identification_document_id',
+  'tax_certificate_pdf',
+  'prize_invoice_pdf',
+  'prize_appraisal_pdf',
+  'guarantee_insurance_pdf',
 ];
 
 /**
