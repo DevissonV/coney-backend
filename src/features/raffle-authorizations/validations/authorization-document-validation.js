@@ -6,14 +6,11 @@ import { AppError } from '#core/utils/response/error-handler.js';
  * @type {string[]}
  */
 export const ALLOWED_DOCUMENT_TYPES = [
-  'identification_document',
-  'tax_certificate',
-  'prize_invoice',
-  'prize_appraisal',
-  'compliance_insurance',
-  'organizer_certificate',
-  'schedule',
-  'ticket_text',
+  'identification_document_id',
+  'tax_certificate_pdf',
+  'prize_invoice_pdf',
+  'prize_appraisal_pdf',
+  'guarantee_insurance_pdf',
 ];
 
 /**

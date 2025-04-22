@@ -12,6 +12,9 @@ const raffleCriteriaSchema = Joi.object({
   created_by: Joi.number().integer().min(1).optional(),
   updated_by: Joi.number().integer().min(1).optional(),
   is_active: Joi.boolean().optional(),
+  authorization_status: Joi.string()
+    .valid('pending', 'reviewing', 'approved', 'rejected')
+    .optional(),
   limit: Joi.number().integer().min(1).optional(),
   page: Joi.number().integer().min(1).optional(),
 });

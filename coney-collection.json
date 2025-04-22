@@ -49,11 +49,6 @@
 							],
 							"query": [
 								{
-									"key": "page",
-									"value": "1",
-									"disabled": true
-								},
-								{
 									"key": "name",
 									"value": "",
 									"disabled": true
@@ -64,23 +59,38 @@
 									"disabled": true
 								},
 								{
-									"key": "limit",
-									"value": "2",
-									"disabled": true
-								},
-								{
-									"key": "is_active",
-									"value": "true",
-									"disabled": true
-								},
-								{
-									"key": "raffle_id",
+									"key": "end_date",
 									"value": "",
 									"disabled": true
 								},
 								{
 									"key": "created_by",
 									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "updated_by",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "is_active",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "authorization_status",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": null,
 									"disabled": true
 								}
 							]

@@ -7,21 +7,32 @@ class AuthorizationRepository extends BaseRepository {
   }
 
   /**
-   * Retrieves paginated and filtered authorizations, including creator data.
+   * Retrieves paginated and filtered authorizations, including creator and raffle info.
    * @param {GenericCriteria} criteria
    * @returns {Promise<Object>}
    */
   async getAll(criteria) {
     const query = db(`${this.tableName} as a`)
       .leftJoin('users as u', 'a.created_by', 'u.id')
+      .leftJoin('raffles as r', 'a.raffle_id', 'r.id')
       .select(
         'a.id',
-        'a.raffle_id',
         'a.status',
         'a.ticket_text',
         'a.rejection_reason',
         'a.created_at',
         'a.updated_at',
+        db.raw(`
+          json_build_object(
+            'id', r.id,
+            'name', r.name,
+            'description', r.description,
+            'image_url', r.photo_url,
+            'init_date', r.init_date,
+            'end_date', r.end_date,
+            'created_at', r.created_at
+          ) as raffle
+        `),
         db.raw(`
           json_build_object(
             'id', u.id,
