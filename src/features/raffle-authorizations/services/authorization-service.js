@@ -13,6 +13,8 @@ import { validateAuthorizationCreate } from '../validations/authorization-create
 import { validateAuthorizationUpdate } from '../validations/authorization-update-validation.js';
 import { validateAuthorizationCriteria } from '../validations/authorization-criteria-validation.js';
 
+import userRepository from '#features/users/repositories/user-repository.js';
+import { AuthorizationNotificationServiceInstance } from '#features/send-emails/authorization-notifications/services/authorization-notification-service.js';
 /**
  * Service for managing raffle authorization records.
  * Limited to CRUD operations only.
@@ -105,7 +107,19 @@ class AuthorizationService {
     try {
       const validated = validateAuthorizationUpdate(data);
       const dto = updateAuthorizationDto(validated);
-      return await authorizationRepository.update(id, dto);
+      const updated = await authorizationRepository.update(id, dto);
+
+      if (dto.status && ['approved', 'rejected'].includes(dto.status)) {
+        const creator = await userRepository.getBasicInfoById(
+          updated.created_by,
+        );
+        await AuthorizationNotificationServiceInstance.notifyAuthorizationStatusChange(
+          updated,
+          creator,
+        );
+      }
+
+      return updated;
     } catch (error) {
       getLogger().error(`Error updating authorization ${id}: ${error.message}`);
       throw new AppError(
