@@ -7,7 +7,7 @@
 ┃ ┗ 📜Dockerfile.dev
 ┣ 📂logs
 ┃ ┣ 📜app-old.log
-┃ ┣ 📜app-new.log
+┃ ┗ 📜app-new.log
 ┣ 📂scripts
 ┃ ┗ 📜generate-module.js
 ┣ 📂src
@@ -99,6 +99,7 @@
 ┃ ┃ ┃ ┣ 📂services
 ┃ ┃ ┃ ┃ ┣ 📜authorization-dependencies.js
 ┃ ┃ ┃ ┃ ┣ 📜authorization-document-service.js
+┃ ┃ ┃ ┃ ┣ 📜authorization-notifier-service.js
 ┃ ┃ ┃ ┃ ┣ 📜authorization-service.js
 ┃ ┃ ┃ ┃ ┗ 📜authorization-upload-service.js
 ┃ ┃ ┃ ┗ 📂validations
@@ -128,6 +129,11 @@
 ┃ ┃ ┃   ┣ 📜raffle-photo-validation.js
 ┃ ┃ ┃   ┗ 📜raffle-update-validation.js
 ┃ ┃ ┣ 📂send-emails
+┃ ┃ ┃ ┣ 📂authorization-notifications
+┃ ┃ ┃ ┃ ┣ 📂services
+┃ ┃ ┃ ┃ ┃ ┗ 📜authorization-notification-service.js
+┃ ┃ ┃ ┃ ┗ 📂validations
+┃ ┃ ┃ ┃   ┗ 📜authorization-notification-validations.js
 ┃ ┃ ┃ ┣ 📂password-recovery
 ┃ ┃ ┃ ┃ ┣ 📂api
 ┃ ┃ ┃ ┃ ┃ ┗ 📜password-recovery-routes.js
@@ -145,6 +151,9 @@
 ┃ ┃ ┃ ┃   ┣ 📜password-recovery-validation.js
 ┃ ┃ ┃ ┃   ┗ 📜password-reset-validation.js
 ┃ ┃ ┃ ┣ 📂templates
+┃ ┃ ┃ ┃ ┣ 📂authorizations
+┃ ┃ ┃ ┃ ┃ ┣ 📜authorization-approved-template.js
+┃ ┃ ┃ ┃ ┃ ┗ 📜authorization-rejected-template.js
 ┃ ┃ ┃ ┃ ┣ 📂users
 ┃ ┃ ┃ ┃ ┃ ┗ 📜password-recovery-template.js
 ┃ ┃ ┃ ┃ ┗ 📂winners
