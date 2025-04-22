@@ -1,6 +1,7 @@
 import { sendEmail } from '../../email-sender.js';
 import { EMAIL_TYPES } from '../../email-types.js';
 import { getLogger } from '#core/utils/logger/logger.js';
+import { validateAuthorizationNotification } from '../validations/authorization-notification-validations.js';
 
 /**
  * Service to handle sending email notifications related to authorization status.
@@ -14,6 +15,8 @@ export class AuthorizationNotificationService {
    * @returns {Promise<void>}
    */
   async notifyAuthorizationStatusChange(authorization, user) {
+    validateAuthorizationNotification(authorization, user);
+
     const to = user.email;
     const userFullName = `${user.first_name} ${user.last_name}`;
     const status = authorization.status;
@@ -27,7 +30,7 @@ export class AuthorizationNotificationService {
 
     const data = {
       userFullName,
-      raffleName: authorization.raffle?.name || 'una de tus rifas',
+      raffleName: authorization.raffle_name || 'una de tus rifas',
       rejectionReason:
         authorization.rejection_reason || authorization.rejectionReason || '',
     };

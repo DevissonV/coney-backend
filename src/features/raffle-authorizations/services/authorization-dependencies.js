@@ -5,6 +5,7 @@ import { createNotifyStatusChange } from './authorization-notifier-service.js';
 
 import { uploadPrivateFileToS3 } from '../../uploads/services/upload-private-service.js';
 
+import raffleRepository from '#features/raffles/repositories/raffle-repository.js';
 import userRepository from '#features/users/repositories/user-repository.js';
 import { AuthorizationNotificationServiceInstance } from '#features/send-emails/authorization-notifications/services/authorization-notification-service.js';
 
@@ -13,6 +14,7 @@ const authorizationUploadService = new AuthorizationUploadService(
 );
 
 AuthorizationService.notifyStatusChange = createNotifyStatusChange({
+  raffleRepository,
   userRepository,
   authorizationNotificationService: AuthorizationNotificationServiceInstance,
 });
