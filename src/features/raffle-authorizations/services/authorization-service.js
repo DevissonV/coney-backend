@@ -116,7 +116,7 @@ class AuthorizationService {
       const updated = await authorizationRepository.update(id, dto);
 
       if (this.notifyStatusChange) {
-        await this.notifyStatusChange(updated, data);
+        this.notifyStatusChange(updated, data);
       }
 
       return updated;
