@@ -13,14 +13,20 @@ import { validateAuthorizationCreate } from '../validations/authorization-create
 import { validateAuthorizationUpdate } from '../validations/authorization-update-validation.js';
 import { validateAuthorizationCriteria } from '../validations/authorization-criteria-validation.js';
 
-import userRepository from '#features/users/repositories/user-repository.js';
-import { AuthorizationNotificationServiceInstance } from '#features/send-emails/authorization-notifications/services/authorization-notification-service.js';
 /**
  * Service for managing raffle authorization records.
  * Limited to CRUD operations only.
  * @class AuthorizationService
  */
 class AuthorizationService {
+  /**
+   * @param {Object} deps
+   * @param {Function} [deps.notifyStatusChange] - Optional notifier callback triggered after update.
+   */
+  constructor({ notifyStatusChange } = {}) {
+    this.notifyStatusChange = notifyStatusChange;
+  }
+
   /**
    * Retrieves all authorizations with optional filtering, including signed document URLs.
    *
@@ -109,14 +115,8 @@ class AuthorizationService {
       const dto = updateAuthorizationDto(validated);
       const updated = await authorizationRepository.update(id, dto);
 
-      if (dto.status && ['approved', 'rejected'].includes(dto.status)) {
-        const creator = await userRepository.getBasicInfoById(
-          updated.created_by,
-        );
-        await AuthorizationNotificationServiceInstance.notifyAuthorizationStatusChange(
-          updated,
-          creator,
-        );
+      if (this.notifyStatusChange) {
+        await this.notifyStatusChange(updated, data);
       }
 
       return updated;
