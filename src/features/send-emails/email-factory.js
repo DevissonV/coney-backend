@@ -2,6 +2,8 @@ import { EMAIL_TYPES } from './email-types.js';
 import { getPasswordRecoveryTemplate } from './templates/users/password-recovery-template.js';
 import { getWinnerAnnouncementTemplate } from './templates/winners/winner-announcement-template.js';
 import { getWinnerNotificationTemplate } from './templates/winners/winner-notification-template.js';
+import { getAuthorizationApprovedTemplate } from './templates/authorizations/authorization-approved-template.js';
+import { getAuthorizationRejectedTemplate } from './templates/authorizations/authorization-rejected-template.js';
 
 /**
  * Returns the email subject and HTML/text body based on the email type and data.
@@ -18,6 +20,10 @@ export const emailFactory = (type, data) => {
       return getWinnerAnnouncementTemplate(data);
     case EMAIL_TYPES.WINNER_NOTIFICATION:
       return getWinnerNotificationTemplate(data);
+    case EMAIL_TYPES.AUTH_APPROVED:
+      return getAuthorizationApprovedTemplate(data);
+    case EMAIL_TYPES.AUTH_REJECTED:
+      return getAuthorizationRejectedTemplate(data);
     default:
       throw new Error(`Email type "${type}" not supported.`);
   }

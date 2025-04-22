@@ -20,6 +20,14 @@ import { validateAuthorizationCriteria } from '../validations/authorization-crit
  */
 class AuthorizationService {
   /**
+   * @param {Object} deps
+   * @param {Function} [deps.notifyStatusChange] - Optional notifier callback triggered after update.
+   */
+  constructor({ notifyStatusChange } = {}) {
+    this.notifyStatusChange = notifyStatusChange;
+  }
+
+  /**
    * Retrieves all authorizations with optional filtering, including signed document URLs.
    *
    * @param {Object} params - Query params
@@ -105,7 +113,13 @@ class AuthorizationService {
     try {
       const validated = validateAuthorizationUpdate(data);
       const dto = updateAuthorizationDto(validated);
-      return await authorizationRepository.update(id, dto);
+      const updated = await authorizationRepository.update(id, dto);
+
+      if (this.notifyStatusChange) {
+        this.notifyStatusChange(updated, data);
+      }
+
+      return updated;
     } catch (error) {
       getLogger().error(`Error updating authorization ${id}: ${error.message}`);
       throw new AppError(
