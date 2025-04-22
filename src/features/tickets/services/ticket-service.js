@@ -92,6 +92,12 @@ class TicketService {
       const ticket = await this.getById(id);
       validateTicketUpdate(data);
       const dto = updateTicketDto(data);
+
+      if (dto.user_id && ticket.user_id) {
+        getLogger().info(`The ticket is already reserved: ${ticket.user_id}`);
+        throw new AppError('The ticket is already reserved', 400);
+      }
+
       return await ticketRepository.update(ticket.id, dto);
     } catch (error) {
       getLogger().error(`Error update ticket: ${error.message}`);
