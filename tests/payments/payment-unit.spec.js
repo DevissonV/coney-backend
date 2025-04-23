@@ -17,6 +17,7 @@ import {
 
 import paymentController from '#features/payments/controllers/payment-controller.js';
 import { responseHandler } from '#core/utils/response/response-handler.js';
+import { paymentCompletionService } from '#features/payments/services/payment-dependencies.js';
 
 describe('Payment Validations', () => {
   // src/features/payments/validations/payment-create-validation.js
@@ -206,6 +207,25 @@ describe('Payment Controller', () => {
       {},
       'Payment cancelled',
       200,
+    );
+  });
+
+  it('should mark payment as completed', async () => {
+    const req = { params: { id: '123' } };
+    const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
+    const next = jest.fn();
+
+    jest
+      .spyOn(paymentCompletionService, 'markAsCompleted')
+      .mockResolvedValue({ success: true });
+
+    await paymentController.markAsCompleted(req, res, next);
+
+    expect(paymentCompletionService.markAsCompleted).toHaveBeenCalledWith(123);
+    expect(responseHandler.success).toHaveBeenCalledWith(
+      res,
+      { success: true },
+      'Payment marked as completed and tickets updated',
     );
   });
 });

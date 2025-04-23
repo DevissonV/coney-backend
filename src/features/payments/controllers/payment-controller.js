@@ -1,7 +1,7 @@
 import BaseController from '#core/base/base-controller.js';
 import paymentService from '../services/payment-service.js';
 import { responseHandler } from '#core/utils/response/response-handler.js';
-import { PaymentCompletionService } from '../services/payment-completion-service.js';
+import { paymentCompletionService } from '../services/payment-dependencies.js';
 import { PaymentValidationService } from '../services/payment-validation-service.js';
 
 /**
@@ -27,16 +27,20 @@ class PaymentController extends BaseController {
   cancel(_, res) {
     responseHandler.success(res, {}, 'Payment cancelled', 200);
   }
+
   /**
-   * Marks a payment as completed and updates all associated tickets as paid.
-   * @param {import("express").Request} req - Express request object.
-   * @param {import("express").Response} res - Express response object.
-   * @param {import("express").NextFunction} next - Express next middleware function.
-   * @returns {Promise<void>}
+   * Marks a payment as completed and updates the associated tickets.
+
+   * @param {Object} req - The HTTP request object.
+   * @param {Object} res - The HTTP response object.
+   * @param {Function} next - The next middleware function in the stack.
+   * @returns {Promise<void>} Resolves when the operation is complete.
+   * @throws {Error} Passes any errors to the next middleware.
    */
   async markAsCompleted(req, res, next) {
     const { id } = req.params;
-    PaymentCompletionService(Number(id))
+    paymentCompletionService
+      .markAsCompleted(Number(id))
       .then((data) =>
         responseHandler.success(
           res,
