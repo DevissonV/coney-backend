@@ -1,6 +1,5 @@
 import { jest } from '@jest/globals';
 
-import * as responseTemplates from '#core/utils/response/api-response-templates.js';
 import { AppError } from '#core/utils/response/error-handler.js';
 import { UserMother } from './mother/user-mother.js';
 
@@ -18,10 +17,9 @@ import {
 } from '#features/users/dto/user-dto.js';
 import dayjs from 'dayjs';
 
-import userController from '#features/users/controllers/user-controller.js';
-import userSesionService from '#features/users/services/user-sesion-service.js';
-import { userPhotoService } from '#features/users/services/user-dependencies.js';
 import { responseHandler } from '#core/utils/response/response-handler.js';
+import userController from '#features/users/controllers/user-controller.js';
+import { userPhotoService } from '#features/users/services/user-dependencies.js';
 
 describe('User Validation', () => {
   // src/features/users/validations/user-create-validation.js
@@ -293,6 +291,94 @@ describe('User Controller', () => {
       res,
       photoResult,
       'User Photo record updated successfully',
+    );
+  });
+});
+
+describe('User Repository', () => {
+  beforeEach(() => {
+    jest.resetModules();
+  });
+
+  it('should find user by email including password', async () => {
+    const baseUser = UserMother.validCreateDTO();
+    const mockUser = {
+      id: 1,
+      ...baseUser,
+    };
+
+    const dbMock = jest.fn(() => ({
+      where: jest.fn(() => ({
+        select: jest.fn(() => ({
+          first: jest.fn().mockResolvedValue(mockUser),
+        })),
+      })),
+    }));
+
+    jest.unstable_mockModule('#core/config/database.js', () => ({
+      default: dbMock,
+    }));
+
+    const { default: userRepository } = await import(
+      '#features/users/repositories/user-repository.js'
+    );
+
+    const result = await userRepository.findByEmail(baseUser.email);
+    expect(result).toEqual(mockUser);
+    expect(dbMock).toHaveBeenCalledWith('users');
+  });
+
+  it('should get basic user info by ID', async () => {
+    const mockUser = {
+      id: 2,
+      email: 'b@b.com',
+      first_name: 'Another',
+      last_name: 'User',
+    };
+
+    const dbMock = jest.fn(() => ({
+      where: jest.fn(() => ({
+        select: jest.fn(() => ({
+          first: jest.fn().mockResolvedValue(mockUser),
+        })),
+      })),
+    }));
+
+    jest.unstable_mockModule('#core/config/database.js', () => ({
+      default: dbMock,
+    }));
+
+    const { default: userRepository } = await import(
+      '#features/users/repositories/user-repository.js'
+    );
+
+    const result = await userRepository.getBasicInfoById(2);
+    expect(result).toEqual(mockUser);
+    expect(dbMock).toHaveBeenCalledWith('users');
+  });
+
+  it('should sanitize record and remove password field', async () => {
+    const baseUser = UserMother.validCreateDTO();
+    const record = {
+      id: 3,
+      ...baseUser,
+      password: 'sensitive123',
+    };
+
+    const { default: userRepository } = await import(
+      '#features/users/repositories/user-repository.js'
+    );
+    const sanitized = userRepository.sanitizeRecord(record);
+
+    expect(sanitized).not.toHaveProperty('password');
+    expect(sanitized).toEqual(
+      expect.objectContaining({
+        id: 3,
+        email: baseUser.email,
+        firstName: baseUser.firstName,
+        lastName: baseUser.lastName,
+        role: baseUser.role,
+      }),
     );
   });
 });
