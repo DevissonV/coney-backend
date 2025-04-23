@@ -7,6 +7,14 @@ import { validateUserLogin } from '#features/users/validations/user-login.js';
 import { validateUserUpdate } from '#features/users/validations/user-update-validation.js';
 import { validateUserCriteria } from '#features/users/validations/user-criteria-validation.js';
 
+import {
+  createUserDto,
+  updateUserDto,
+  searchUserDto,
+  loginUserDto,
+} from '#features/users/dto/user-dto.js';
+import dayjs from 'dayjs';
+
 describe('User Validation', () => {
   // src/features/users/validations/user-create-validation.js
   it('should pass with valid user DTO (create)', () => {
@@ -114,5 +122,129 @@ describe('User Validation', () => {
     expect(() => validateUserCriteria({ role: 'superadmin' })).toThrow(
       AppError,
     );
+  });
+});
+
+describe('User DTO', () => {
+  it('should transform user creation data to DTO', () => {
+    const input = {
+      email: '  USER@MAIL.COM ',
+      firstName: 'John',
+      lastName: 'Doe',
+      password: 'pass123',
+      role: 'admin',
+      isEmailValidated: true,
+      isUserAuthorized: true,
+    };
+
+    const result = createUserDto(input);
+
+    expect(result).toEqual({
+      email: 'user@mail.com',
+      first_name: 'John',
+      last_name: 'Doe',
+      password: 'pass123',
+      role: 'admin',
+      is_email_validated: true,
+      is_user_authorized: true,
+    });
+  });
+
+  it('should transform user update data and include updated_at', () => {
+    const input = {
+      firstName: 'Updated',
+      role: 'user',
+      isEmailValidated: false,
+      photoUrl: 'http://img.com/pic.jpg',
+    };
+
+    const result = updateUserDto(input);
+
+    expect(result).toEqual(
+      expect.objectContaining({
+        first_name: 'Updated',
+        role: 'user',
+        is_email_validated: false,
+        photo_url: 'http://img.com/pic.jpg',
+      }),
+    );
+
+    expect(dayjs(result.updated_at).isValid()).toBe(true);
+  });
+
+  it('should omit undefined optional fields in updateUserDto', () => {
+    const input = {
+      firstName: 'OnlyName',
+    };
+
+    const result = updateUserDto(input);
+
+    expect(result).toEqual(
+      expect.objectContaining({
+        first_name: 'OnlyName',
+      }),
+    );
+    expect(result).not.toHaveProperty('password');
+    expect(result).not.toHaveProperty('photo_url');
+    expect(result).toHaveProperty('updated_at');
+  });
+
+  it('should transform search criteria without modification', () => {
+    const input = {
+      email: 'a@a.com',
+      page: 1,
+      limit: 10,
+      role: 'user',
+      is_email_validated: true,
+      first_name: 'A',
+      last_name: 'B',
+      is_user_authorized: false,
+    };
+
+    const result = searchUserDto(input);
+
+    expect(result).toEqual(input);
+  });
+
+  it('should normalize email in login DTO', () => {
+    const input = {
+      email: '  LOGIN@DOMAIN.COM ',
+      password: 'secret123',
+    };
+
+    const result = loginUserDto(input);
+
+    expect(result).toEqual({
+      email: 'login@domain.com',
+      password: 'secret123',
+    });
+  });
+
+  it('should include password if present in update', () => {
+    const input = { firstName: 'John', password: '12345678' };
+    const result = updateUserDto(input);
+
+    expect(result).toHaveProperty('password', '12345678');
+  });
+
+  it('should include is_email_validated if present', () => {
+    const input = { isEmailValidated: true };
+    const result = updateUserDto(input);
+
+    expect(result).toHaveProperty('is_email_validated', true);
+  });
+
+  it('should include is_user_authorized if present', () => {
+    const input = { isUserAuthorized: false };
+    const result = updateUserDto(input);
+
+    expect(result).toHaveProperty('is_user_authorized', false);
+  });
+
+  it('should include photo_url if present', () => {
+    const input = { photoUrl: 'https://img.com/avatar.png' };
+    const result = updateUserDto(input);
+
+    expect(result).toHaveProperty('photo_url', 'https://img.com/avatar.png');
   });
 });
