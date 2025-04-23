@@ -1,3 +1,6 @@
+import { jest } from '@jest/globals';
+
+import * as responseTemplates from '#core/utils/response/api-response-templates.js';
 import { AppError } from '#core/utils/response/error-handler.js';
 import { UserMother } from './mother/user-mother.js';
 
@@ -14,6 +17,11 @@ import {
   loginUserDto,
 } from '#features/users/dto/user-dto.js';
 import dayjs from 'dayjs';
+
+import userController from '#features/users/controllers/user-controller.js';
+import userSesionService from '#features/users/services/user-sesion-service.js';
+import { userPhotoService } from '#features/users/services/user-dependencies.js';
+import { responseHandler } from '#core/utils/response/response-handler.js';
 
 describe('User Validation', () => {
   // src/features/users/validations/user-create-validation.js
@@ -246,5 +254,45 @@ describe('User DTO', () => {
     const result = updateUserDto(input);
 
     expect(result).toHaveProperty('photo_url', 'https://img.com/avatar.png');
+  });
+});
+
+describe('User Controller', () => {
+  it('should upload photo and respond with success', async () => {
+    const req = {
+      file: {
+        buffer: Buffer.from('img-data'),
+        originalname: 'avatar.png',
+      },
+      params: { id: 123 },
+    };
+
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+
+    const next = jest.fn();
+    const photoResult = { photoUrl: 'https://cdn.com/avatar.png' };
+
+    userPhotoService.saveProfilePicture = jest
+      .fn()
+      .mockResolvedValue(photoResult);
+    responseHandler.success = jest.fn();
+
+    await userController.uploadPhoto(req, res, next);
+    await new Promise(process.nextTick);
+
+    expect(userPhotoService.saveProfilePicture).toHaveBeenCalledWith(
+      req.file.buffer,
+      req.file.originalname,
+      req.params.id,
+    );
+
+    expect(responseHandler.success).toHaveBeenCalledWith(
+      res,
+      photoResult,
+      'User Photo record updated successfully',
+    );
   });
 });
