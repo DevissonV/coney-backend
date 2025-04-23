@@ -20,6 +20,8 @@ import dayjs from 'dayjs';
 import { responseHandler } from '#core/utils/response/response-handler.js';
 import userController from '#features/users/controllers/user-controller.js';
 import { userPhotoService } from '#features/users/services/user-dependencies.js';
+import userRepository from '#features/users/repositories/user-repository.js';
+import UserSesionService from '#features/users/services/user-sesion-service.js';
 
 describe('User Validation', () => {
   // src/features/users/validations/user-create-validation.js
@@ -426,7 +428,7 @@ describe('User Photo Service', () => {
   it('should throw AppError when userId is invalid', async () => {
     const buffer = Buffer.from('img-data');
     const originalname = 'avatar.png';
-    const userId = 'abc'; // inválido
+    const userId = 'abc';
 
     const mockUpload = jest.fn();
 
@@ -445,5 +447,30 @@ describe('User Photo Service', () => {
     expect(error).toBeDefined();
     expect(error.message).toMatch(/user id must be a number/i);
     expect(mockUpload).not.toHaveBeenCalled();
+  });
+});
+
+describe('UserSesionService - Errors', () => {
+  it('should throw AppError when user does not exist or password is incorrect', async () => {
+    const dto = UserMother.validLoginDTO();
+
+    jest.spyOn(userRepository, 'findByEmail').mockResolvedValue(null);
+
+    await expect(UserSesionService.login(dto)).rejects.toThrow(AppError);
+    await expect(UserSesionService.login(dto)).rejects.toThrow(
+      'Invalid username or password',
+    );
+  });
+
+  it('should throw AppError when findByEmail throws an error', async () => {
+    const dto = UserMother.validLoginDTO();
+    const error = new Error('Database failure');
+
+    jest.spyOn(userRepository, 'findByEmail').mockRejectedValue(error);
+
+    await expect(UserSesionService.login(dto)).rejects.toThrow(AppError);
+    await expect(UserSesionService.login(dto)).rejects.toThrow(
+      'Database failure',
+    );
   });
 });

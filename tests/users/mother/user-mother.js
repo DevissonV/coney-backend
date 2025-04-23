@@ -11,6 +11,12 @@ export const UserMother = {
     ...overrides,
   }),
 
+  validLoginDTO: (overrides = {}) => ({
+    email: 'test@example.com',
+    password: 'StrongPass123',
+    ...overrides,
+  }),
+
   async insertUser(overrides = {}) {
     const user = this.validCreateDTO(overrides);
     const [id] = await db('users')
