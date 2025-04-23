@@ -1,4 +1,5 @@
 import { jest } from '@jest/globals';
+import bcrypt from 'bcryptjs';
 
 import request from 'supertest';
 import app from '../../src/server.js';
@@ -169,5 +170,27 @@ describe('Users API - Integration (Errores)', () => {
 
     await expect(userService.getAll(mockParams)).rejects.toThrow(AppError);
     expect(logSpy).toHaveBeenCalledWith(`Error getAll users: ${error.message}`);
+  });
+
+  it('should hash password if present in update data', async () => {
+    const plainPassword = 'secret123';
+    const hashedPassword = 'hashedSecret123';
+
+    const user = { id: 10 };
+    const inputData = { firstName: 'John', password: plainPassword };
+
+    jest.spyOn(userService, 'getById').mockResolvedValue(user);
+    jest.spyOn(bcrypt, 'hash').mockResolvedValue(hashedPassword);
+    const updateSpy = jest
+      .spyOn(userRepository, 'update')
+      .mockResolvedValue({ id: user.id });
+
+    await userService.update(user.id, inputData);
+
+    expect(bcrypt.hash).toHaveBeenCalledWith(plainPassword, 10);
+    expect(updateSpy).toHaveBeenCalledWith(
+      user.id,
+      expect.objectContaining({ password: hashedPassword }),
+    );
   });
 });
