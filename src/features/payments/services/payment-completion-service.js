@@ -1,14 +1,14 @@
 import { AppError } from '#core/utils/response/error-handler.js';
+import { getLogger } from '#core/utils/logger/logger.js';
 
 /**
  * Service for handling the completion of a payment.
  * Marks the payment as completed and updates the associated tickets.
  */
 export default class PaymentCompletionService {
-  constructor(paymentRepository, ticketRepository, logger) {
+  constructor(paymentRepository, ticketRepository) {
     this.paymentRepository = paymentRepository;
     this.ticketRepository = ticketRepository;
-    this.logger = logger;
   }
 
   /**
@@ -32,13 +32,13 @@ export default class PaymentCompletionService {
 
       await this.ticketRepository.markTicketsAsPaid(ticketIds);
 
-      this.logger.info(
+      getLogger().info(
         `Payment ${paymentId} marked as completed and tickets updated.`,
       );
 
       return { success: true };
     } catch (error) {
-      this.logger.error(`Error in markPaymentAsCompleted: ${error.message}`);
+      getLogger().error(`Error in markPaymentAsCompleted: ${error.message}`);
       throw new AppError(
         error.message || 'Error marking payment as completed',
         500,
