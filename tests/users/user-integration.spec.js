@@ -1,20 +1,28 @@
+import { jest } from '@jest/globals';
+
 import request from 'supertest';
 import app from '../../src/server.js';
 import { registerAndLoginUser } from '../factories/auth-factory.js';
 import { UserMother } from './mother/user-mother.js';
+import userRepository from '#features/users/repositories/user-repository.js';
+import userService from '#features/users/services/user-service.js';
+import { AppError } from '#core/utils/response/error-handler.js';
+import { getLogger } from '#core/utils/logger/logger.js';
+
+let logger = getLogger();
+let token;
+let userId;
+
+beforeAll(async () => {
+  const result = await registerAndLoginUser();
+  token = result.token;
+  userId = result.userId;
+});
 
 describe('Users API - Integration', () => {
-  let token;
-  let userId;
   let createdUserId;
   let email;
   let password;
-
-  beforeAll(async () => {
-    const result = await registerAndLoginUser();
-    token = result.token;
-    userId = result.userId;
-  });
 
   afterAll(async () => {
     if (userId) {
@@ -87,5 +95,79 @@ describe('Users API - Integration', () => {
 
     expect(response.status).toBe(200);
     expect(response.body.status).toBe(true);
+  });
+
+  it('should retrieve all users based on validated criteria', async () => {
+    const mockParams = { email: 'test@example.com', page: 1 };
+    const mockUsers = [{ id: 1, email: 'test@example.com' }];
+
+    jest.spyOn(userRepository, 'getAll').mockResolvedValue(mockUsers);
+
+    const result = await userService.getAll(mockParams);
+
+    expect(result).toEqual(mockUsers);
+    expect(userRepository.getAll).toHaveBeenCalled();
+  });
+});
+
+describe('Users API - Integration (Errores)', () => {
+  it('should return 400 when creating a user with invalid data', async () => {
+    const invalidUser = { email: 'bad-email', password: '123' };
+
+    const res = await request(app).post('/api/users/').send(invalidUser);
+
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty('message');
+  });
+
+  it('should return 404 when retrieving a non-existent user', async () => {
+    const nonExistentId = 99999;
+    const res = await request(app)
+      .get(`/api/users/${nonExistentId}`)
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(res.status).toBe(404);
+    expect(res.body.message).toMatch(/not found/i);
+  });
+
+  it('should return 400 when updating user with invalid data', async () => {
+    const user = UserMother.validCreateDTO();
+    const createRes = await request(app).post('/api/users/').send(user);
+    const tempUserId = createRes.body.data.id;
+
+    const invalidData = { password: '123' };
+
+    const res = await request(app)
+      .patch(`/api/users/${tempUserId}`)
+      .set('Authorization', `Bearer ${token}`)
+      .send(invalidData);
+
+    expect(res.status).toBe(400);
+    expect(res.body.message).toBeDefined();
+
+    await request(app)
+      .delete(`/api/users/${tempUserId}`)
+      .set('Authorization', `Bearer ${token}`);
+  });
+
+  it('should return 404 when deleting a non-existent user', async () => {
+    const nonExistentId = 99999;
+    const res = await request(app)
+      .delete(`/api/users/${nonExistentId}`)
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(res.status).toBe(404);
+    expect(res.body.message).toMatch(/not found/i);
+  });
+
+  it('should throw AppError when repository fails on getAll', async () => {
+    const mockParams = { email: 'test@example.com' };
+    const error = new Error('DB crashed');
+
+    jest.spyOn(userRepository, 'getAll').mockRejectedValue(error);
+    const logSpy = jest.spyOn(logger, 'error').mockImplementation(() => {});
+
+    await expect(userService.getAll(mockParams)).rejects.toThrow(AppError);
+    expect(logSpy).toHaveBeenCalledWith(`Error getAll users: ${error.message}`);
   });
 });
