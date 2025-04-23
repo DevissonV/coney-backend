@@ -382,3 +382,68 @@ describe('User Repository', () => {
     );
   });
 });
+
+describe('User Photo Service', () => {
+  const buffer = Buffer.from('img-data');
+  const originalname = 'avatar.png';
+  const userId = 10;
+
+  it('should upload photo and update user with URL', async () => {
+    const fakeUrl = 'https://s3.amazonaws.com/users/avatar.png';
+    const mockUpload = jest.fn().mockResolvedValue(fakeUrl);
+
+    const updateSpy = jest
+      .spyOn(
+        (await import('#features/users/repositories/user-repository.js'))
+          .default,
+        'update',
+      )
+      .mockResolvedValue();
+
+    const { default: UserPhotoService } = await import(
+      '#features/users/services/user-photo-service.js'
+    );
+
+    const service = new UserPhotoService(mockUpload);
+    const result = await service.saveProfilePicture(
+      buffer,
+      originalname,
+      userId,
+    );
+
+    expect(mockUpload).toHaveBeenCalledWith({
+      buffer,
+      originalname,
+      folder: 'users',
+    });
+    expect(updateSpy).toHaveBeenCalledWith(
+      userId,
+      expect.objectContaining({ photo_url: fakeUrl }),
+    );
+    expect(result).toEqual({ photoUrl: fakeUrl });
+  });
+
+  it('should throw AppError when userId is invalid', async () => {
+    const buffer = Buffer.from('img-data');
+    const originalname = 'avatar.png';
+    const userId = 'abc'; // inválido
+
+    const mockUpload = jest.fn();
+
+    const { default: UserPhotoService } = await import(
+      '#features/users/services/user-photo-service.js'
+    );
+    const service = new UserPhotoService(mockUpload);
+
+    let error;
+    try {
+      await service.saveProfilePicture(buffer, originalname, userId);
+    } catch (e) {
+      error = e;
+    }
+
+    expect(error).toBeDefined();
+    expect(error.message).toMatch(/user id must be a number/i);
+    expect(mockUpload).not.toHaveBeenCalled();
+  });
+});
