@@ -121,3 +121,81 @@ describe('Payments API - Integration', () => {
     expect(res.body.message).toBe('Payment cancelled');
   });
 });
+
+describe('Payments API - Error Scenarios', () => {
+  let token, userId, createdRaffleId, createdPaymentId;
+
+  beforeAll(async () => {
+    const auth = await registerAndLoginUser();
+    token = auth.token;
+    userId = auth.userId;
+
+    const raffle = await createTestRaffle(token);
+    createdRaffleId = raffle.id;
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it('should return 500 if createSession fails', async () => {
+    const paymentData = PaymentMother.validCreateDTO({
+      raffleId: createdRaffleId,
+    });
+
+    jest
+      .spyOn(paymentExternalService, 'createSession')
+      .mockRejectedValue(new Error('Stripe failure'));
+
+    const res = await request(app)
+      .post('/api/payments/')
+      .set('Authorization', `Bearer ${token}`)
+      .send(paymentData);
+
+    expect(res.status).toBe(500);
+    expect(res.body.message).toMatch(/stripe failure/i);
+  });
+
+  it('should return 404 if getById fails with not found', async () => {
+    const nonExistentId = 999999;
+
+    const res = await request(app)
+      .get(`/api/payments/${nonExistentId}`)
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(res.status).toBe(404);
+    expect(res.body.message).toMatch(/not found/i);
+  });
+
+  it('should return 404 if trying to update a non-existent payment', async () => {
+    const nonExistentId = 999999;
+
+    const res = await request(app)
+      .patch(`/api/payments/${nonExistentId}`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({ status: 'completed' });
+
+    expect(res.status).toBe(404);
+    expect(res.body.message).toMatch(/not found/i);
+  });
+
+  it('should return 404 if trying to delete a non-existent payment', async () => {
+    const nonExistentId = 999999;
+
+    const res = await request(app)
+      .delete(`/api/payments/${nonExistentId}`)
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(res.status).toBe(404);
+    expect(res.body.message).toMatch(/not found/i);
+  });
+
+  it('should return 400 if payment query params are invalid', async () => {
+    const res = await request(app)
+      .get('/api/payments?limit=-10')
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(res.status).toBe(400);
+    expect(res.body.message).toMatch(/limit/i);
+  });
+});
