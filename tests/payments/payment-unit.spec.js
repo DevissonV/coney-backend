@@ -18,6 +18,7 @@ import {
 import paymentController from '#features/payments/controllers/payment-controller.js';
 import { responseHandler } from '#core/utils/response/response-handler.js';
 import { paymentCompletionService } from '#features/payments/services/payment-dependencies.js';
+import PaymentCompletionService from '#features/payments/services/payment-completion-service.js';
 
 describe('Payment Validations', () => {
   // src/features/payments/validations/payment-create-validation.js
@@ -269,5 +270,67 @@ describe('PaymentRepository', () => {
 
     expect(dbMock).toHaveBeenCalledWith('payments');
     expect(result).toEqual(mockData);
+  });
+});
+
+describe('PaymentCompletionService', () => {
+  it('should complete payment and mark tickets as paid', async () => {
+    const paymentId = 10;
+    const mockPayment = {
+      id: paymentId,
+      tickets: [1, 2, 3],
+    };
+
+    const mockPaymentRepository = {
+      getById: jest.fn().mockResolvedValue(mockPayment),
+      update: jest.fn().mockResolvedValue(),
+    };
+
+    const mockTicketRepository = {
+      markTicketsAsPaid: jest.fn().mockResolvedValue(),
+    };
+
+    const service = new PaymentCompletionService(
+      mockPaymentRepository,
+      mockTicketRepository,
+    );
+
+    const result = await service.markAsCompleted(paymentId);
+
+    expect(mockPaymentRepository.getById).toHaveBeenCalledWith(paymentId);
+    expect(mockPaymentRepository.update).toHaveBeenCalledWith(paymentId, {
+      status: 'completed',
+    });
+    expect(mockTicketRepository.markTicketsAsPaid).toHaveBeenCalledWith([
+      1, 2, 3,
+    ]);
+    expect(result).toEqual({ success: true });
+  });
+
+  it('should throw AppError if payment is not found', async () => {
+    const paymentId = 999;
+
+    const mockPaymentRepository = {
+      getById: jest.fn().mockResolvedValue(null),
+      update: jest.fn(),
+    };
+
+    const mockTicketRepository = {
+      markTicketsAsPaid: jest.fn(),
+    };
+
+    const service = new PaymentCompletionService(
+      mockPaymentRepository,
+      mockTicketRepository,
+    );
+
+    await expect(service.markAsCompleted(paymentId)).rejects.toThrow(AppError);
+    await expect(service.markAsCompleted(paymentId)).rejects.toThrow(
+      'Payment not found',
+    );
+
+    expect(mockPaymentRepository.getById).toHaveBeenCalledWith(paymentId);
+    expect(mockPaymentRepository.update).not.toHaveBeenCalled();
+    expect(mockTicketRepository.markTicketsAsPaid).not.toHaveBeenCalled();
   });
 });
