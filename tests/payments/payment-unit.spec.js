@@ -20,6 +20,13 @@ import { responseHandler } from '#core/utils/response/response-handler.js';
 import { paymentCompletionService } from '#features/payments/services/payment-dependencies.js';
 import PaymentCompletionService from '#features/payments/services/payment-completion-service.js';
 
+import { getLogger } from '#core/utils/logger/logger.js';
+import paymentRepository from '#features/payments/repositories/payment-repository.js';
+import { PaymentValidationService } from '#features/payments/services/payment-validation-service.js';
+import ticketRepository from '#features/tickets/repositories/ticket-repository.js';
+
+let logger = getLogger();
+
 describe('Payment Validations', () => {
   // src/features/payments/validations/payment-create-validation.js
   it('should validate payment creation successfully', () => {
@@ -332,5 +339,74 @@ describe('PaymentCompletionService', () => {
     expect(mockPaymentRepository.getById).toHaveBeenCalledWith(paymentId);
     expect(mockPaymentRepository.update).not.toHaveBeenCalled();
     expect(mockTicketRepository.markTicketsAsPaid).not.toHaveBeenCalled();
+  });
+});
+
+describe('PaymentValidationService', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should return 0 if there are no expired pending payments', async () => {
+    jest
+      .spyOn(paymentRepository, 'getExpiredPendingPayments')
+      .mockResolvedValue([]);
+
+    const infoSpy = jest.spyOn(logger, 'info').mockImplementation(() => {});
+    const result = await PaymentValidationService();
+
+    expect(result).toEqual({ expiredPayments: 0 });
+    expect(infoSpy).toHaveBeenCalledWith('No expired pending payments found');
+  });
+
+  it('should mark expired payments as failed and release tickets', async () => {
+    const expiredPayment = {
+      id: 55,
+      tickets: [101, 102, 103],
+    };
+
+    const updateSpy = jest
+      .spyOn(paymentRepository, 'update')
+      .mockResolvedValue();
+
+    const releaseSpy = jest
+      .spyOn(ticketRepository, 'releaseTickets')
+      .mockResolvedValue();
+
+    const infoSpy = jest.spyOn(logger, 'info').mockImplementation(() => {});
+
+    jest
+      .spyOn(paymentRepository, 'getExpiredPendingPayments')
+      .mockResolvedValue([expiredPayment]);
+
+    const result = await PaymentValidationService();
+
+    expect(updateSpy).toHaveBeenCalledWith(55, { status: 'failed' });
+    expect(releaseSpy).toHaveBeenCalledWith([101, 102, 103]);
+    expect(infoSpy).toHaveBeenCalledWith(
+      'Marked payment 55 as failed and released 3 tickets.',
+    );
+    expect(result).toEqual({ expiredPayments: 1 });
+  });
+
+  it('should throw AppError and log error if something fails', async () => {
+    const fakeError = new Error('Database crashed');
+
+    jest
+      .spyOn(paymentRepository, 'getExpiredPendingPayments')
+      .mockRejectedValue(fakeError);
+
+    const loggerSpy = {
+      info: jest.fn(),
+      error: jest.fn(),
+    };
+
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+    jest.spyOn(logger, 'error').mockImplementation(loggerSpy.error);
+
+    await expect(PaymentValidationService()).rejects.toThrow(AppError);
+    expect(loggerSpy.error).toHaveBeenCalledWith(
+      `Error validating pending payments: ${fakeError.message}`,
+    );
   });
 });
