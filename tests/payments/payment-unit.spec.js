@@ -24,6 +24,7 @@ import { getLogger } from '#core/utils/logger/logger.js';
 import paymentRepository from '#features/payments/repositories/payment-repository.js';
 import { PaymentValidationService } from '#features/payments/services/payment-validation-service.js';
 import ticketRepository from '#features/tickets/repositories/ticket-repository.js';
+import PaymentExternalService from '#features/payments/services/payment-external-service.js';
 
 let logger = getLogger();
 
@@ -407,6 +408,27 @@ describe('PaymentValidationService', () => {
     await expect(PaymentValidationService()).rejects.toThrow(AppError);
     expect(loggerSpy.error).toHaveBeenCalledWith(
       `Error validating pending payments: ${fakeError.message}`,
+    );
+  });
+});
+
+describe('PaymentExternalService', () => {
+  it('should throw AppError if session creation fails', async () => {
+    const mockStripe = {
+      checkout: {
+        sessions: {
+          create: jest.fn().mockRejectedValue(new Error('Stripe failure')),
+        },
+      },
+    };
+
+    const service = new PaymentExternalService(mockStripe);
+
+    const payment = PaymentMother.validCreateDTO({ id: 1 });
+
+    await expect(service.createSession(payment)).rejects.toThrow(AppError);
+    await expect(service.createSession(payment)).rejects.toThrow(
+      'Error creating payment session',
     );
   });
 });
