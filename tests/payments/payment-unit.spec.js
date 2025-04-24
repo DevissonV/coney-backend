@@ -229,3 +229,45 @@ describe('Payment Controller', () => {
     );
   });
 });
+
+describe('PaymentRepository', () => {
+  beforeEach(() => {
+    jest.resetModules();
+  });
+
+  it('should retrieve expired pending payments correctly', async () => {
+    const dto = PaymentMother.validCreateDTO();
+    const mockData = [
+      {
+        id: 1,
+        raffle_id: dto.raffleId,
+        amount: dto.amount,
+        tickets: JSON.stringify(dto.tickets),
+        currency: dto.currency,
+        status: 'pending',
+        created_at: '2024-01-01T00:00:00Z',
+      },
+    ];
+
+    const dbMock = jest.fn(() => ({
+      select: jest.fn().mockReturnThis(),
+      where: jest.fn().mockReturnThis(),
+      andWhere: jest.fn().mockResolvedValue(mockData),
+    }));
+
+    jest.unstable_mockModule('#core/config/database.js', () => ({
+      default: dbMock,
+    }));
+
+    const { default: paymentRepository } = await import(
+      '#features/payments/repositories/payment-repository.js'
+    );
+
+    const result = await paymentRepository.getExpiredPendingPayments(
+      '2024-02-01T00:00:00Z',
+    );
+
+    expect(dbMock).toHaveBeenCalledWith('payments');
+    expect(result).toEqual(mockData);
+  });
+});
