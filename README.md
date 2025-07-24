@@ -2,272 +2,60 @@
 
 ## Estructura del proyecto
 
-```
-┣ 📂.docker
-┃ ┗ 📜Dockerfile.dev
-┣ 📂logs
-┃ ┣ 📜app-old.log
-┃ ┗ 📜app-new.log
-┣ 📂scripts
-┃ ┗ 📜generate-module.js
-┣ 📂src
-┃ ┣ 📂core
-┃ ┃ ┣ 📂base
-┃ ┃ ┃ ┣ 📜base-controller.js
-┃ ┃ ┃ ┗ 📜base-repository.js
-┃ ┃ ┣ 📂config
-┃ ┃ ┃ ┣ 📜cors-options.js
-┃ ┃ ┃ ┣ 📜database.js
-┃ ┃ ┃ ┗ 📜envs.js
-┃ ┃ ┣ 📂filters
-┃ ┃ ┃ ┗ 📂criteria
-┃ ┃ ┃   ┗ 📜generic-criteria.js
-┃ ┃ ┣ 📂middlewares
-┃ ┃ ┃ ┣ 📜auth-middleware.js
-┃ ┃ ┃ ┗ 📜error-middleware.js
-┃ ┃ ┣ 📂s3
-┃ ┃ ┃ ┣ 📜s3-client.js
-┃ ┃ ┃ ┣ 📜s3-signer.js
-┃ ┃ ┃ ┗ 📜s3-uploader.js
-┃ ┃ ┗ 📂utils
-┃ ┃   ┣ 📂logger
-┃ ┃   ┃ ┣ 📜log-manager.js
-┃ ┃   ┃ ┗ 📜logger.js
-┃ ┃   ┗ 📂response
-┃ ┃     ┣ 📜api-response-templates.js
-┃ ┃     ┣ 📜error-handler.js
-┃ ┃     ┗ 📜response-handler.js
-┃ ┣ 📂features
-┃ ┃ ┣ 📂countries
-┃ ┃ ┃ ┣ 📂api
-┃ ┃ ┃ ┃ ┗ 📜country-routes.js
-┃ ┃ ┃ ┣ 📂controllers
-┃ ┃ ┃ ┃ ┗ 📜country-controller.js
-┃ ┃ ┃ ┣ 📂dto
-┃ ┃ ┃ ┃ ┗ 📜country-dto.js
-┃ ┃ ┃ ┣ 📂migrations
-┃ ┃ ┃ ┃ ┗ 📜20250225143122_create_countries_table.js
-┃ ┃ ┃ ┣ 📂repositories
-┃ ┃ ┃ ┃ ┗ 📜country-repository.js
-┃ ┃ ┃ ┣ 📂seed
-┃ ┃ ┃ ┃ ┗ 📜country-seeder.js
-┃ ┃ ┃ ┣ 📂services
-┃ ┃ ┃ ┃ ┗ 📜country-service.js
-┃ ┃ ┃ ┗ 📂validations
-┃ ┃ ┃   ┣ 📜country-criteria-validation.js
-┃ ┃ ┃   ┗ 📜country-validation.js
-┃ ┃ ┣ 📂health-checks
-┃ ┃ ┃ ┣ 📂api
-┃ ┃ ┃ ┃ ┗ 📜health-check-routes.js
-┃ ┃ ┃ ┗ 📂controllers
-┃ ┃ ┃   ┗ 📜health-check-controller.js
-┃ ┃ ┣ 📂payments
-┃ ┃ ┃ ┣ 📂api
-┃ ┃ ┃ ┃ ┗ 📜payment-routes.js
-┃ ┃ ┃ ┣ 📂controllers
-┃ ┃ ┃ ┃ ┗ 📜payment-controller.js
-┃ ┃ ┃ ┣ 📂dto
-┃ ┃ ┃ ┃ ┗ 📜payment-dto.js
-┃ ┃ ┃ ┣ 📂migrations
-┃ ┃ ┃ ┃ ┗ 📜20250318142148_create_payments_table.js
-┃ ┃ ┃ ┣ 📂repositories
-┃ ┃ ┃ ┃ ┗ 📜payment-repository.js
-┃ ┃ ┃ ┣ 📂services
-┃ ┃ ┃ ┃ ┣ 📜payment-completion-service.js
-┃ ┃ ┃ ┃ ┣ 📜payment-dependencies.js
-┃ ┃ ┃ ┃ ┣ 📜payment-external-service.js
-┃ ┃ ┃ ┃ ┣ 📜payment-service.js
-┃ ┃ ┃ ┃ ┗ 📜payment-validation-service.js
-┃ ┃ ┃ ┗ 📂validations
-┃ ┃ ┃   ┣ 📜payment-create-validation.js
-┃ ┃ ┃   ┣ 📜payment-criteria-validation.js
-┃ ┃ ┃   ┣ 📜payment-session-validation.js
-┃ ┃ ┃   ┗ 📜payment-update-validation.js
-┃ ┃ ┣ 📂raffle-authorizations
-┃ ┃ ┃ ┣ 📂api
-┃ ┃ ┃ ┃ ┗ 📜authorization-routes.js
-┃ ┃ ┃ ┣ 📂controllers
-┃ ┃ ┃ ┃ ┗ 📜authorization-controller.js
-┃ ┃ ┃ ┣ 📂dto
-┃ ┃ ┃ ┃ ┗ 📜authorization-dto.js
-┃ ┃ ┃ ┣ 📂migrations
-┃ ┃ ┃ ┃ ┣ 📜20250418190000_create_raffle_authorizations_table.js
-┃ ┃ ┃ ┃ ┗ 📜20250418190500_create_raffle_authorization_documents_table.js
-┃ ┃ ┃ ┣ 📂repositories
-┃ ┃ ┃ ┃ ┣ 📜authorization-document-repository.js
-┃ ┃ ┃ ┃ ┗ 📜authorization-repository.js
-┃ ┃ ┃ ┣ 📂services
-┃ ┃ ┃ ┃ ┣ 📜authorization-dependencies.js
-┃ ┃ ┃ ┃ ┣ 📜authorization-document-service.js
-┃ ┃ ┃ ┃ ┣ 📜authorization-notifier-service.js
-┃ ┃ ┃ ┃ ┣ 📜authorization-service.js
-┃ ┃ ┃ ┃ ┗ 📜authorization-upload-service.js
-┃ ┃ ┃ ┗ 📂validations
-┃ ┃ ┃   ┣ 📜authorization-create-validation.js
-┃ ┃ ┃   ┣ 📜authorization-criteria-validation.js
-┃ ┃ ┃   ┣ 📜authorization-document-validation.js
-┃ ┃ ┃   ┗ 📜authorization-update-validation.js
-┃ ┃ ┣ 📂raffles
-┃ ┃ ┃ ┣ 📂api
-┃ ┃ ┃ ┃ ┗ 📜raffle-routes.js
-┃ ┃ ┃ ┣ 📂controllers
-┃ ┃ ┃ ┃ ┗ 📜raffle-controller.js
-┃ ┃ ┃ ┣ 📂dto
-┃ ┃ ┃ ┃ ┗ 📜raffle-dto.js
-┃ ┃ ┃ ┣ 📂migrations
-┃ ┃ ┃ ┃ ┗ 📜20250225031050_create_raffles_table.js
-┃ ┃ ┃ ┣ 📂repositories
-┃ ┃ ┃ ┃ ┗ 📜raffle-repository.js
-┃ ┃ ┃ ┣ 📂services
-┃ ┃ ┃ ┃ ┣ 📜raffle-dependencies.js
-┃ ┃ ┃ ┃ ┣ 📜raffle-photo-service.js
-┃ ┃ ┃ ┃ ┣ 📜raffle-service.js
-┃ ┃ ┃ ┃ ┗ 📜raffle-ticket-service.js
-┃ ┃ ┃ ┗ 📂validations
-┃ ┃ ┃   ┣ 📜raffle-create-validation.js
-┃ ┃ ┃   ┣ 📜raffle-criteria-validation.js
-┃ ┃ ┃   ┣ 📜raffle-photo-validation.js
-┃ ┃ ┃   ┗ 📜raffle-update-validation.js
-┃ ┃ ┣ 📂send-emails
-┃ ┃ ┃ ┣ 📂authorization-notifications
-┃ ┃ ┃ ┃ ┣ 📂services
-┃ ┃ ┃ ┃ ┃ ┗ 📜authorization-notification-service.js
-┃ ┃ ┃ ┃ ┗ 📂validations
-┃ ┃ ┃ ┃   ┗ 📜authorization-notification-validations.js
-┃ ┃ ┃ ┣ 📂password-recovery
-┃ ┃ ┃ ┃ ┣ 📂api
-┃ ┃ ┃ ┃ ┃ ┗ 📜password-recovery-routes.js
-┃ ┃ ┃ ┃ ┣ 📂controllers
-┃ ┃ ┃ ┃ ┃ ┗ 📜password-recovery-controller.js
-┃ ┃ ┃ ┃ ┣ 📂dto
-┃ ┃ ┃ ┃ ┃ ┗ 📜password-recovery-dto.js
-┃ ┃ ┃ ┃ ┣ 📂migrations
-┃ ┃ ┃ ┃ ┃ ┗ 📜20250407120000_create_password_recovery_tokens_table.js
-┃ ┃ ┃ ┃ ┣ 📂repositories
-┃ ┃ ┃ ┃ ┃ ┗ 📜password-recovery-repository.js
-┃ ┃ ┃ ┃ ┣ 📂services
-┃ ┃ ┃ ┃ ┃ ┗ 📜password-recovery-service.js
-┃ ┃ ┃ ┃ ┗ 📂validations
-┃ ┃ ┃ ┃   ┣ 📜password-recovery-validation.js
-┃ ┃ ┃ ┃   ┗ 📜password-reset-validation.js
-┃ ┃ ┃ ┣ 📂templates
-┃ ┃ ┃ ┃ ┣ 📂authorizations
-┃ ┃ ┃ ┃ ┃ ┣ 📜authorization-approved-template.js
-┃ ┃ ┃ ┃ ┃ ┗ 📜authorization-rejected-template.js
-┃ ┃ ┃ ┃ ┣ 📂users
-┃ ┃ ┃ ┃ ┃ ┗ 📜password-recovery-template.js
-┃ ┃ ┃ ┃ ┗ 📂winners
-┃ ┃ ┃ ┃   ┣ 📜winner-announcement-template.js
-┃ ┃ ┃ ┃   ┗ 📜winner-notification-template.js
-┃ ┃ ┃ ┣ 📂winner-notifications
-┃ ┃ ┃ ┃ ┣ 📂services
-┃ ┃ ┃ ┃ ┃ ┗ 📜winner-notification-service.js
-┃ ┃ ┃ ┃ ┗ 📂validations
-┃ ┃ ┃ ┣ 📜email-factory.js
-┃ ┃ ┃ ┣ 📜email-sender.js
-┃ ┃ ┃ ┗ 📜email-types.js
-┃ ┃ ┣ 📂tickets
-┃ ┃ ┃ ┣ 📂api
-┃ ┃ ┃ ┃ ┗ 📜ticket-routes.js
-┃ ┃ ┃ ┣ 📂controllers
-┃ ┃ ┃ ┃ ┗ 📜ticket-controller.js
-┃ ┃ ┃ ┣ 📂dto
-┃ ┃ ┃ ┃ ┗ 📜ticket-dto.js
-┃ ┃ ┃ ┣ 📂migrations
-┃ ┃ ┃ ┃ ┗ 📜20250225163808_create_tickets_table.js
-┃ ┃ ┃ ┣ 📂repositories
-┃ ┃ ┃ ┃ ┗ 📜ticket-repository.js
-┃ ┃ ┃ ┣ 📂services
-┃ ┃ ┃ ┃ ┣ 📜ticket-management-service.js
-┃ ┃ ┃ ┃ ┗ 📜ticket-service.js
-┃ ┃ ┃ ┗ 📂validations
-┃ ┃ ┃   ┣ 📜ticket-create-validation.js
-┃ ┃ ┃   ┣ 📜ticket-criteria-validation.js
-┃ ┃ ┃   ┗ 📜ticket-update-validation.js
-┃ ┃ ┣ 📂uploads
-┃ ┃ ┃ ┣ 📂services
-┃ ┃ ┃ ┃ ┣ 📜upload-private-service.js
-┃ ┃ ┃ ┃ ┗ 📜upload-service.js
-┃ ┃ ┃ ┣ 📂utils
-┃ ┃ ┃ ┃ ┗ 📜uploader-helper.js
-┃ ┃ ┃ ┗ 📂validations
-┃ ┃ ┃   ┗ 📜upload-validation.js
-┃ ┃ ┣ 📂users
-┃ ┃ ┃ ┣ 📂api
-┃ ┃ ┃ ┃ ┗ 📜user-routes.js
-┃ ┃ ┃ ┣ 📂controllers
-┃ ┃ ┃ ┃ ┗ 📜user-controller.js
-┃ ┃ ┃ ┣ 📂dto
-┃ ┃ ┃ ┃ ┗ 📜user-dto.js
-┃ ┃ ┃ ┣ 📂migrations
-┃ ┃ ┃ ┃ ┗ 📜20241206173037_create_users_table.js
-┃ ┃ ┃ ┣ 📂repositories
-┃ ┃ ┃ ┃ ┗ 📜user-repository.js
-┃ ┃ ┃ ┣ 📂services
-┃ ┃ ┃ ┃ ┣ 📜user-dependencies.js
-┃ ┃ ┃ ┃ ┣ 📜user-photo-service.js
-┃ ┃ ┃ ┃ ┣ 📜user-service.js
-┃ ┃ ┃ ┃ ┗ 📜user-sesion-service.js
-┃ ┃ ┃ ┗ 📂validations
-┃ ┃ ┃   ┣ 📜user-create-validation.js
-┃ ┃ ┃   ┣ 📜user-criteria-validation.js
-┃ ┃ ┃   ┣ 📜user-login.js
-┃ ┃ ┃   ┣ 📜user-photo-validation.js
-┃ ┃ ┃   ┗ 📜user-update-validation.js
-┃ ┃ ┗ 📂winners
-┃ ┃   ┣ 📂api
-┃ ┃   ┃ ┗ 📜winner-routes.js
-┃ ┃   ┣ 📂controllers
-┃ ┃   ┃ ┗ 📜winner-controller.js
-┃ ┃   ┣ 📂dto
-┃ ┃   ┃ ┗ 📜winner-dto.js
-┃ ┃   ┣ 📂migrations
-┃ ┃   ┃ ┗ 📜20250317161154_create_winners_table.js
-┃ ┃   ┣ 📂repositories
-┃ ┃   ┃ ┗ 📜winner-repository.js
-┃ ┃   ┣ 📂services
-┃ ┃   ┃ ┣ 📜winner-dependencies.js
-┃ ┃   ┃ ┣ 📜winner-logic-service.js
-┃ ┃   ┃ ┗ 📜winner-service.js
-┃ ┃   ┗ 📂validations
-┃ ┃     ┣ 📜winner-criteria-validation.js
-┃ ┃     ┗ 📜winner-validation.js
-┃ ┣ 📂routes
-┃ ┃ ┗ 📜api-routes.js
-┃ ┗ 📜server.js
-┣ 📂tests
-┃ ┣ 📂countries
-┃ ┃ ┗ 📜country.spec.js
-┃ ┣ 📂factories
-┃ ┃ ┗ 📜auth-factory.js
-┃ ┣ 📂health-checks
-┃ ┃ ┗ 📜health-check.spec.js
-┃ ┣ 📂payments
-┃ ┃ ┗ 📜payment.spec.js
-┃ ┣ 📂raffles
-┃ ┃ ┗ 📜raffle.spec.js
-┃ ┣ 📂tickets
-┃ ┃ ┗ 📜ticket.spec.js
-┃ ┣ 📂users
-┃ ┃ ┗ 📜user.spec.js
-┃ ┗ 📂winners
-┃   ┗ 📜winner.spec.js
-┣ 📜.dockerignore
-┣ 📜.env
-┣ 📜.env-example
-┣ 📜.gitignore
-┣ 📜.prettierignore
-┣ 📜.prettierrc
-┣ 📜coney-collection.json
-┣ 📜docker-compose.yml
-┣ 📜eslint.config.js
-┣ 📜jest.config.mjs
-┣ 📜jsconfig.json
-┣ 📜knexfile.js
-┣ 📜LICENSE
-┣ 📜package.json
-┗ 📜README.md
+El sistema sigue una arquitectura modular por features, con una capa core/ para utilidades, configuración y lógica transversal. Cada módulo funcional encapsula su propia lógica de negocio, controladores, rutas, DTOs, validaciones, repositorios y servicios, permitiendo escalar sin acoplamientos innecesarios.
 
+Cada feature tiene una estructura similar a la siguiente:
+```
+features/<nombre>/
+ ┣ 📂api/
+ ┣ 📂controllers/
+ ┣ 📂dto/
+ ┣ 📂migrations/
+ ┣ 📂repositories/
+ ┣ 📂seed/
+ ┣ 📂services/
+ ┗ 📂validations/
+```
+y la estructura en general se vera asi: 
+```
+📦 .
+ ┣ 📂.docker
+ ┣ 📂logs
+ ┣ 📂scripts
+ ┣ 📂src
+ ┃ ┣ 📂core
+ ┃ ┃ ┣ 📂base
+ ┃ ┃ ┣ 📂config
+ ┃ ┃ ┣ 📂filters
+ ┃ ┃ ┣ 📂middlewares
+ ┃ ┃ ┣ 📂s3
+ ┃ ┃ ┗ 📂utils
+ ┃ ┣ 📂features
+ ┃ ┃ ┣ 📂countries
+ ┃ ┃ ┣ 📂health-checks
+ ┃ ┃ ┣ 📂payments
+ ┃ ┃ ┣ 📂raffle-authorizations
+ ┃ ┃ ┣ 📂raffles
+ ┃ ┃ ┣ 📂send-emails
+ ┃ ┃ ┣ 📂tickets
+ ┃ ┃ ┣ 📂uploads
+ ┃ ┃ ┣ 📂users
+ ┃ ┃ ┗ 📂winners
+ ┃ ┣ 📂routes
+ ┃ ┗ 📜server.js
+ ┣ 📂tests
+ ┃ ┣ 📂countries
+ ┃ ┣ 📂factories
+ ┃ ┣ 📂health-checks
+ ┃ ┣ 📂payments
+ ┃ ┣ 📂raffles
+ ┃ ┣ 📂tickets
+ ┃ ┣ 📂users
+ ┃ ┗ 📂winners
+ ┣ 📜.env
+ ┣ 📜docker-compose.yml
+ ┣ 📜package.json
+ ┗ 📜README.md
 
 ```
 
@@ -384,7 +172,7 @@ Para generar un modulo nuevo pararse en la raiz del proyecto y ejecutar:
 npm run generate-module nameModule
 ```
 
-Automaticamente se le generara el modulo con su estructura:
+El nuevo módulo se generará con la siguiente estructura por defecto:
 
 ```
 nameModule
